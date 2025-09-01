@@ -26,6 +26,7 @@ const nextConfig = {
       'lh3.googleusercontent.com',
       '127.0.0.1:8000',
       'galileecommerce.netlify.app',
+      'galileecommerceshopapi-3.onrender.com',
     ],
     unoptimized: true,
   },
