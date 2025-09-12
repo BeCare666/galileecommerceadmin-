@@ -36,7 +36,7 @@ const OwnerLayout: React.FC<{ children?: React.ReactNode }> = ({
     >
       <Navbar />
       <MobileNavigation>
-        <OwnerInformation />
+        {/** <OwnerInformation />**/}
         {!permission ? <SideBarMenu /> : null}
       </MobileNavigation>
 
@@ -63,7 +63,7 @@ const OwnerLayout: React.FC<{ children?: React.ReactNode }> = ({
                 },
               }}
             >
-              <OwnerInformation />
+              {/** <OwnerInformation />**/}
               {!permission ? <SideBarMenu /> : null}
             </Scrollbar>
           </div>

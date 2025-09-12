@@ -132,7 +132,7 @@ export default function OrderDetailsPage() {
       width: 70,
       render: (image: Attachment) => (
         <Image
-          src={image?.thumbnail ?? siteSettings.product.placeholder}
+          src={image?.url ?? siteSettings.product.placeholder}
           alt="alt text"
           width={50}
           height={50}
@@ -145,23 +145,24 @@ export default function OrderDetailsPage() {
       key: 'name',
       align: alignLeft,
       render: (name: string, item: any) => (
-        <div>
+        console.log("item", item),
+        < div >
           <span>{name}</span>
           <span className="mx-2">x</span>
           <span className="font-semibold text-heading">
-            {item.pivot.order_quantity}
+            {item.order_quantity}
           </span>
-        </div>
+        </div >
       ),
     },
     {
       title: t('table:table-item-total'),
-      dataIndex: 'pivot',
-      key: 'pivot',
+      dataIndex: 'subtotal',
+      key: 'subtotal',
       align: alignRight,
-      render: function Render(pivot: any) {
+      render: function Render(subtotal: any) {
         const { price } = usePrice({
-          amount: Number(pivot?.subtotal),
+          amount: Number(subtotal),
         });
         return <span>{price}</span>;
       },
@@ -202,31 +203,31 @@ export default function OrderDetailsPage() {
             OrderStatus.CANCELLED,
             OrderStatus.REFUNDED,
           ].includes(order?.order_status! as OrderStatus) && (
-            <form
-              onSubmit={handleSubmit(ChangeStatus)}
-              className="flex w-full items-start ms-auto lg:w-2/4"
-            >
-              <div className="z-20 w-full me-5">
-                <SelectInput
-                  name="order_status"
-                  control={control}
-                  getOptionLabel={(option: any) => t(option.name)}
-                  getOptionValue={(option: any) => option.status}
-                  options={ORDER_STATUS.slice(0, 6)}
-                  placeholder={t(`text-${order?.order_status}`) ?? t('form:input-placeholder-order-status')}
-                />
-                <ValidationError message={t(errors?.order_status?.message)} />
-              </div>
-              <Button loading={updating}>
-                <span className="hidden sm:block">
-                  {t('form:button-label-change-status')}
-                </span>
-                <span className="block sm:hidden">
-                  {t('form:form:button-label-change')}
-                </span>
-              </Button>
-            </form>
-          )}
+              <form
+                onSubmit={handleSubmit(ChangeStatus)}
+                className="flex w-full items-start ms-auto lg:w-2/4"
+              >
+                <div className="z-20 w-full me-5">
+                  <SelectInput
+                    name="order_status"
+                    control={control}
+                    getOptionLabel={(option: any) => t(option.name)}
+                    getOptionValue={(option: any) => option.status}
+                    options={ORDER_STATUS.slice(0, 6)}
+                    placeholder={t(`text-${order?.order_status}`) ?? t('form:input-placeholder-order-status')}
+                  />
+                  <ValidationError message={t(errors?.order_status?.message)} />
+                </div>
+                <Button loading={updating}>
+                  <span className="hidden sm:block">
+                    {t('form:button-label-change-status')}
+                  </span>
+                  <span className="block sm:hidden">
+                    {t('form:form:button-label-change')}
+                  </span>
+                </Button>
+              </form>
+            )}
         </div>
 
         <div className="my-5 flex items-center justify-center lg:my-10">

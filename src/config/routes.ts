@@ -138,6 +138,7 @@ export const Routes = {
   ownerDashboardNotice: '/notice',
   ownerDashboardMessage: '/owner-message',
   ownerDashboardMyShop: '/my-shop',
+  //ownerDashboardMyShop: '/my-shop',
   myProductsInFlashSale: '/flash-sale/my-products',
   ownerDashboardNotifyLogs: '/notify-logs',
   inventory: {

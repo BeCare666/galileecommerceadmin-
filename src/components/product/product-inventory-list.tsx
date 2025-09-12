@@ -98,7 +98,7 @@ const ProductInventoryList = ({
         <div className="flex items-center">
           <div className="relative aspect-square h-10 w-10 shrink-0 overflow-hidden rounded border border-border-200/80 bg-gray-100 me-2.5">
             <Image
-              src={image?.thumbnail ?? siteSettings.product.placeholder}
+              src={image?.url ?? siteSettings.product.placeholder}
               alt={name}
               fill
               priority={true}
@@ -147,11 +147,10 @@ const ProductInventoryList = ({
           return (
             <>
               <div
-                className={`flex justify-start ${
-                  quantity > 0 && quantity < 10
+                className={`flex justify-start ${quantity > 0 && quantity < 10
                     ? 'flex-col items-baseline space-y-3 3xl:flex-row 3xl:space-x-2 3xl:space-y-0 rtl:3xl:space-x-reverse'
                     : 'items-center space-x-2 rtl:space-x-reverse'
-                }`}
+                  }`}
               >
                 {quantity < 1 ? (
                   <Badge

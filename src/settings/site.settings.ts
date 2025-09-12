@@ -107,12 +107,12 @@ export const siteSettings = {
             label: 'sidebar-nav-item-my-shops',
             icon: 'MyShopIcon',
           },
-          {
+          {/**{
             href: Routes.ownershipTransferRequest.list,
             label: 'Shop Transfer Request',
             icon: 'MyShopIcon',
             permission: adminAndOwnerOnly,
-          },
+          },**/}
         ],
       },
 
@@ -624,12 +624,12 @@ export const siteSettings = {
         icon: 'MyShopOwnerIcon',
         permissions: ownerAndStaffOnly,
       },
-      {
+      {/** {
         href: Routes?.ownerDashboardShopTransferRequest,
         label: 'Shop Transfer Request',
         icon: 'MyShopIcon',
         permissions: adminAndOwnerOnly,
-      },
+      },**/}
     ],
   },
   product: {

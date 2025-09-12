@@ -25,8 +25,8 @@ const loginFormSchema = yup.object().shape({
   password: yup.string().required('form:error-password-required'),
 });
 const defaultValues = {
-  email: "admin@demo.com",
-  password: "demodemo",
+  email: "",
+  password: "",
 };
 
 const LoginForm = () => {

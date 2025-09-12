@@ -133,8 +133,8 @@ export default function ProductsPage() {
                 </LinkButton>
               )}
             </div>
-
-            <Button
+            {/**
+            < Button
               onClick={handleImportModal}
               className="mt-5 w-full md:hidden"
             >
@@ -159,12 +159,14 @@ export default function ProductsPage() {
             >
               <MoreIcon className="w-3.5 text-body" />
             </button>
+            **/ }
           </div>
+
         </div>
 
         <div
           className={cn('flex w-full transition', {
-            'visible h-auto': visible,
+            'visible h-auto': !visible,
             'invisible h-0': !visible,
           })}
         >
@@ -190,7 +192,7 @@ export default function ProductsPage() {
             />
           </div>
         </div>
-      </Card>
+      </Card >
       <ProductList
         products={products}
         paginatorInfo={paginatorInfo}

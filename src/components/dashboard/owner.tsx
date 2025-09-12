@@ -26,17 +26,6 @@ import { motion } from 'framer-motion';
 import PageHeading from '@/components/common/page-heading';
 const ShopList = dynamic(() => import('@/components/dashboard/shops/shops'));
 
-// TODO : this vendor root page code portion need to be checked in pixer.
-
-// import { adminOnly, getAuthCredentials, hasAccess } from '@/utils/auth-utils';
-
-// const tabList = [
-//   {
-//     title: 'common:sidebar-nav-item-my-shops',
-//     children: 'ShopList',
-//   },
-// ];
-
 const Message = dynamic(() => import('@/components/dashboard/shops/message'));
 const StoreNotices = dynamic(
   () => import('@/components/dashboard/shops/store-notices'),
@@ -55,10 +44,6 @@ const TopRatedProducts = dynamic(
   () => import('@/components/dashboard/widgets/box/widget-top-rate-product'),
 );
 
-const MAP_PAGE_LIST: Record<string, any> = {
-  ShopList: ShopList,
-};
-
 const OwnerShopLayout = () => {
   const { t } = useTranslation();
   const { locale } = useRouter();
@@ -66,50 +51,43 @@ const OwnerShopLayout = () => {
   const { permissions } = getAuthCredentials();
   const { data, isLoading: loading } = useAnalyticsQuery();
   const [activeTimeFrame, setActiveTimeFrame] = useState(1);
-  const [orderDataRange, setOrderDataRange] = useState(
-    data?.todayTotalOrderByStatus,
-  );
+  const [orderDataRange, setOrderDataRange] = useState<any>(null);
+
+  // Debug pour voir ce que renvoie ton backend
+  useEffect(() => {
+    console.log('📊 Analytics data from backend:', data);
+  }, [data]);
 
   const {
     data: productByCategory,
     isLoading: productByCategoryLoading,
-    error: productByCategoryError,
   } = useProductByCategoryQuery({ limit: 10, language: locale });
 
   const {
     data: topRatedProducts,
     isLoading: topRatedProductsLoading,
-    error: topRatedProductsError,
   } = useTopRatedProductsQuery({ limit: 10, language: locale });
 
   const { price: total_revenue } = usePrice(
     data && {
-      amount: data?.totalRevenue!,
+      amount: data?.totalRevenue ?? 0,
     },
   );
   const { price: total_refund } = usePrice(
     data && {
-      amount: data?.totalRefunds!,
+      amount: data?.totalRefunds ?? 0,
     },
   );
-
   const { price: todays_revenue } = usePrice(
     data && {
-      amount: data?.todaysRevenue!,
+      amount: data?.todaysRevenue ?? 0,
     },
   );
-  const { query } = router;
 
-  const classNames = {
-    basic:
-      'lg:text-[1.375rem] font-semibold border-b-2 border-solid border-transparent lg:pb-5 pb-3 -mb-0.5',
-    selected: 'text-accent hover:text-accent-hover border-current',
-    normal: 'hover:text-black/80',
-  };
-  let salesByYear: number[] = Array.from({ length: 12 }, (_) => 0);
-  if (!!data?.totalYearSaleByMonth?.length) {
+  let salesByYear: number[] = Array.from({ length: 12 }, () => 0);
+  if (Array.isArray(data?.totalYearSaleByMonth) && data?.totalYearSaleByMonth.length) {
     salesByYear = data.totalYearSaleByMonth.map((item: any) =>
-      item.total.toFixed(2),
+      Number(item.total).toFixed ? Number(item.total).toFixed(2) : 0,
     );
   }
 
@@ -120,7 +98,9 @@ const OwnerShopLayout = () => {
     { name: t('text-yearly'), day: 365 },
   ];
 
+  // Fix du useEffect pour bien prendre monthly et yearly
   useEffect(() => {
+    if (!data) return;
     switch (activeTimeFrame) {
       case 1:
         setOrderDataRange(data?.todayTotalOrderByStatus);
@@ -129,17 +109,19 @@ const OwnerShopLayout = () => {
         setOrderDataRange(data?.weeklyTotalOrderByStatus);
         break;
       case 30:
-        setOrderDataRange(data?.todayTotalOrderByStatus);
+        setOrderDataRange(data?.monthlyTotalOrderByStatus);
         break;
       case 365:
         setOrderDataRange(data?.yearlyTotalOrderByStatus);
         break;
-
       default:
-        setOrderDataRange(orderDataRange);
+        setOrderDataRange(data?.todayTotalOrderByStatus);
         break;
     }
-  });
+  }, [activeTimeFrame, data]);
+
+  if (loading) return <div>⏳ Chargement des analytics...</div>;
+  if (!data) return <div>⚠️ Aucune donnée analytics trouvée.</div>;
 
   return (
     <>
@@ -150,57 +132,53 @@ const OwnerShopLayout = () => {
         <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
           <StickerCard
             titleTransKey="sticker-card-title-rev"
-            // subtitleTransKey="sticker-card-subtitle-rev"
             icon={<EaringIcon className="h-8 w-8" />}
-            color="#047857"
+            color="#FFF"
             price={total_revenue}
           />
           <StickerCard
             titleTransKey="sticker-card-title-today-refunds"
-            // subtitleTransKey="sticker-card-subtitle-order"
             icon={<ShoppingIcon className="h-8 w-8" />}
-            color="#865DFF"
+            color="#FFF"
             price={total_refund}
           />
           <StickerCard
             titleTransKey="sticker-card-title-total-shops"
             icon={<BasketIcon className="h-8 w-8" />}
-            color="#E157A0"
+            color="#FFF"
             price={data?.totalShops}
           />
           <StickerCard
             titleTransKey="sticker-card-title-today-rev"
             icon={<ChecklistIcon className="h-8 w-8" />}
-            color="#D74EFF"
+            color="#FFF"
             price={todays_revenue}
           />
         </div>
       </div>
 
-      <div className="mb-8 rounded-lg bg-light p-5 md:p-8">
+      <div className="hidden mb-8 rounded-lg bg-light p-5 md:p-8">
         <div className="mb-5 items-center justify-between sm:flex md:mb-7">
           <PageHeading title={t('text-order-status')} />
           <div className="mt-3.5 inline-flex rounded-full bg-gray-100/80 p-1.5 sm:mt-0">
-            {timeFrame
-              ? timeFrame.map((time) => (
-                <div key={time.day} className="relative">
-                  <Button
-                    className={cn(
-                      '!focus:ring-0  relative z-10 !h-7 rounded-full !px-2.5 text-sm font-medium text-gray-500',
-                      time.day === activeTimeFrame ? 'text-accent' : '',
-                    )}
-                    type="button"
-                    onClick={() => setActiveTimeFrame(time.day)}
-                    variant="custom"
-                  >
-                    {time.name}
-                  </Button>
-                  {time.day === activeTimeFrame ? (
-                    <motion.div className="absolute bottom-0 left-0 right-0 z-0 h-full rounded-3xl bg-accent/10" />
-                  ) : null}
-                </div>
-              ))
-              : null}
+            {timeFrame.map((time) => (
+              <div key={time.day} className="relative">
+                <Button
+                  className={cn(
+                    '!focus:ring-0  relative z-10 !h-7 rounded-full !px-2.5 text-sm font-medium text-gray-500',
+                    time.day === activeTimeFrame ? 'text-accent' : '',
+                  )}
+                  type="button"
+                  onClick={() => setActiveTimeFrame(time.day)}
+                  variant="custom"
+                >
+                  {time.name}
+                </Button>
+                {time.day === activeTimeFrame ? (
+                  <motion.div className="absolute bottom-0 left-0 right-0 z-0 h-full rounded-3xl bg-accent/10" />
+                ) : null}
+              </div>
+            ))}
           </div>
         </div>
         <OrderStatusWidget
@@ -211,7 +189,7 @@ const OwnerShopLayout = () => {
       </div>
 
       {hasAccess(adminAndOwnerOnly, permissions) && (
-        <div className="mb-8 flex w-full flex-wrap md:flex-nowrap">
+        <div className="mb-8 flex w-full flex-wrap md:flex-nowrap ">
           <ColumnChart
             widgetTitle={t('common:sale-history')}
             colors={['#6073D4']}
@@ -234,7 +212,7 @@ const OwnerShopLayout = () => {
         </div>
       )}
 
-      <div className="grid gap-8 xl:grid-cols-12">
+      <div className="hidden grid gap-8 xl:grid-cols-12">
         <TopRatedProducts
           products={topRatedProducts}
           title={'text-most-rated-products'}

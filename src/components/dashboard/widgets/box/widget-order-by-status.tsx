@@ -27,7 +27,7 @@ const WidgetOrderByStatus: React.FC<IProps> = ({
       title: t('text-pending-order'),
       subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
       icon: <ChecklistIcon className="h-8 w-8" />,
-      color: '#0094FF',
+      color: '#FFF',
       data: order?.pending!,
     },
     {
@@ -35,7 +35,7 @@ const WidgetOrderByStatus: React.FC<IProps> = ({
       title: t('text-processing-order'),
       subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
       icon: <CustomersIcon className="h-8 w-8" />,
-      color: '#28B7FF',
+      color: '#FFF',
       data: order?.processing!,
     },
     {
@@ -43,7 +43,7 @@ const WidgetOrderByStatus: React.FC<IProps> = ({
       title: t('text-completed-order'),
       subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
       icon: <OrderProcessedIcon className="h-8 w-8" />,
-      color: '#FF8D29',
+      color: '#FFF',
       data: order?.complete!,
     },
     {
@@ -51,7 +51,7 @@ const WidgetOrderByStatus: React.FC<IProps> = ({
       title: t('text-cancelled-order'),
       subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
       icon: <EaringIcon className="h-8 w-8" />,
-      color: '#D7E679',
+      color: '#FFF',
       data: order?.cancelled!,
     },
     {
@@ -59,7 +59,7 @@ const WidgetOrderByStatus: React.FC<IProps> = ({
       title: t('text-refunded-order'),
       subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
       icon: <OrderProcessedIcon className="h-8 w-8" />,
-      color: '#A7F3D0',
+      color: '#FFF',
       data: order?.refunded!,
     },
     {
@@ -99,18 +99,18 @@ const WidgetOrderByStatus: React.FC<IProps> = ({
       <div className="mt-5 grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
         {tempContent && tempContent.length > 0
           ? tempContent.map((content) => {
-              return (
-                <div className="w-full" key={content?.key}>
-                  <StickerCard
-                    titleTransKey={content?.title}
-                    subtitleTransKey={content?.subtitle}
-                    icon={content?.icon}
-                    color={content?.color}
-                    price={content?.data}
-                  />
-                </div>
-              );
-            })
+            return (
+              <div className="w-full" key={content?.key}>
+                <StickerCard
+                  titleTransKey={content?.title}
+                  subtitleTransKey={content?.subtitle}
+                  icon={content?.icon}
+                  color={content?.color}
+                  price={content?.data}
+                />
+              </div>
+            );
+          })
           : ''}
       </div>
     </Fragment>

@@ -127,7 +127,9 @@ const OrderList = ({
       dataIndex: 'products',
       key: 'products',
       align: 'center',
-      render: (products: Product) => <span>{products.length}</span>,
+      render: (products: Product[] | undefined) => (
+        <span>{Array.isArray(products) ? products.length : 0}</span>
+      ),
     },
     {
       // title: t('table:table-item-order-date'),
