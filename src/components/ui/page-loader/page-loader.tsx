@@ -1,23 +1,23 @@
-import cn from 'classnames';
-import styles from './page-loader.module.css';
-import { useTranslation } from 'next-i18next';
+import styles from './preloader.module.css';
 
-const PageLoader = () => {
-  const { t } = useTranslation('common');
+export default function PageLoader() {
   return (
-    <div
-      className={cn(
-        'w-full h-screen flex flex-col items-center justify-center'
-      )}
-    >
-      <div className="flex relative">
-        <div className={styles.page_loader}></div>
-        <h3 className="text-sm font-semibold text-body italic absolute top-1/2 -mt-2 w-full text-center">
-          {t('text-loading')}
-        </h3>
+    <div className={styles.loaderContainer}>
+      <img
+        src="https://galileecommerce.netlify.app/img/logo_galile_pc.png"
+        alt="logo"
+        className={styles.logo}
+      />
+      <p className={styles.text}>GalileeCommerce !</p>
+      <p className={styles.textspin}></p>
+      <p className={styles.textspin}></p>
+      <p className={styles.textspin}></p>
+      <div className={styles.dots}>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
     </div>
   );
-};
-
-export default PageLoader;
+}
