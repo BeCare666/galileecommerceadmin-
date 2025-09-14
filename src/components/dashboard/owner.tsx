@@ -146,7 +146,7 @@ const OwnerShopLayout = () => {
             titleTransKey="sticker-card-title-total-shops"
             icon={<BasketIcon className="h-8 w-8" />}
             color="#FFF"
-            price={data?.totalShops}
+            price={data?.totalShops || 1}
           />
           <StickerCard
             titleTransKey="sticker-card-title-today-rev"

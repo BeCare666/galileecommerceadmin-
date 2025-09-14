@@ -26,7 +26,7 @@ function generateLocales() {
 
 module.exports = {
   i18n: {
-    defaultLocale: process.env.NEXT_PUBLIC_DEFAULT_LANGUAGE ?? 'en',
+    defaultLocale: process.env.NEXT_PUBLIC_DEFAULT_LANGUAGE ?? 'fr',
     locales: generateLocales(),
   },
   localePath: path.resolve('./public/locales'),

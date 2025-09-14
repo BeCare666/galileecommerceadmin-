@@ -11,7 +11,10 @@ const { i18n } = require('./next-i18next.config');
 
 const nextConfig = {
   reactStrictMode: true,
-  i18n,
+  i18n: {
+    defaultLocale: 'fr',
+    locales: ['fr', 'en', 'ar'],
+  },
   images: {
     domains: [
       '127.0.0.1:8000',
