@@ -131,25 +131,25 @@ const OwnerShopLayout = () => {
         </div>
         <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
           <StickerCard
-            titleTransKey="sticker-card-title-rev"
+            titleTransKey="Revenu total"
             icon={<EaringIcon className="h-8 w-8" />}
             color="#FFF"
             price={total_revenue}
           />
           <StickerCard
-            titleTransKey="sticker-card-title-today-refunds"
+            titleTransKey="Remboursements du jour"
             icon={<ShoppingIcon className="h-8 w-8" />}
             color="#FFF"
             price={total_refund}
           />
           <StickerCard
-            titleTransKey="sticker-card-title-total-shops"
+            titleTransKey="Total des boutiques"
             icon={<BasketIcon className="h-8 w-8" />}
             color="#FFF"
             price={data?.totalShops || 1}
           />
           <StickerCard
-            titleTransKey="sticker-card-title-today-rev"
+            titleTransKey="Revenu du jour"
             icon={<ChecklistIcon className="h-8 w-8" />}
             color="#FFF"
             price={todays_revenue}
