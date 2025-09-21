@@ -11,6 +11,7 @@ import type { LoginInput } from '@/types';
 import { useState } from 'react';
 import Alert from '@/components/ui/alert';
 import Router from 'next/router';
+import { toast } from 'react-toastify';
 import {
   allowedRoles,
   hasAccess,
@@ -45,6 +46,7 @@ const LoginForm = () => {
       {
         onSuccess: (data) => {
           if (data?.token) {
+            toast.success(t('common:successfully-connexion'));
             if (hasAccess(allowedRoles, data?.permissions)) {
               setAuthCredentials(data?.token, data?.permissions, data?.role);
               Router.push(Routes.dashboard);

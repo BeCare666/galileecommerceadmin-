@@ -50,21 +50,7 @@ const ShopCard: React.FC<ShopCardProps> = ({ shop }) => {
           // shop?.cover_image?.original ? '' : 'flex justify-end'
         )}
       >
-        <Image
-          alt={shop?.name as string}
-          // src={shop?.cover_image?.original ?? '/topographic.svg'}
-          src={'/topographic.svg'}
-          // fill
-          width={350}
-          height={88}
-          sizes="(max-width: 768px) 100vw"
-          // className={classNames(
-          //   shop?.cover_image?.original
-          //     ? 'h-full w-full object-cover'
-          //     : 'h-auto w-auto object-contain'
-          // )}
-          className="h-auto w-auto object-contain"
-        />
+ 
       </div>
       <div className="relative z-10 -mt-[4.25rem] ml-6 flex flex-wrap items-center gap-3">
         <ShopAvatar
@@ -102,7 +88,7 @@ const ShopCard: React.FC<ShopCardProps> = ({ shop }) => {
         </div>
       </div>
 
-      <ul className="mt-4 grid grid-cols-4 divide-x divide-[#E7E7E7] px-2 pb-7 text-center">
+      <ul className="hidden mt-4 grid grid-cols-4 divide-x divide-[#E7E7E7] px-2 pb-7 text-center">
         <li>
           <ListItem
             title={t('text-title-commission')}

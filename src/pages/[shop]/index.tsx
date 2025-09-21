@@ -123,7 +123,7 @@ export default function ShopPage() {
         <Image
           src={cover_image_url ?? '/shop-fallback-cover-photo.png'}
           // fill
-          height={600}
+          height={300}
           width={1200}
           sizes="(max-width: 768px) 100vw"
           alt={Object(name)}
@@ -267,9 +267,10 @@ export default function ShopPage() {
                 iconClassName="text-[#FF8D29]"
                 iconInnerClassName="bg-[#FFF0E2]"
               />
-              {role !== 'staff' ? (
+              {/** {role !== 'staff' ? (
+
                 <>
-                  <IconCard
+                  < IconCard
                     content={`${balance?.admin_commission_rate ?? 0}%`}
                     title={t('common:text-commission-rate')}
                     icon="CommissionIcon"
@@ -290,13 +291,13 @@ export default function ShopPage() {
                     iconClassName="text-[#0017E1]"
                     iconInnerClassName="bg-[#F0F2FF]"
                   />
-                </>
-              ) : null}
+                </> 
+              ) : null}**/ }
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 ShopPage.Layout = ShopLayout;

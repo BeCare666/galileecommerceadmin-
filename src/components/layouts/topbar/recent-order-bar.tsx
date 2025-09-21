@@ -147,7 +147,7 @@ const RecentOrderBar = ({ user }: IProps) => {
       <Menu as="div" className="inline-block text-left sm:relative">
         <Menu.Button
           className={cn(
-            'relative flex h-9 w-9 items-center justify-center gap-2 rounded-full border border-gray-200 bg-gray-50 text-gray-600 before:absolute before:top-0 before:right-0 before:h-2 before:w-2 before:rounded-full focus:outline-none data-[headlessui-state=open]:bg-white data-[headlessui-state=open]:text-accent',
+            'relative flex h-9 w-9 items-center justify-center gap-2  text-gray-600 before:absolute before:top-0 before:right-0 before:h-2 before:w-2 before:rounded-full focus:outline-none data-[headlessui-state=open]:bg-white data-[headlessui-state=open]:text-accent',
             activeStatus.length > 0 ? 'before:bg-[#3080F8]' : ''
           )}
         >

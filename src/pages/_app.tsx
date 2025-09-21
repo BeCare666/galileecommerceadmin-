@@ -72,7 +72,7 @@ const CustomApp = ({ Component, pageProps }: AppPropsWithLayout) => {
               </ModalProvider>
             </UIProvider>
           </AppSettings>
-          <ReactQueryDevtools />
+          { /**<ReactQueryDevtools />**/}
         </Hydrate>
       </QueryClientProvider>
     </div>

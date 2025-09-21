@@ -23,7 +23,7 @@ export default function ProfilePage() {
       <EmailUpdateForm me={data} />
 
       <ProfileUpdateFrom me={data} />
-      <ChangePasswordForm />
+      { /*** <ChangePasswordForm />**/}
     </>
   );
 }

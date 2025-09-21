@@ -3,19 +3,28 @@
 @tailwind utilities;
 
 @layer base {
+  * {
+    font-family: 'Montserrat-bold', sans-serif !important;
+  }
+
   :root {
     /*
-    * primary color - bleu
+    * primary color - bleu    S
     */
     --color-accent: 0, 64, 255;
-    --color-accent-hover: 255, 20, 147;
-    /* pink pour hover/icônes */
-    --color-accent-300: 255, 20, 147;
-    /* pink clair pour icônes */
-    --color-accent-400: 51, 102, 255;
+    /* Bleu vif principal */
+    --color-accent-hover: 0, 38, 153;
+    /* Bleu marine foncé pour hover */
+    --color-accent-300: 51, 102, 255;
+    /* Bleu moyen clair (icônes secondaires) */
+    --color-accent-400: 38, 132, 255;
+    /* Bleu lumineux */
     --color-accent-500: 0, 64, 255;
-    --color-accent-600: 0, 51, 204;
+    /* Accent principal */
+    --color-accent-600: 0, 64, 255;
+    /* Variante accent */
     --color-accent-700: 0, 38, 153;
+    /* Marine profond */
 
     /* light & dark */
     --color-light: 255, 255, 255;
@@ -45,7 +54,7 @@
     --color-gray-300: 209, 213, 219;
     --color-gray-400: 156, 163, 175;
     --color-gray-500: 107, 114, 128;
-    --color-gray-600: 236, 72, 153;
+    --color-gray-600: 0, 38, 153;
     --color-gray-700: 55, 65, 81;
     --color-gray-800: 31, 41, 55;
     --color-gray-900: 31, 41, 55;
@@ -71,9 +80,9 @@
     --color-failed: 238, 43, 0;
     --color-out-for-delivery: 51, 102, 204;
     /* bleu pour livraison */
-
+    /* bleu pour livraison */
     /* icon color - pink */
-    --color-icon: 255, 20, 147;
+    --color-icon: 0, 38, 153;
 
     /* headings */
     --h1: 2.5rem;
@@ -109,6 +118,7 @@
   }
 
   /* Firefox */
+  /* Firefox */
   input[type='number'] {
     -moz-appearance: textfield;
   }
@@ -116,3 +126,11 @@
 
 @import './custom-plugins.css';
 @import './rich-text-editor.css';
+
+
+
+
+.bg-gray-100 {
+  --tw-bg-opacity: 1;
+  background-color: white !important;
+}

@@ -17,6 +17,8 @@ import { useUI } from '@/contexts/ui.context';
 import { useSettingsQuery } from '@/data/settings';
 import { useShopQuery } from '@/data/shop';
 import { useMeQuery } from '@/data/user';
+import { ToggleButton } from './ToggleButton';
+import { NotificationBell } from './NotificationBell';
 import {
   adminAndOwnerOnly,
   adminOnly,
@@ -250,7 +252,10 @@ const Navbar = () => {
           <div className="relative hidden w-full max-w-[710px] py-4 me-6 lg:block 2xl:me-auto">
             <SearchBar />
           </div>
-
+          <div className="flex items-center justify-between  bg-white">
+            <ToggleButton />
+            { /**<NotificationBell />**/}
+          </div>
           <div className="flex shrink-0 grow-0 basis-auto items-center">
             {hasAccess(adminAndOwnerOnly, permissions) && (
               <>
@@ -269,8 +274,8 @@ const Navbar = () => {
                 </div>
 
                 {options?.pushNotification?.all?.order ||
-                options?.pushNotification?.all?.message ||
-                options?.pushNotification?.all?.storeNotice ? (
+                  options?.pushNotification?.all?.message ||
+                  options?.pushNotification?.all?.storeNotice ? (
                   <div className="flex items-center gap-3 px-0.5 py-3 sm:relative sm:border-gray-200/80 sm:py-3.5 sm:px-6 sm:border-s lg:py-5">
                     {options?.pushNotification?.all?.order ? (
                       <RecentOrderBar user={data} />

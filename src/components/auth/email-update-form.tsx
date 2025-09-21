@@ -1,7 +1,7 @@
 import Input from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import Button from '@/components/ui/button';
-import {useUpdateUserEmailMutation} from '@/data/user';
+import { useUpdateUserEmailMutation } from '@/data/user';
 import { useTranslation } from 'next-i18next';
 import pick from 'lodash/pick';
 import Description from "@/components/ui/description";
@@ -25,7 +25,7 @@ export default function EmailUpdateForm({ me }: any) {
     });
 
     async function onSubmit(values: FormValues) {
-        const {email } = values;
+        const { email } = values;
         updateEmail({
             email: email,
         });
@@ -51,7 +51,7 @@ export default function EmailUpdateForm({ me }: any) {
 
                 </Card>
 
-                <div className="text-end w-full">
+                <div className="hidden text-end w-full">
                     <Button loading={loading} disabled={loading}>
                         {t('form:button-label-save')}
                     </Button>

@@ -25,7 +25,7 @@ export const siteSettings = {
     width: 32,
     height: 32,
   },
-  defaultLanguage: 'en',
+  defaultLanguage: 'fr',
   author: {
     name: '', //RedQ
     websiteUrl: 'http://localhost:3002/',//  https://redq.io
@@ -622,6 +622,30 @@ export const siteSettings = {
         href: Routes?.ownerDashboardMyShop,
         label: 'common:sidebar-nav-item-my-shops',
         icon: 'MyShopOwnerIcon',
+        permissions: ownerAndStaffOnly,
+      },
+      {
+        href: Routes.profileUpdate,
+        label: 'authorized-nav-item-profile',
+        icon: 'UserIcon',
+        permissions: ownerAndStaffOnly,
+      },
+      {
+        href: Routes.shop.create,
+        label: 'common:text-create-shop',
+        icon: 'ShopIcon',
+        permissions: ownerAndStaffOnly,
+      },
+      {
+        href: Routes.userprofile,
+        label: 'visite-your-user-profile',
+        icon: 'UserIcon',
+        permissions: ownerAndStaffOnly,
+      },
+      {
+        href: Routes.logout,
+        label: 'authorized-nav-item-logout',
+        icon: 'LogOutIcon',
         permissions: ownerAndStaffOnly,
       },
       {/** {

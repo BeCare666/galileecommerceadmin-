@@ -40,7 +40,7 @@ export default function CreateOrUpdateFaqsForm({ initialValues }: IProps) {
     // @ts-ignore
     settings: { options },
   } = useSettingsQuery({
-    language: locale!,
+    language: locale,
   });
   const { openModal } = useModalAction();
 
@@ -124,11 +124,10 @@ export default function CreateOrUpdateFaqsForm({ initialValues }: IProps) {
       <div className="my-5 flex flex-wrap sm:my-8">
         <Description
           title={t('form:input-label-description')}
-          details={`${
-            initialValues
-              ? t('form:item-description-edit')
-              : t('form:item-description-add')
-          } ${t('form:faq-form-info-help-text')}`}
+          details={`${initialValues
+            ? t('form:item-description-edit')
+            : t('form:item-description-add')
+            } ${t('form:faq-form-info-help-text')}`}
           className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5 "
         />
 
@@ -140,7 +139,7 @@ export default function CreateOrUpdateFaqsForm({ initialValues }: IProps) {
             variant="outline"
             className="mb-5"
             required={true}
-            // disabled={isTranslateFaqs}
+          // disabled={isTranslateFaqs}
           />
 
           <div className="relative">

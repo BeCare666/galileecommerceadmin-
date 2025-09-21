@@ -26,8 +26,8 @@ export default function ProductSimpleForm({ initialValues, settings }: IProps) {
   } = useFormContext();
   const { t } = useTranslation();
   const { locale } = useRouter();
-  const isTranslateProduct = locale !== Config.defaultLanguage;
-
+  //const isTranslateProduct = locale !== Config.defaultLanguage;
+  const isTranslateProduct = locale;
   const is_digital = watch('is_digital');
   const is_external = watch('is_external');
   const is_update_message = watch('inform_purchased_customer');
@@ -69,8 +69,8 @@ export default function ProductSimpleForm({ initialValues, settings }: IProps) {
             error={t(errors.quantity?.message!)}
             variant="outline"
             className="mb-5"
-            // Need discussion
-            disabled={isTranslateProduct}
+          // Need discussion
+          //disabled={isTranslateProduct}
           />
         )}
 
@@ -85,7 +85,7 @@ export default function ProductSimpleForm({ initialValues, settings }: IProps) {
           error={t(errors.sku?.message!)}
           variant="outline"
           className="mb-5"
-          disabled={isTranslateProduct}
+        //disabled={isTranslateProduct}
         />
 
         <Input

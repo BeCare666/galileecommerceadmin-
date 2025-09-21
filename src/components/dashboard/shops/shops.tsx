@@ -22,6 +22,7 @@ const ShopList = () => {
   const firstShop = data?.shops?.[0] || data?.managed_shop;
 
   if (!firstShop) {
+
     return (
       <NotFound
         image="/no-shop-found.svg"
@@ -29,10 +30,12 @@ const ShopList = () => {
         className="mx-auto w-7/12"
       />
     );
+  } else {
+    router.push(`/${firstShop.slug}`)
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-4">
+    <div className="hidden flex flex-col items-center justify-center min-h-screen px-4">
       <h1 className="text-2xl md:text-3xl font-bold text-heading mb-8">
         {t('common:sidebar-nav-item-my-shops')}
       </h1>

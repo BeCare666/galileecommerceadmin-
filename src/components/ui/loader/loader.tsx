@@ -1,23 +1,40 @@
-import styles from './preloader.module.css';
+import { twMerge } from 'tailwind-merge';
+import styles from './loader.module.css';
+import cn from 'classnames';
+import { useTranslation } from 'next-i18next';
 
-export default function Preloader() {
-  return (
-    <div className={styles.loaderContainer}>
-      <img
-        src="https://galileecommerce.netlify.app/img/logo_galile_pc.png"
-        alt="logo"
-        className={styles.logo}
-      />
-      <p className={styles.text}>GalileeCommerce !</p>
-      <p className={styles.textspin}></p>
-      <p className={styles.textspin}></p>
-      <p className={styles.textspin}></p>
-      <div className={styles.dots}>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </div>
-  );
+interface Props {
+  className?: string;
+  text?: string;
+  showText?: boolean;
+  simple?: boolean;
 }
+
+const Loader = (props: Props) => {
+  const { t } = useTranslation();
+  const { className, showText = true, text = 'Loading...', simple } = props;
+  return (
+    <>
+      {simple ? (
+        <div className={cn(className, styles.simple_loading)} />
+      ) : (
+        <div
+          className={twMerge(
+            cn('w-full flex flex-col items-center justify-center', className),
+          )}
+          style={{ height: 'calc(100vh - 200px)' }}
+        >
+          <div className={styles.loading} />
+
+          {showText && (
+            <h3 className="text-lg font-semibold text-body italic">
+              {t(text)}
+            </h3>
+          )}
+        </div>
+      )}
+    </>
+  );
+};
+
+export default Loader;

@@ -90,6 +90,8 @@ export default function CreateOrUpdateProductForm({
     },
   ];
   const [selectedCountry, setSelectedCountry] = useState<number | undefined>();
+  const [isOrigin, setIsOrigin] = useState<string>('false');
+
   const { data: shopData } = useShopQuery(
     { slug: router.query.shop as string },
     {
@@ -136,14 +138,16 @@ export default function CreateOrUpdateProductForm({
       ...getProductInputValues(values, initialValues, isNewTranslation),
     };
 
-    // Préparation des données pour le backend
+    // Préparation des données pour le backend 
     const backendInput: any = { ...inputValues };
 
     // --- Gestion du pays sélectionné ---
     backendInput.countries_id = selectedCountry
       ? Number(selectedCountry)
       : null;
+    // send if th productis isOrigin
 
+    backendInput.is_origin = isOrigin === 'true';
     // --- Gestion des vidéos (le backend attend un objet unique) ---
     if (Array.isArray(inputValues.video) && inputValues.video.length > 0) {
       backendInput.video = inputValues.video[0];
@@ -293,9 +297,9 @@ export default function CreateOrUpdateProductForm({
   } else {
     statusList = [
       {
-        label: 'form:input-label-published',
-        id: 'published',
-        value: ProductStatus.Publish,
+        label: 'form:input-label-unpublish-send-for-admin',
+        id: 'unpublish',
+        value: ProductStatus.UnPublish,
       },
       {
         label: 'form:input-label-draft',
@@ -363,14 +367,14 @@ export default function CreateOrUpdateProductForm({
             </Card>
           </div>
 
-          <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+          <div className="hidden flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
             <Description
               title={t('form:video-title')}
               details={t('form:video-help-text')}
               className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
             />
 
-            <Card className="w-full sm:w-8/12 md:w-2/3">
+            <Card className=" w-full sm:w-8/12 md:w-2/3">
               {/* Video url picker */}
               <div>
                 {fields.map((item: any, index: number) => (
@@ -532,9 +536,25 @@ export default function CreateOrUpdateProductForm({
                   </p>
                 )}
               </div>
-              <div className="mt-5">
-                <h2>Choose countrie :</h2>
+              <div className="mt-5 w-ful">
+                <Label>{`${t('form:input-label-CountrySelect')}*`}</Label>
                 <CountrySelect value={selectedCountry} onChange={setSelectedCountry} />
+                <div className="mt-5 w-ful">
+                  <Label>{`${t('form:input-label-countryorigin-optionL')}*`}</Label>
+                  <select
+                    id="product-origin"
+                    required
+                    value={isOrigin} // string
+                    onChange={(e) => setIsOrigin(e.target.value)} // toujours string
+                    className="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none transition-all"
+                  >
+                    <option value="" disabled>
+                      {t('form:input-label-countryorigin-option')}
+                    </option>
+                    <option value="true">{t('form:input-label-countryorigin-option-yes')}</option>
+                    <option value="false">{t('form:input-label-countryorigin-option-no')}</option>
+                  </select>
+                </div>
               </div>
             </Card>
           </div>
@@ -557,7 +577,7 @@ export default function CreateOrUpdateProductForm({
 
           {/* Variation Type */}
           {/* {product_type?.value === ProductType.Variable && (
-            <ProductVariableForm
+            <ProductVariableForm    
               shopId={shopId}
               initialValues={initialValues}
               settings={options}

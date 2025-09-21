@@ -124,7 +124,7 @@ const ProductCategoryInput = ({ control, setValue }: Props) => {
       <Label>{t('form:input-label-categories')}</Label>
       <div
         onClick={() => setOpenPanel((p) => !p)}
-        className="border rounded-md px-3 py-2 cursor-pointer bg-white flex justify-between items-center"
+        className="border rounded-md px-3 py-2 cursor-pointer bg-white flex justify-between items-center text-gray-500"
       >
         <span>
           {selectedCategory
@@ -144,7 +144,7 @@ const ProductCategoryInput = ({ control, setValue }: Props) => {
                 <li
                   key={c.id}
                   className={cn(
-                    'p-2 rounded cursor-pointer',
+                    'p-2 rounded cursor-pointer text-gray-500',
                     { 'bg-pink-50': selectedCategory !== null && selectedCategory === c.id }
                   )}
                   onClick={() => handleCategoryClick(c.id)}
@@ -158,14 +158,14 @@ const ProductCategoryInput = ({ control, setValue }: Props) => {
           {/* Subcategories */}
           {subCategories && subCategories.length > 0 && (
             <div className="mb-4">
-              <h4 className="font-medium mb-2">{t('form:subcategories')}</h4>
+              <h4 className="font-medium mb-2 text-gray-500">{t('form:subcategories')}</h4>
               <ul className="space-y-1">
                 {subCategories.map((s) => {
                   const selected = selectedSubCategories.has(s.id);
                   return (
                     <li
                       key={s.id}
-                      className={cn('flex items-center justify-between p-2 rounded cursor-pointer', {
+                      className={cn('flex items-center justify-between p-2 rounded cursor-pointer text-gray-500', {
                         'bg-pink-50': selected,
                       })}
                       onClick={() => handleSubCategoryClick(s.id)}
@@ -173,8 +173,8 @@ const ProductCategoryInput = ({ control, setValue }: Props) => {
                       <div className="flex items-center gap-2">
                         <div
                           className={cn(
-                            'h-5 w-5 rounded-sm border flex items-center justify-center',
-                            { 'bg-pink-500 border-pink-500 text-white': selected, 'bg-white': !selected }
+                            'h-5 w-5 rounded-sm border flex items-center justify-center text-gray-500',
+                            { 'bg-pink-500 border-pink-500 text-gray-500': selected, 'bg-white': !selected }
                           )}
                         >
                           {selected && <CheckIcon />}
@@ -199,7 +199,7 @@ const ProductCategoryInput = ({ control, setValue }: Props) => {
                   return (
                     <li
                       key={ss.id}
-                      className={cn('flex items-center p-2 rounded cursor-pointer', {
+                      className={cn('flex items-center p-2 rounded cursor-pointer text-gray-500', {
                         'bg-pink-50': selected,
                       })}
                       onClick={() => handleSubSubCategoryClick(ss.id)}
@@ -207,7 +207,7 @@ const ProductCategoryInput = ({ control, setValue }: Props) => {
                       <div
                         className={cn(
                           'h-5 w-5 rounded-sm border flex items-center justify-center',
-                          { 'bg-pink-500 border-pink-500 text-white': selected, 'bg-white': !selected }
+                          { 'bg-pink-500 border-pink-500 text-gray-500': selected, 'bg-white': !selected }
                         )}
                       >
                         {selected && <CheckIcon />}
@@ -221,10 +221,10 @@ const ProductCategoryInput = ({ control, setValue }: Props) => {
           )}
 
           <div className="flex justify-end gap-2 mt-2">
-            <button onClick={() => setOpenPanel(false)} className="px-4 py-2 border rounded">
+            <button onClick={() => setOpenPanel(false)} className="px-4 py-2 border rounded text-gray-500">
               {t('form:close')}
             </button>
-            <button onClick={applySelection} className="px-4 py-2 bg-pink-500 text-white rounded">
+            <button onClick={applySelection} className="px-4 py-2 bg-pink-500 text-gray-500 rounded">
               {t('form:apply')}
             </button>
           </div>

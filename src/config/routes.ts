@@ -22,6 +22,7 @@ export const Routes = {
   checkout: '/orders/checkout',
   verifyEmail: '/verify-email',
   verifyLicense: '/verify-license',
+  userprofile: 'https://galileecommerce.com',
   user: {
     ...routesFactory('/users'),
   },

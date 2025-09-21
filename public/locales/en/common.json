@@ -3,7 +3,8 @@
   "text-read-more": "Read more",
   "text-less": "Less",
   "text-or": "Or",
-  "text-nav-menu": "Menu",
+  "text-nav-menu": "The owner Menu",
+  "successfully-connexion":"Login successful! Welcome to your account.",
   "description": "Track Order",
   "error-heading": "Error code: 404",
   "nav-menu-track-order": "Track Order",
@@ -150,6 +151,7 @@
   "text-no-shop": "No Shops Found",
   "text-px": "px",
   "text-create-shop": "Create Shop",
+  "visite-your-user-profile": "View your customer account",
   "text-add-your": "Please add your",
   "text-pending": "Pending",
   "text-approved": "Approved",
@@ -552,6 +554,5 @@
   "text-image-uploading-message": "Please wait! Image is uploading",
   "text-quote-title": "Quote",
   "text-transfer-shop-ownership-status": "Transfer shop ownership.",
-
   "text-pixel-dot": "pixel."
 }

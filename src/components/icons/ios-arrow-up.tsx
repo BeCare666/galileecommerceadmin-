@@ -1,23 +1,57 @@
-import React from 'react';
-export const IosArrowUp = ({
-  color = 'currentColor',
-  width = '7px',
-  height = '10px',
-  ...props
-}) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
-      viewBox="0 0 7 10"
-      {...props}
-    >
-      <path
-        d="M166.5,115.723a.454.454,0,0,1-.639,0l-2.115-2.108v8.034a.452.452,0,0,1-.9,0v-8.034l-2.115,2.112a.457.457,0,0,1-.639,0,.45.45,0,0,1,0-.636l2.883-2.862a.507.507,0,0,1,.142-.094.431.431,0,0,1,.174-.035.453.453,0,0,1,.316.129l2.883,2.862A.442.442,0,0,1,166.5,115.723Z"
-        transform="translate(-159.962 -112.1)"
-        fill={color}
-      />
-    </svg>
-  );
-};
+import React from "react";
+
+export const NoDataFound: React.FC<React.SVGAttributes<{}>> = (props) => (
+  <svg
+    viewBox="0 0 400 300"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-label="No data"
+    {...props}
+  >
+    <defs>
+      {/* Dégradé bleu marine */}
+      <linearGradient id="marine" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#002147" />
+        <stop offset="100%" stopColor="#002699" />
+      </linearGradient>
+    </defs>
+
+    {/* Cercle subtil en arrière-plan */}
+    <circle
+      cx="200"
+      cy="140"
+      r="80"
+      fill="url(#marine)"
+      opacity="0.08"
+    />
+
+    {/* Icône dossier stylisée */}
+    <path
+      d="M140 150 h120 a10 10 0 0 0 10 -10 v-40 a10 10 0 0 0 -10 -10 h-60 l-15 -15 h-45 a10 10 0 0 0 -10 10 v55 a10 10 0 0 0 10 10z"
+      fill="none"
+      stroke="url(#marine)"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+
+    {/* Deux traits horizontaux */}
+    <line
+      x1="155"
+      y1="145"
+      x2="245"
+      y2="145"
+      stroke="#002699"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+    />
+    <line
+      x1="155"
+      y1="160"
+      x2="225"
+      y2="160"
+      stroke="#002699"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+    />
+  </svg>
+);

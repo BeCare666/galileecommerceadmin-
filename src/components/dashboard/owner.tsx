@@ -23,7 +23,9 @@ import { ChecklistIcon } from '@/components/icons/summary/checklist';
 import { BasketIcon } from '@/components/icons/summary/basket';
 import Button from '@/components/ui/button';
 import { motion } from 'framer-motion';
+import { useMeQuery } from '@/data/user';
 import PageHeading from '@/components/common/page-heading';
+import DashboardHeader from './dashboardHeader';
 const ShopList = dynamic(() => import('@/components/dashboard/shops/shops'));
 
 const Message = dynamic(() => import('@/components/dashboard/shops/message'));
@@ -53,6 +55,8 @@ const OwnerShopLayout = () => {
   const [activeTimeFrame, setActiveTimeFrame] = useState(1);
   const [orderDataRange, setOrderDataRange] = useState<any>(null);
 
+  const { data: datax } = useMeQuery();
+  const shops = datax?.shops || [];
   // Debug pour voir ce que renvoie ton backend
   useEffect(() => {
     console.log('📊 Analytics data from backend:', data);
@@ -72,6 +76,7 @@ const OwnerShopLayout = () => {
     data && {
       amount: data?.totalRevenue ?? 0,
     },
+
   );
   const { price: total_refund } = usePrice(
     data && {
@@ -120,37 +125,109 @@ const OwnerShopLayout = () => {
     }
   }, [activeTimeFrame, data]);
 
-  if (loading) return <div>⏳ Chargement des analytics...</div>;
-  if (!data) return <div>⚠️ Aucune donnée analytics trouvée.</div>;
-
+  if (loading) return <div className="text-gray-500">⏳ Chargement des analytics...</div>;
+  if (!data) return <div className="text-gray-500">⚠️ Aucune donnée analytics trouvée.</div>;
+  console.log("data", data.shops)
   return (
     <>
-      <div className="mb-8 rounded-lg bg-light p-5 md:p-8">
-        <div className="mb-7 flex items-center justify-between">
-          <PageHeading title={t('text-summary')} />
+      <div className="mb-8 rounded-2xl bg-white p-6 shadow-lg md:p-10">
+        <div className="p-6">
+          <DashboardHeader
+            actionTitle="Créer une nouvelle boutique"
+            actionDescription="Ajoutez votre boutique et commencez à vendre."
+            onActionClick={() => alert("Action exécutée 🚀")}
+          />
         </div>
-        <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        {/* Header */}
+        <div className="mb-7 flex items-center justify-between">
+          <h2 className="text-xl font-semibold text-gray-800">
+            {t('text-summary')}
+          </h2>
+        </div>
+
+        {/* Grid */}
+        <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
           <StickerCard
             titleTransKey="Revenu total"
-            icon={<EaringIcon className="h-8 w-8" />}
+            icon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-10 w-10 text-emerald-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 8c-1.657 0-3 .843-3 1.875S10.343 11.75 12 11.75s3 .843 3 1.875S13.657 15.5 12 15.5M12 8V6m0 9.5v2m-6-9a9 9 0 1112 0 9 9 0 01-12 0z"
+                />
+              </svg>
+            }
             color="#FFF"
             price={total_revenue}
           />
           <StickerCard
             titleTransKey="Remboursements du jour"
-            icon={<ShoppingIcon className="h-8 w-8" />}
+            icon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-10 w-10 text-rose-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4.5 12.75a8.25 8.25 0 1116.5 0m-16.5 0L7.5 9.75m-3 3 3 3"
+                />
+              </svg>
+            }
             color="#FFF"
             price={total_refund}
           />
           <StickerCard
             titleTransKey="Total des boutiques"
-            icon={<BasketIcon className="h-8 w-8" />}
+            icon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-10 w-10 text-indigo-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 9.75V21h18V9.75M3 9.75L12 3l9 6.75M3 9.75h18"
+                />
+              </svg>
+            }
             color="#FFF"
-            price={data?.totalShops || 1}
+            price={shops ? 1 : 0}
           />
           <StickerCard
             titleTransKey="Revenu du jour"
-            icon={<ChecklistIcon className="h-8 w-8" />}
+            icon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-10 w-10 text-amber-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 3v18h18M7.5 13.5l3 3 6-6"
+                />
+              </svg>
+            }
             color="#FFF"
             price={todays_revenue}
           />
