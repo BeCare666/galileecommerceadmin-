@@ -69,7 +69,9 @@ const RecentOrders = ({
       dataIndex: 'products',
       key: 'products',
       align: 'center',
-      render: (products: Product) => <span>{products.length}</span>,
+      render: (products: Product[] | undefined) => (
+        <span>{products?.length ?? 0}</span>
+      ),
     },
 
     {
@@ -160,7 +162,7 @@ const RecentOrders = ({
               <p className="text-[13px]">{t('table:empty-table-sorry-text')}</p>
             </div>
           )}
-          data={orders}
+          data={Array.isArray(orders) ? orders : []}
           rowKey="id"
           scroll={{ x: 1000 }}
           expandable={{

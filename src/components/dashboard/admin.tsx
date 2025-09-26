@@ -28,7 +28,7 @@ import { ShoppingIcon } from '@/components/icons/summary/shopping';
 import { BasketIcon } from '@/components/icons/summary/basket';
 import { ChecklistIcon } from '@/components/icons/summary/checklist';
 import Search from '@/components/common/search';
-
+import DashboardHeader from './dashboardHeader';
 // const TotalOrderByStatus = dynamic(
 //   () => import('@/components/dashboard/total-order-by-status')
 // );
@@ -57,6 +57,7 @@ const TopRatedProducts = dynamic(
 export default function Dashboard() {
   const { t } = useTranslation();
   const { locale } = useRouter();
+  const router = useRouter();
   const { data, isLoading: loading } = useAnalyticsQuery();
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
@@ -66,14 +67,17 @@ export default function Dashboard() {
   );
 
   const { price: total_revenue } = usePrice(
-    data && {
-      amount: data?.totalRevenue!,
-    },
+    data ? { amount: Number(data.totalRevenue) } : { amount: 0 },
+  );
+  const { price: total_refund } = usePrice(
+    data ? { amount: Number(data.totalRefunds) } : { amount: 0 },
   );
   const { price: todays_revenue } = usePrice(
-    data && {
-      amount: data?.todaysRevenue!,
-    },
+    data ? { amount: Number(data.todaysRevenue) } : { amount: 0 },
+  );
+
+  const { price: total_shops } = usePrice(
+    data ? { amount: Number(data.totalShops) } : { amount: 0 },
   );
   const {
     error: orderError,
@@ -189,43 +193,107 @@ export default function Dashboard() {
   return (
     <div className="grid gap-7 md:gap-8 lg:grid-cols-2 2xl:grid-cols-12">
       <div className="col-span-full rounded-lg bg-light p-6 md:p-7">
+        <div className="p-6">
+          <DashboardHeader
+            actionTitle="Créer une nouvelle boutique"
+            actionDescription="Ajoutez votre boutique et commencez à vendre."
+            onActionClick={() => router.push(`/shops/create`)}
+          />
+        </div>
         <div className="mb-5 flex items-center justify-between md:mb-7">
           <h3 className="before:content-'' relative mt-1 bg-light text-lg font-semibold text-heading before:absolute before:-top-px before:h-7 before:w-1 before:rounded-tr-md before:rounded-br-md before:bg-accent ltr:before:-left-6 rtl:before:-right-6 md:before:-top-0.5 md:ltr:before:-left-7 md:rtl:before:-right-7 lg:before:h-8">
             {t('text-summary')}
           </h3>
         </div>
-
-        <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
           <StickerCard
-            titleTransKey="sticker-card-title-rev"
-            subtitleTransKey="sticker-card-subtitle-rev"
-            icon={<EaringIcon className="h-8 w-8" />}
-            color="#1EAE98"
+            titleTransKey="Revenu total"
+            icon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-10 w-10 text-emerald-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 8c-1.657 0-3 .843-3 1.875S10.343 11.75 12 11.75s3 .843 3 1.875S13.657 15.5 12 15.5M12 8V6m0 9.5v2m-6-9a9 9 0 1112 0 9 9 0 01-12 0z"
+                />
+              </svg>
+            }
+            color="#FFF"
             price={total_revenue}
           />
           <StickerCard
-            titleTransKey="sticker-card-title-order"
-            subtitleTransKey="sticker-card-subtitle-order"
-            icon={<ShoppingIcon className="h-8 w-8" />}
-            color="#865DFF"
-            price={data?.totalOrders}
+            titleTransKey="Remboursements du jour"
+            icon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-10 w-10 text-rose-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4.5 12.75a8.25 8.25 0 1116.5 0m-16.5 0L7.5 9.75m-3 3 3 3"
+                />
+              </svg>
+            }
+            color="#FFF"
+            price={total_refund}
           />
           <StickerCard
-            titleTransKey="sticker-card-title-vendor"
-            icon={<ChecklistIcon className="h-8 w-8" />}
-            color="#D74EFF"
-            price={data?.totalVendors}
+            titleTransKey="Total des boutiques"
+            icon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-10 w-10 text-indigo-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 9.75V21h18V9.75M3 9.75L12 3l9 6.75M3 9.75h18"
+                />
+              </svg>
+            }
+            color="#FFF"
+            price={total_shops}
           />
           <StickerCard
-            titleTransKey="sticker-card-title-total-shops"
-            icon={<BasketIcon className="h-8 w-8" />}
-            color="#E157A0"
-            price={data?.totalShops}
+            titleTransKey="Revenu du jour"
+            icon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-10 w-10 text-amber-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 3v18h18M7.5 13.5l3 3 6-6"
+                />
+              </svg>
+            }
+            color="#FFF"
+            price={todays_revenue}
           />
         </div>
       </div>
 
-      <div className="col-span-full rounded-lg bg-light p-6 md:p-7">
+      <div className="hidden col-span-full rounded-lg bg-light p-6 md:p-7">
         <div className="mb-5 items-center justify-between sm:flex md:mb-7">
           <h3 className="before:content-'' relative mt-1 bg-light text-lg font-semibold text-heading before:absolute before:-top-px before:h-7 before:w-1 before:rounded-tr-md before:rounded-br-md before:bg-accent ltr:before:-left-6 rtl:before:-right-6 md:before:-top-0.5 md:ltr:before:-left-7 md:rtl:before:-right-7 lg:before:h-8">
             {t('text-order-status')}
@@ -233,28 +301,28 @@ export default function Dashboard() {
           <div className="mt-3.5 inline-flex rounded-full bg-gray-100/80 p-1.5 sm:mt-0">
             {timeFrame
               ? timeFrame.map((time) => (
-                  <div key={time.day} className="relative">
-                    <Button
-                      className={cn(
-                        '!focus:ring-0  relative z-10 !h-7 rounded-full !px-2.5 text-sm font-medium text-gray-500',
-                        time.day === activeTimeFrame ? 'text-accent' : '',
-                      )}
-                      type="button"
-                      onClick={() => setActiveTimeFrame(time.day)}
-                      variant="custom"
-                    >
-                      {time.name}
-                    </Button>
-                    {time.day === activeTimeFrame ? (
-                      <motion.div className="absolute bottom-0 left-0 right-0 z-0 h-full rounded-3xl bg-accent/10" />
-                    ) : null}
-                  </div>
-                ))
+                <div key={time.day} className="relative">
+                  <Button
+                    className={cn(
+                      '!focus:ring-0  relative z-10 !h-7 rounded-full !px-2.5 text-sm font-medium text-gray-500',
+                      time.day === activeTimeFrame ? 'text-accent' : '',
+                    )}
+                    type="button"
+                    onClick={() => setActiveTimeFrame(time.day)}
+                    variant="custom"
+                  >
+                    {time.name}
+                  </Button>
+                  {time.day === activeTimeFrame ? (
+                    <motion.div className="absolute bottom-0 left-0 right-0 z-0 h-full rounded-3xl bg-accent/10" />
+                  ) : null}
+                </div>
+              ))
               : null}
           </div>
         </div>
 
-        <OrderStatusWidget
+        { /**<OrderStatusWidget
           order={orderDataRange}
           timeFrame={activeTimeFrame}
           allowedStatus={[
@@ -264,7 +332,7 @@ export default function Dashboard() {
             'cancel',
             // 'out-for-delivery',
           ]}
-        />
+        />**/}
       </div>
 
       <RecentOrders
@@ -307,7 +375,7 @@ export default function Dashboard() {
       <PopularProductList
         products={popularProductData}
         title={t('table:popular-products-table-title')}
-        className="lg:col-span-1 lg:col-start-2 lg:row-start-5 2xl:col-span-4 2xl:col-start-auto 2xl:row-start-auto"
+        className="hidden lg:col-span-1 lg:col-start-2 lg:row-start-5 2xl:col-span-4 2xl:col-start-auto 2xl:row-start-auto"
       />
 
       <LowStockProduct
@@ -316,7 +384,7 @@ export default function Dashboard() {
         title={'text-low-stock-products'}
         paginatorInfo={withdrawPaginatorInfo}
         onPagination={handlePagination}
-        className="col-span-full"
+        className="hidden col-span-full"
         searchElement={
           <Search
             onSearch={handleSearch}
@@ -330,12 +398,12 @@ export default function Dashboard() {
       <TopRatedProducts
         products={topRatedProducts}
         title={'text-most-rated-products'}
-        className="lg:col-span-1 lg:col-start-1 lg:row-start-5 2xl:col-span-5 2xl:col-start-auto 2xl:row-start-auto 2xl:me-20"
+        className="hidden lg:col-span-1 lg:col-start-1 lg:row-start-5 2xl:col-span-5 2xl:col-start-auto 2xl:row-start-auto 2xl:me-20"
       />
       <ProductCountByCategory
         products={productByCategory}
         title={'text-most-category-products'}
-        className="col-span-full 2xl:col-span-7 2xl:ltr:-ml-20 2xl:rtl:-mr-20"
+        className="hidden col-span-full 2xl:col-span-7 2xl:ltr:-ml-20 2xl:rtl:-mr-20"
       />
 
       <WithdrawTable
@@ -343,7 +411,7 @@ export default function Dashboard() {
         title={t('table:withdraw-table-title')}
         paginatorInfo={withdrawPaginatorInfo}
         onPagination={handlePagination}
-        className="col-span-full"
+        className="hidden col-span-full"
       />
     </div>
   );

@@ -43,6 +43,7 @@ export default function VendorTransactionsPage() {
   const { data: shopData, isLoading: fetchingShop } = useShopQuery({
     slug: shop as string,
   });
+
   const shopId = shopData?.id!;
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
@@ -60,7 +61,7 @@ export default function VendorTransactionsPage() {
       enabled: Boolean(shopId),
     }
   );
-
+  console.log("orders", orders)
   const { refetch } = useExportOrderQuery(
     {
       ...(shopId && { shop_id: shopId }),

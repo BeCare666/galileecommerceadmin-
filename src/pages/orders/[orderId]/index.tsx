@@ -122,7 +122,7 @@ export default function OrderDetailsPage() {
 
   const totalItem = order?.products.reduce(
     // @ts-ignore
-    (initial = 0, p) => initial + parseInt(p?.pivot?.order_quantity!),
+    (initial = 0, p) => initial + parseInt(p?.order_quantity!),
     0
   );
 
@@ -152,7 +152,7 @@ export default function OrderDetailsPage() {
       render: (image: Attachment) => (
         <div className="relative h-[50px] w-[50px]">
           <Image
-            src={image?.thumbnail ?? siteSettings.product.placeholder}
+            src={image?.url ?? siteSettings.product.placeholder}
             alt="alt text"
             fill
             sizes="(max-width: 768px) 100vw"
@@ -171,7 +171,7 @@ export default function OrderDetailsPage() {
           <span>{name}</span>
           <span className="mx-2">x</span>
           <span className="font-semibold text-heading">
-            {item.pivot.order_quantity}
+            {item.order_quantity}
           </span>
         </div>
       ),
@@ -183,7 +183,7 @@ export default function OrderDetailsPage() {
       align: alignRight,
       render: function Render(_: any, item: any) {
         const { price } = usePrice({
-          amount: parseFloat(item.pivot.subtotal),
+          amount: parseFloat(item.subtotal),
         });
         return <span>{price}</span>;
       },
@@ -217,35 +217,35 @@ export default function OrderDetailsPage() {
             OrderStatus.CANCELLED,
             OrderStatus.REFUNDED,
           ].includes(order?.order_status! as OrderStatus) && (
-            <form
-              onSubmit={handleSubmit(ChangeStatus)}
-              className="flex w-full items-start ms-auto lg:w-2/4"
-            >
-              <div className="z-20 w-full me-5">
-                <SelectInput
-                  name="order_status"
-                  control={control}
-                  getOptionLabel={(option: any) => t(option.name)}
-                  getOptionValue={(option: any) => option.status}
-                  options={ORDER_STATUS.slice(0, 6)}
-                  placeholder={t(`text-${order?.order_status}`) ?? t('form:input-placeholder-order-status')}
-                />
+              <form
+                onSubmit={handleSubmit(ChangeStatus)}
+                className="flex w-full items-start ms-auto lg:w-2/4"
+              >
+                <div className="z-20 w-full me-5">
+                  <SelectInput
+                    name="order_status"
+                    control={control}
+                    getOptionLabel={(option: any) => t(option.name)}
+                    getOptionValue={(option: any) => option.status}
+                    options={ORDER_STATUS.slice(0, 6)}
+                    placeholder={t(`text-${order?.order_status}`) ?? t('form:input-placeholder-order-status')}
+                  />
 
-                <ValidationError message={t(errors?.order_status?.message)} />
-              </div>
-              <Button loading={updating}>
-                <span className="hidden sm:block">
-                  {t('form:button-label-change-status')}
-                </span>
-                <span className="block sm:hidden">
-                  {t('form:form:button-label-change')}
-                </span>
-              </Button>
-            </form>
-          )}
+                  <ValidationError message={t(errors?.order_status?.message)} />
+                </div>
+                <Button loading={updating}>
+                  <span className="hidden sm:block">
+                    {t('form:button-label-change-status')}
+                  </span>
+                  <span className="block sm:hidden">
+                    {t('form:form:button-label-change')}
+                  </span>
+                </Button>
+              </form>
+            )}
         </div>
 
-        <div className="my-5 flex items-center justify-center lg:my-10">
+        <div className=" my-5 flex items-center justify-center lg:my-10">
           <OrderStatusProgressBox
             orderStatus={order?.order_status as OrderStatus}
             paymentStatus={order?.payment_status as PaymentStatus}

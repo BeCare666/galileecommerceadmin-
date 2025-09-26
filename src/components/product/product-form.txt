@@ -240,48 +240,71 @@ export default function CreateOrUpdateProductForm({
   }, [productName]);
 
   const slugAutoSuggest = formatSlug(watch('name'));
-  if (permission) {
-    if (initialValues?.status !== ProductStatus.Draft) {
-      // Super admin et produit non Draft => toutes les options
-      statusList = [
-        {
-          label: 'form:input-label-published',
-          id: 'published',
-          value: ProductStatus.Publish,
-        },
-        {
-          label: 'form:input-label-approved',
-          id: 'approved',
-          value: ProductStatus.Approved,
-        },
-        {
-          label: 'form:input-label-rejected',
-          id: 'rejected',
-          value: ProductStatus.Rejected,
-        },
-        {
-          label: 'form:input-label-soft-disabled',
-          id: 'unpublish',
-          value: ProductStatus.UnPublish,
-        },
-      ];
+  if (Boolean(options?.isProductReview)) {
+    console.log("isProductReview.")
+    if (permission) {
+      console.log("permission")
+      if (initialValues?.status !== ProductStatus?.Draft) {
+        console.log("initialValues")
+        statusList = [
+          {
+            label: 'form:input-label-published',
+            id: 'published',
+            value: ProductStatus.Publish,
+          },
+          {
+            label: 'form:input-label-approved',
+            id: 'approved',
+            value: ProductStatus.Approved,
+          },
+          {
+            label: 'form:input-label-rejected',
+            id: 'rejected',
+            value: ProductStatus.Rejected,
+          },
+          {
+            label: 'form:input-label-soft-disabled',
+            id: 'unpublish',
+            value: ProductStatus.UnPublish,
+          },
+        ];
+      } else {
+        console.log("non non")
+        statusList = [
+          {
+            label: 'form:input-label-draft',
+            id: 'draft',
+            value: ProductStatus.Draft,
+          },
+        ];
+      }
     } else {
-      // Produit Draft => seulement Draft / Unpublish
-      statusList = [
+      console.log(" initialValues?.status === ProductStatus.Publish ")
+      if (
+        initialValues?.status === ProductStatus.Publish ||
+        initialValues?.status === ProductStatus.Approved ||
+        initialValues?.status === ProductStatus.UnPublish
+      ) {
+        console.log(" statusList 1")
         {
-          label: 'form:input-label-unpublish-send-for-admin',
-          id: 'unpublish',
-          value: ProductStatus.UnPublish,
-        },
-        {
-          label: 'form:input-label-draft',
-          id: 'draft',
-          value: ProductStatus.Draft,
-        },
-      ];
+          statusList = [
+            {
+              label: 'form:input-label-published',
+              id: 'published',
+              value: ProductStatus.Publish,
+            },
+            {
+              label: 'form:input-label-unpublish',
+              id: 'unpublish',
+              value: ProductStatus.UnPublish,
+            },
+          ];
+        }
+      }
     }
+
   } else {
-    // Pas super admin => uniquement Draft / Unpublish
+    console.log("form:input-label-unpublish-send-for-admin")
     statusList = [
       {
         label: 'form:input-label-unpublish-send-for-admin',
@@ -295,7 +318,6 @@ export default function CreateOrUpdateProductForm({
       },
     ];
   }
-
 
   const featuredImageInformation = (
     <span>

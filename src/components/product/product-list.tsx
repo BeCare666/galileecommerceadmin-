@@ -47,7 +47,7 @@ const ProductList = ({
   } = router;
   const { t } = useTranslation();
   const { alignLeft, alignRight } = useIsRTL();
-
+  console.log(shop)
   const [sortingObj, setSortingObj] = useState<SortingObjType>({
     sort: SortOrder.Desc,
     column: null,
@@ -137,7 +137,7 @@ const ProductList = ({
         <div className="flex items-center font-medium">
           <div className="relative aspect-square h-9 w-9 shrink-0 overflow-hidden rounded-full border border-border-200/80 bg-gray-100 me-2">
             <Image
-              src={shop?.logo?.thumbnail ?? siteSettings.product.placeholder}
+              src={shop?.logo?.logo_image_url ?? siteSettings.product.placeholder}
               alt={shop?.name ?? 'Shop Name'}
               fill
               priority={true}
@@ -291,7 +291,7 @@ const ProductList = ({
               <p className="text-[13px]">{t('table:empty-table-sorry-text')}</p>
             </div>
           )}
-          data={products}
+          data={Array.isArray(products) ? products : []}
           rowKey="id"
           scroll={{ x: 900 }}
         />

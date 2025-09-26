@@ -76,18 +76,13 @@ export default function ProductsPage() {
               placeholderText={t('form:input-placeholder-search-name')}
             />
           </div>
-
+          {/***< ArrowUp className="ms-2" />**/}{/** < ArrowDown className="ms-2" />**/}
           <button
             className="hidden mt-5 flex items-center whitespace-nowrap text-base font-semibold text-accent md:mt-0 md:ms-5"
             onClick={toggleVisible}
           >
             {t('common:text-filter')}{' '}
-            {visible ? (
-              {/***< ArrowUp className="ms-2" />**/ }
-
-            ) : (
-              {/** < ArrowDown className="ms-2" />**/ }
-            )}
+            {visible ? null : null}
           </button>
         </div>
 

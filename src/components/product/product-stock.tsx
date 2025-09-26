@@ -56,7 +56,7 @@ const LowStockProduct = ({
           <div className="relative aspect-square h-9 w-9 shrink-0 overflow-hidden rounded-full border border-border-200/80 bg-gray-100 me-2">
             <Image
               alt={item.name}
-              src={item.image?.thumbnail ?? siteSettings.product.placeholder}
+              src={item.image?.url ?? siteSettings.product.placeholder}
               fill
               priority={true}
               sizes="(max-width: 768px) 100vw"
@@ -98,7 +98,7 @@ const LowStockProduct = ({
         <div className="flex items-center">
           <div className="relative aspect-square h-9 w-9 shrink-0 overflow-hidden rounded-full border border-border-200/80 bg-gray-100 me-2">
             <Image
-              src={shop.logo?.thumbnail ?? siteSettings.product.placeholder}
+              src={shop.logo?.logo_image_url ?? siteSettings.product.placeholder}
               alt={shop?.name ?? 'Shop Name'}
               fill
               priority={true}

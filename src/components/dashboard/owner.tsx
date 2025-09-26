@@ -59,9 +59,9 @@ const OwnerShopLayout = () => {
   const shops = datax?.shops || [];
   // Debug pour voir ce que renvoie ton backend
   useEffect(() => {
-    console.log('📊 Analytics data from backend:', data);
+    console.log('📊 Analytics data (keys): ', data);
+    //console.log('📊 Analytics full JSON:', JSON.stringify(data, null, 2));
   }, [data]);
-
   const {
     data: productByCategory,
     isLoading: productByCategoryLoading,
@@ -73,20 +73,17 @@ const OwnerShopLayout = () => {
   } = useTopRatedProductsQuery({ limit: 10, language: locale });
 
   const { price: total_revenue } = usePrice(
-    data && {
-      amount: data?.totalRevenue ?? 0,
-    },
-
+    data ? { amount: Number(data.totalRevenue) } : { amount: 0 },
   );
   const { price: total_refund } = usePrice(
-    data && {
-      amount: data?.totalRefunds ?? 0,
-    },
+    data ? { amount: Number(data.totalRefunds) } : { amount: 0 },
   );
   const { price: todays_revenue } = usePrice(
-    data && {
-      amount: data?.todaysRevenue ?? 0,
-    },
+    data ? { amount: Number(data.todaysRevenue) } : { amount: 0 },
+  );
+
+  const { price: total_shops } = usePrice(
+    data ? { amount: Number(data.totalShops) } : { amount: 0 },
   );
 
   let salesByYear: number[] = Array.from({ length: 12 }, () => 0);
@@ -123,6 +120,7 @@ const OwnerShopLayout = () => {
         setOrderDataRange(data?.todayTotalOrderByStatus);
         break;
     }
+    //console.log('📊 Analytics data : ', data);
   }, [activeTimeFrame, data]);
 
   if (loading) return <div className="text-gray-500">⏳ Chargement des analytics...</div>;
@@ -135,7 +133,7 @@ const OwnerShopLayout = () => {
           <DashboardHeader
             actionTitle="Créer une nouvelle boutique"
             actionDescription="Ajoutez votre boutique et commencez à vendre."
-            onActionClick={() => alert("Action exécutée 🚀")}
+            onActionClick={() => router.push(`/shops/create`)}
           />
         </div>
         {/* Header */}
@@ -208,7 +206,7 @@ const OwnerShopLayout = () => {
               </svg>
             }
             color="#FFF"
-            price={shops ? 1 : 0}
+            price={total_shops}
           />
           <StickerCard
             titleTransKey="Revenu du jour"

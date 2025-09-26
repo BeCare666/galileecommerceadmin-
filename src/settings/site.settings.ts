@@ -27,33 +27,32 @@ export const siteSettings = {
   },
   defaultLanguage: 'fr',
   author: {
-    name: '', //RedQ
-    websiteUrl: 'http://localhost:3002/',//  https://redq.io
+    name: '',
+    websiteUrl: 'http://localhost:3002',
     address: '',
   },
   headerLinks: [],
   authorizedLinks: [
     {
-      href: Routes.profileUpdate,
+      href: Routes.profileUpdate || '#',
       labelTransKey: 'authorized-nav-item-profile',
       icon: 'UserIcon',
       permission: adminOwnerAndStaffOnly,
     },
     {
-      href: Routes.shop.create,
+      href: Routes.shop?.create || '#',
       labelTransKey: 'common:text-create-shop',
       icon: 'ShopIcon',
       permission: adminAndOwnerOnly,
     },
-
     {
-      href: Routes.settings,
+      href: Routes.settings || '#',
       labelTransKey: 'authorized-nav-item-settings',
       icon: 'SettingsIcon',
       permission: adminOnly,
     },
     {
-      href: Routes.logout,
+      href: Routes.logout || '#',
       labelTransKey: 'authorized-nav-item-logout',
       icon: 'LogOutIcon',
       permission: adminOwnerAndStaffOnly,
@@ -63,12 +62,12 @@ export const siteSettings = {
   sidebarLinks: {
     admin: {
       root: {
-        href: Routes.dashboard,
+        href: Routes.dashboard || '#',
         label: 'Main',
         icon: 'DashboardIcon',
         childMenu: [
           {
-            href: Routes.dashboard,
+            href: Routes.dashboard || '#',
             label: 'sidebar-nav-item-dashboard',
             icon: 'DashboardIcon',
           },
@@ -76,91 +75,84 @@ export const siteSettings = {
       },
 
       shop: {
-        href: '',
+        href: '#',
         label: 'text-shop-management',
         icon: 'ShopIcon',
         childMenu: [
           {
-            href: '',
+            href: '#',
             label: 'sidebar-nav-item-shops',
             icon: 'ShopIcon',
             childMenu: [
               {
-                href: Routes.shop.list,
+                href: Routes.shop?.list || '#',
                 label: 'text-all-shops',
                 icon: 'MyShopIcon',
               },
               {
-                href: Routes.shop.create,
+                href: Routes.shop?.create || '#',
                 label: 'text-add-all-shops',
                 icon: 'ShopIcon',
               },
               {
-                href: Routes.newShops,
+                href: Routes.newShops || '#',
                 label: 'text-inactive-shops',
                 icon: 'MyShopIcon',
               },
             ],
           },
           {
-            href: Routes.adminMyShops,
+            href: Routes.adminMyShops || '#',
             label: 'sidebar-nav-item-my-shops',
             icon: 'MyShopIcon',
           },
-          {/**{
-            href: Routes.ownershipTransferRequest.list,
-            label: 'Shop Transfer Request',
-            icon: 'MyShopIcon',
-            permission: adminAndOwnerOnly,
-          },**/}
         ],
       },
 
       product: {
-        href: '',
+        href: '#',
         label: 'text-product-management',
         icon: 'ProductsIcon',
         childMenu: [
           {
-            href: '',
+            href: '#',
             label: 'sidebar-nav-item-products',
             icon: 'ProductsIcon',
             childMenu: [
               {
-                href: Routes.product.list,
+                href: Routes.product?.list || '#',
                 label: 'text-all-products',
                 icon: 'ProductsIcon',
               },
-
               {
-                href: Routes.draftProducts,
+                href: Routes.draftProducts || '#',
                 label: 'text-my-draft-products',
                 icon: 'ProductsIcon',
               },
               {
-                href: Routes.outOfStockOrLowProducts,
+                href: Routes.outOfStockOrLowProducts || '#',
                 label: 'text-all-out-of-stock',
                 icon: 'ProductsIcon',
               },
             ],
           },
           {
-            href: Routes.type.list,
+            href: Routes.type?.list || '#',
             label: 'text-groups',
             icon: 'HomeIcon',
           },
           {
-            href: Routes.productInventory,
+            href: Routes.productInventory || '#',
             label: 'text-inventory',
             icon: 'InventoryIcon',
           },
           {
-            href: Routes.category.list,
+            href: Routes.category?.list || '#',
             label: 'sidebar-nav-item-categories',
             icon: 'CategoriesIcon',
           },
           {
-            href: Routes.tag.list,
+            href: Routes.tag?.list || '#',
             label: 'sidebar-nav-item-tags',
             icon: 'TagIcon',
           },
@@ -168,17 +160,17 @@ export const siteSettings = {
       },
 
       financial: {
-        href: '',
+        href: '#',
         label: 'text-e-commerce-management',
         icon: 'WithdrawIcon',
         childMenu: [
           {
-            href: Routes.tax.list,
+            href: Routes.tax?.list || '#',
             label: 'sidebar-nav-item-taxes',
             icon: 'TaxesIcon',
           },
           {
-            href: Routes.withdraw.list,
+            href: Routes.withdraw?.list || '#',
             label: 'sidebar-nav-item-withdraws',
             icon: 'WithdrawIcon',
           },
@@ -186,18 +178,17 @@ export const siteSettings = {
       },
 
       order: {
-        href: Routes.order.list,
+        href: Routes.order?.list || '#',
         label: 'text-order-management',
         icon: 'OrdersIcon',
         childMenu: [
           {
-            href: Routes.order.list,
+            href: Routes.order?.list || '#',
             label: 'sidebar-nav-item-orders',
             icon: 'OrdersIcon',
           },
-
           {
-            href: Routes.transaction,
+            href: Routes.transaction || '#',
             label: 'text-transactions',
             icon: 'TransactionsIcon',
           },
@@ -205,47 +196,46 @@ export const siteSettings = {
       },
 
       layout: {
-        href: '',
+        href: '#',
         label: 'text-page-control',
         icon: 'SettingsIcon',
         childMenu: [
           {
-            href: '',
+            href: '#',
             label: 'text-faqs',
             icon: 'FaqIcon',
             childMenu: [
               {
-                href: Routes.faqs.list,
+                href: Routes.faqs?.list || '#',
                 label: 'text-all-faqs',
                 icon: 'FaqIcon',
               },
               {
-                href: Routes.faqs.create,
+                href: Routes.faqs?.create || '#',
                 label: 'text-new-faq',
                 icon: 'TypesIcon',
               },
             ],
           },
-
           {
-            href: '',
+            href: '#',
             label: 'text-terms-conditions',
             icon: 'TermsIcon',
             childMenu: [
               {
-                href: Routes.termsAndCondition.list,
+                href: Routes.termsAndCondition?.list || '#',
                 label: 'text-all-terms',
                 icon: 'TermsIcon',
               },
               {
-                href: Routes.termsAndCondition.create,
+                href: Routes.termsAndCondition?.create || '#',
                 label: 'text-new-terms',
                 icon: 'TermsIcon',
               },
             ],
           },
           {
-            href: Routes.becomeSeller,
+            href: Routes.becomeSeller || '#',
             label: 'Become a seller Page',
             icon: 'TermsIcon',
           },
@@ -253,56 +243,56 @@ export const siteSettings = {
       },
 
       user: {
-        href: '',
+        href: '#',
         label: 'text-user-control',
         icon: 'SettingsIcon',
         childMenu: [
           {
-            href: Routes.user.list,
+            href: Routes.user?.list || '#',
             label: 'text-all-users',
             icon: 'UsersIcon',
           },
           {
-            href: Routes.adminList,
+            href: Routes.adminList || '#',
             label: 'text-admin-list',
             icon: 'AdminListIcon',
           },
           {
-            href: '',
+            href: '#',
             label: 'text-vendors',
             icon: 'VendorsIcon',
             childMenu: [
               {
-                href: Routes.vendorList,
+                href: Routes.vendorList || '#',
                 label: 'text-all-vendors',
                 icon: 'UsersIcon',
               },
               {
-                href: Routes.pendingVendorList,
+                href: Routes.pendingVendorList || '#',
                 label: 'text-pending-vendors',
                 icon: 'UsersIcon',
               },
             ],
           },
           {
-            href: '',
+            href: '#',
             label: 'sidebar-nav-item-staffs',
             icon: 'StaffIcon',
             childMenu: [
               {
-                href: Routes.myStaffs,
+                href: Routes.myStaffs || '#',
                 label: 'sidebar-nav-item-my-staffs',
                 icon: 'UsersIcon',
               },
               {
-                href: Routes.vendorStaffs,
+                href: Routes.vendorStaffs || '#',
                 label: 'sidebar-nav-item-vendor-staffs',
                 icon: 'UsersIcon',
               },
             ],
           },
           {
-            href: Routes.customerList,
+            href: Routes.customerList || '#',
             label: 'text-customers',
             icon: 'CustomersIcon',
           },
@@ -310,17 +300,17 @@ export const siteSettings = {
       },
 
       feedback: {
-        href: '',
+        href: '#',
         label: 'text-feedback-control',
         icon: 'SettingsIcon',
         childMenu: [
           {
-            href: Routes.reviews.list,
+            href: Routes.reviews?.list || '#',
             label: 'sidebar-nav-item-reviews',
             icon: 'ReviewIcon',
           },
           {
-            href: Routes.question.list,
+            href: Routes.question?.list || '#',
             label: 'sidebar-nav-item-questions',
             icon: 'QuestionIcon',
           },
@@ -328,52 +318,52 @@ export const siteSettings = {
       },
 
       settings: {
-        href: '',
+        href: '#',
         label: 'text-site-management',
         icon: 'SettingsIcon',
         childMenu: [
           {
-            href: Routes.settings,
+            href: Routes.settings || '#',
             label: 'sidebar-nav-item-settings',
             icon: 'SettingsIcon',
             childMenu: [
               {
-                href: Routes.settings,
+                href: Routes.settings || '#',
                 label: 'text-general-settings',
                 icon: 'SettingsIcon',
               },
               {
-                href: Routes.paymentSettings,
+                href: Routes.paymentSettings || '#',
                 label: 'text-payment-settings',
                 icon: 'RefundsIcon',
               },
               {
-                href: Routes.seoSettings,
+                href: Routes.seoSettings || '#',
                 label: 'text-seo-settings',
                 icon: 'StoreNoticeIcon',
               },
               {
-                href: Routes.eventSettings,
+                href: Routes.eventSettings || '#',
                 label: 'text-events-settings',
                 icon: 'RefundsIcon',
               },
               {
-                href: Routes.shopSettings,
+                href: Routes.shopSettings || '#',
                 label: 'text-shop-settings',
                 icon: 'RefundsIcon',
               },
               {
-                href: Routes?.maintenance,
+                href: Routes.maintenance || '#',
                 label: 'text-maintenance-settings',
                 icon: 'InformationIcon',
               },
               {
-                href: Routes?.companyInformation,
+                href: Routes.companyInformation || '#',
                 label: 'text-company-settings',
                 icon: 'InformationIcon',
               },
               {
-                href: Routes?.promotionPopup,
+                href: Routes.promotionPopup || '#',
                 label: 'text-popup-settings',
                 icon: 'InformationIcon',
               },
@@ -385,12 +375,13 @@ export const siteSettings = {
 
     shop: {
       root: {
-        href: '',
+        href: '#',
         label: 'text-main',
         icon: 'DashboardIcon',
         childMenu: [
           {
-            href: (shop: string) => `${Routes.dashboard}${shop}`,
+            href: (shop: string) =>
+              `${Routes.dashboard}${shop}`.replace(/\/+/, '/'),
             label: 'sidebar-nav-item-dashboard',
             icon: 'DashboardIcon',
             permissions: adminOwnerAndStaffOnly,
@@ -399,37 +390,44 @@ export const siteSettings = {
       },
 
       product: {
-        href: '',
+        href: '#',
         label: 'text-product-management',
         icon: 'ProductsIcon',
         permissions: adminOwnerAndStaffOnly,
         childMenu: [
           {
-            href: (shop: string) => `/${shop}${Routes.product.list}`,
+            href: (shop: string) =>
+              `/${shop}${Routes.product?.list || ''}`.replace(/\/+/, '/'),
             label: 'sidebar-nav-item-products',
             icon: 'ProductsIcon',
             childMenu: [
               {
-                href: (shop: string) => `/${shop}${Routes.product.list}`,
+                href: (shop: string) =>
+                  `/${shop}${Routes.product?.list || ''}`.replace(/\/+/, '/'),
                 label: 'text-all-products',
                 icon: 'ProductsIcon',
                 permissions: adminOwnerAndStaffOnly,
               },
               {
-                href: (shop: string) => `/${shop}${Routes.product.create}`,
+                href: (shop: string) =>
+                  `/${shop}${Routes.product?.create || ''}`.replace(/\/+/, '/'),
                 label: 'text-new-products',
                 icon: 'ProductsIcon',
                 permissions: adminOwnerAndStaffOnly,
               },
               {
-                href: (shop: string) => `/${shop}${Routes.draftProducts}`,
+                href: (shop: string) =>
+                  `/${shop}${Routes.draftProducts || ''}`.replace(/\/+/, '/'),
                 label: 'text-my-draft',
                 icon: 'ProductsIcon',
                 permissions: adminOwnerAndStaffOnly,
               },
               {
                 href: (shop: string) =>
-                  `/${shop}${Routes.outOfStockOrLowProducts}`,
+                  `/${shop}${Routes.outOfStockOrLowProducts || ''}`.replace(
+                    /\/+/,
+                    '/'
+                  ),
                 label: 'text-all-out-of-stock',
                 icon: 'ProductsIcon',
                 permissions: adminOwnerAndStaffOnly,
@@ -437,7 +435,8 @@ export const siteSettings = {
             ],
           },
           {
-            href: (shop: string) => `/${shop}${Routes.productInventory}`,
+            href: (shop: string) =>
+              `/${shop}${Routes.productInventory || ''}`.replace(/\/+/, '/'),
             label: 'text-inventory',
             icon: 'InventoryIcon',
             permissions: adminOwnerAndStaffOnly,
@@ -446,12 +445,13 @@ export const siteSettings = {
       },
 
       financial: {
-        href: '',
+        href: '#',
         label: 'text-financial-management',
         icon: 'WithdrawIcon',
         childMenu: [
           {
-            href: (shop: string) => `/${shop}${Routes.withdraw.list}`,
+            href: (shop: string) =>
+              `/${shop}${Routes.withdraw?.list || ''}`.replace(/\/+/, '/'),
             label: 'sidebar-nav-item-withdraws',
             icon: 'AttributeIcon',
             permissions: adminAndOwnerOnly,
@@ -460,18 +460,20 @@ export const siteSettings = {
       },
 
       order: {
-        href: '',
+        href: '#',
         label: 'text-order-management',
         icon: 'OrdersIcon',
         childMenu: [
           {
-            href: (shop: string) => `/${shop}${Routes.order.list}`,
+            href: (shop: string) =>
+              `/${shop}${Routes.order?.list || ''}`.replace(/\/+/, '/'),
             label: 'sidebar-nav-item-orders',
             icon: 'OrdersIcon',
             permissions: adminOwnerAndStaffOnly,
           },
           {
-            href: (shop: string) => `/${shop}${Routes.transaction}`,
+            href: (shop: string) =>
+              `/${shop}${Routes.transaction || ''}`.replace(/\/+/, '/'),
             label: 'text-transactions',
             icon: 'CalendarScheduleIcon',
             permissions: adminAndOwnerOnly,
@@ -480,18 +482,20 @@ export const siteSettings = {
       },
 
       feedback: {
-        href: '',
+        href: '#',
         label: 'text-feedback-control',
         icon: 'SettingsIcon',
         childMenu: [
           {
-            href: (shop: string) => `/${shop}${Routes.reviews.list}`,
+            href: (shop: string) =>
+              `/${shop}${Routes.reviews?.list || ''}`.replace(/\/+/, '/'),
             label: 'sidebar-nav-item-reviews',
             icon: 'ReviewIcon',
             permissions: adminAndOwnerOnly,
           },
           {
-            href: (shop: string) => `/${shop}${Routes.question.list}`,
+            href: (shop: string) =>
+              `/${shop}${Routes.question?.list || ''}`.replace(/\/+/, '/'),
             label: 'sidebar-nav-item-questions',
             icon: 'QuestionIcon',
             permissions: adminAndOwnerOnly,
@@ -500,12 +504,13 @@ export const siteSettings = {
       },
 
       user: {
-        href: '',
+        href: '#',
         label: 'text-user-control',
         icon: 'SettingsIcon',
         childMenu: [
           {
-            href: (shop: string) => `/${shop}${Routes.staff.list}`,
+            href: (shop: string) =>
+              `/${shop}${Routes.staff?.list || ''}`.replace(/\/+/, '/'),
             label: 'sidebar-nav-item-staffs',
             icon: 'UsersIcon',
             permissions: adminAndOwnerOnly,
@@ -514,18 +519,23 @@ export const siteSettings = {
       },
 
       layout: {
-        href: '',
+        href: '#',
         label: 'text-page-management',
         icon: 'SettingsIcon',
         childMenu: [
           {
-            href: (shop: string) => `/${shop}${Routes.faqs.list}`,
+            href: (shop: string) =>
+              `/${shop}${Routes.faqs?.list || ''}`.replace(/\/+/, '/'),
             label: 'text-faqs',
             icon: 'TypesIcon',
             permissions: adminOwnerAndStaffOnly,
           },
           {
-            href: (shop: string) => `/${shop}${Routes.termsAndCondition.list}`,
+            href: (shop: string) =>
+              `/${shop}${Routes.termsAndCondition?.list || ''}`.replace(
+                /\/+/,
+                '/'
+              ),
             label: 'Terms And Conditions',
             icon: 'TypesIcon',
             permissions: adminAndOwnerOnly,
@@ -536,12 +546,13 @@ export const siteSettings = {
 
     staff: {
       root: {
-        href: '',
+        href: '#',
         label: 'text-main',
         icon: 'DashboardIcon',
         childMenu: [
           {
-            href: (shop: string) => `${Routes.dashboard}${shop}`,
+            href: (shop: string) =>
+              `${Routes.dashboard}${shop}`.replace(/\/+/, '/'),
             label: 'sidebar-nav-item-dashboard',
             icon: 'DashboardIcon',
             permissions: adminOwnerAndStaffOnly,
@@ -550,37 +561,44 @@ export const siteSettings = {
       },
 
       product: {
-        href: '',
+        href: '#',
         label: 'text-product-management',
         icon: 'ProductsIcon',
         permissions: adminOwnerAndStaffOnly,
         childMenu: [
           {
-            href: (shop: string) => `/${shop}${Routes.product.list}`,
+            href: (shop: string) =>
+              `/${shop}${Routes.product?.list || ''}`.replace(/\/+/, '/'),
             label: 'sidebar-nav-item-products',
             icon: 'ProductsIcon',
             childMenu: [
               {
-                href: (shop: string) => `/${shop}${Routes.product.list}`,
+                href: (shop: string) =>
+                  `/${shop}${Routes.product?.list || ''}`.replace(/\/+/, '/'),
                 label: 'text-all-products',
                 icon: 'ProductsIcon',
                 permissions: adminOwnerAndStaffOnly,
               },
               {
-                href: (shop: string) => `/${shop}${Routes.product.create}`,
+                href: (shop: string) =>
+                  `/${shop}${Routes.product?.create || ''}`.replace(/\/+/, '/'),
                 label: 'text-new-products',
                 icon: 'ProductsIcon',
                 permissions: adminOwnerAndStaffOnly,
               },
               {
-                href: (shop: string) => `/${shop}${Routes.draftProducts}`,
+                href: (shop: string) =>
+                  `/${shop}${Routes.draftProducts || ''}`.replace(/\/+/, '/'),
                 label: 'text-my-draft',
                 icon: 'ProductsIcon',
                 permissions: adminOwnerAndStaffOnly,
               },
               {
                 href: (shop: string) =>
-                  `/${shop}${Routes.outOfStockOrLowProducts}`,
+                  `/${shop}${Routes.outOfStockOrLowProducts || ''}`.replace(
+                    /\/+/,
+                    '/'
+                  ),
                 label: 'text-low-out-of-stock',
                 icon: 'ProductsIcon',
                 permissions: adminOwnerAndStaffOnly,
@@ -588,7 +606,8 @@ export const siteSettings = {
             ],
           },
           {
-            href: (shop: string) => `/${shop}${Routes.productInventory}`,
+            href: (shop: string) =>
+              `/${shop}${Routes.productInventory || ''}`.replace(/\/+/, '/'),
             label: 'text-inventory',
             icon: 'InventoryIcon',
             permissions: adminOwnerAndStaffOnly,
@@ -597,12 +616,13 @@ export const siteSettings = {
       },
 
       order: {
-        href: '',
+        href: '#',
         label: 'text-order-management',
         icon: 'OrdersIcon',
         childMenu: [
           {
-            href: (shop: string) => `/${shop}${Routes.order.list}`,
+            href: (shop: string) =>
+              `/${shop}${Routes.order?.list || ''}`.replace(/\/+/, '/'),
             label: 'sidebar-nav-item-orders',
             icon: 'OrdersIcon',
             permissions: adminOwnerAndStaffOnly,
@@ -613,47 +633,41 @@ export const siteSettings = {
 
     ownerDashboard: [
       {
-        href: Routes.dashboard,
+        href: Routes.dashboard || '#',
         label: 'sidebar-nav-item-dashboard',
         icon: 'DashboardIcon',
         permissions: ownerAndStaffOnly,
       },
       {
-        href: Routes?.ownerDashboardMyShop,
+        href: Routes.ownerDashboardMyShop || '#',
         label: 'common:sidebar-nav-item-my-shops',
         icon: 'MyShopOwnerIcon',
         permissions: ownerAndStaffOnly,
       },
       {
-        href: Routes.profileUpdate,
+        href: Routes.profileUpdate || '#',
         label: 'authorized-nav-item-profile',
         icon: 'UserIcon',
         permissions: ownerAndStaffOnly,
       },
       {
-        href: Routes.shop.create,
+        href: Routes.shop?.create || '#',
         label: 'common:text-create-shop',
         icon: 'ShopIcon',
         permissions: ownerAndStaffOnly,
       },
       {
-        href: Routes.userprofile,
+        href: Routes.userprofile || '#',
         label: 'visite-your-user-profile',
         icon: 'UserIcon',
         permissions: ownerAndStaffOnly,
       },
       {
-        href: Routes.logout,
+        href: Routes.logout || '#',
         label: 'authorized-nav-item-logout',
         icon: 'LogOutIcon',
         permissions: ownerAndStaffOnly,
       },
-      {/** {
-        href: Routes?.ownerDashboardShopTransferRequest,
-        label: 'Shop Transfer Request',
-        icon: 'MyShopIcon',
-        permissions: adminAndOwnerOnly,
-      },**/}
     ],
   },
   product: {

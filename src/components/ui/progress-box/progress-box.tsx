@@ -25,7 +25,7 @@ const ProgressBox: React.FC<ProgressProps> = ({
         },
       }}
     >
-      <div className="flex w-full flex-col py-7 md:flex-row md:items-start md:justify-center">
+      <div className="pl-[65px] flex w-full flex-col py-7 md:flex-row md:items-start md:justify-center">
         {data?.map((item: any, index) => (
           <div
             className={styles.progress_container}
@@ -49,9 +49,9 @@ const ProgressBox: React.FC<ProgressProps> = ({
               <div className={styles.bar} />
             </div>
 
-            <div className="flex flex-col items-start ltr:ml-5 rtl:mr-5 md:items-center ltr:md:ml-0 rtl:md:mr-0">
+            <div className=" flex flex-col items-start ltr:ml-5 rtl:mr-5 md:items-center ltr:md:ml-0 rtl:md:mr-0">
               {item && (
-                <span className="text-base font-semibold capitalize text-body-dark ltr:text-left rtl:text-right md:px-2 md:!text-center">
+                <span className=" text-base font-semibold capitalize text-body-dark ltr:text-left rtl:text-right md:px-2 md:!text-center">
                   {t(item?.name)}
                 </span>
               )}

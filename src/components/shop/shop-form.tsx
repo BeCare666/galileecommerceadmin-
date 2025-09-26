@@ -597,7 +597,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
           </Card>
         </div>
         {!permissions?.includes(SUPER_ADMIN) ? (
-          <div className="flex flex-wrap pb-8 my-5 border-b border-gray-300 border-dashed sm:my-8">
+          <div className="hidden flex flex-wrap pb-8 my-5 border-b border-gray-300 border-dashed sm:my-8">
             <Description
               title="Shop maintenance settings "
               details="Control all the maintenance settings related to this shop."

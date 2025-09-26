@@ -78,7 +78,7 @@ const ProductCountByCategory = ({ products, title, className }: IProps) => {
               <p className="text-[13px]">{t('table:empty-table-sorry-text')}</p>
             </div>
           )}
-          data={products}
+          data={Array.isArray(products) ? products : []}
           rowKey="category_id"
           scroll={{ x: 200 }}
         />

@@ -80,11 +80,11 @@ export default function ProductStockPage() {
 
         <div
           className={cn('flex w-full transition', {
-            'visible h-auto': visible,
+            'visible h-auto': !visible,
             'invisible h-0': !visible,
           })}
         >
-          <div className="mt-5 flex w-full flex-col border-t border-gray-200 pt-5 md:mt-8 md:flex-row md:items-center md:pt-8">
+          <div className="hidden mt-5 flex w-full flex-col border-t border-gray-200 pt-5 md:mt-8 md:flex-row md:items-center md:pt-8">
             <CategoryTypeFilter
               className="w-full"
               onCategoryFilter={({ slug }: { slug: string }) => {
