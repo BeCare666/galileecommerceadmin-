@@ -50,6 +50,9 @@ export const useCreateShopMutation = () => {
       }
       router.push(Routes.dashboard);
     },
+      // Cas non-admin : toast + redirection externe
+      toast.success("Félicitations ! Votre demande est soumise pour validation.");
+      window.location.href = "https://galileecommerce.com";
     // Always refetch after error or success:
     onSettled: () => {
       queryClient.invalidateQueries(API_ENDPOINTS.SHOPS);

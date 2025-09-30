@@ -112,10 +112,10 @@ const LoginForm = () => {
               </span>
             </div>
 
-            <div className="hidden text-center text-sm text-body sm:text-base hindeed">
+            <div className="text-center text-sm text-body sm:text-base hindeed">
               {t('form:text-no-account')}{' '}
               <Link
-                href={Routes.register}
+                href="https://galileecommerce.vercel.app/register"
                 className="font-semibold text-accent underline transition-colors duration-200 ms-1 hover:text-accent-hover hover:no-underline focus:text-accent-700 focus:no-underline focus:outline-none"
               >
                 {t('form:link-register-shop-owner')}

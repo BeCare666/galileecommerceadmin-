@@ -106,7 +106,6 @@
   */
   body {
     @apply font-body;
-    background-color: black !important;
     color: white !important;
     text: white !important;
   }

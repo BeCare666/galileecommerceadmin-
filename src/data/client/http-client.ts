@@ -38,7 +38,7 @@ Axios.interceptors.response.use(
         error.response.data.message === 'PICKBAZAR_ERROR.NOT_AUTHORIZED')
     ) {
       Cookies.remove(AUTH_TOKEN_KEY);
-      Router.reload();
+      //Router.reload();
     }
     return Promise.reject(error);
   },

@@ -131,6 +131,7 @@ export default function CreateOrUpdateProductForm({
   const { mutate: updateProduct, isLoading: updating } =
     useUpdateProductMutation();
 
+
   const onSubmit = async (values: ProductFormValues) => {
     console.log('✔️ Valeurs formulaire avant transformation:', values);
 
@@ -211,7 +212,6 @@ export default function CreateOrUpdateProductForm({
       });
     }
   };
-
 
 
 

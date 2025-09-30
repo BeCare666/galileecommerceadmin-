@@ -40,12 +40,6 @@ export const siteSettings = {
       permission: adminOwnerAndStaffOnly,
     },
     {
-      href: Routes.shop?.create || '#',
-      labelTransKey: 'common:text-create-shop',
-      icon: 'ShopIcon',
-      permission: adminAndOwnerOnly,
-    },
-    {
       href: Routes.settings || '#',
       labelTransKey: 'authorized-nav-item-settings',
       icon: 'SettingsIcon',
@@ -651,12 +645,6 @@ export const siteSettings = {
         permissions: ownerAndStaffOnly,
       },
       {
-        href: Routes.shop?.create || '#',
-        label: 'common:text-create-shop',
-        icon: 'ShopIcon',
-        permissions: ownerAndStaffOnly,
-      },
-      {
         href: Routes.userprofile || '#',
         label: 'visite-your-user-profile',
         icon: 'UserIcon',
@@ -696,3 +684,16 @@ export const socialIcon = [
     label: 'Youtube',
   },
 ];
+
+{/***      {
+        href: Routes.shop?.create || '#',
+        label: 'common:text-create-shop',
+        icon: 'ShopIcon',
+        permissions: ownerAndStaffOnly,
+      },
+          {
+      href: Routes.shop?.create || '#',
+      labelTransKey: 'common:text-create-shop',
+      icon: 'ShopIcon',
+      permission: adminAndOwnerOnly,
+    },***/}
