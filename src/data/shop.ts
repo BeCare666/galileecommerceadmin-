@@ -45,20 +45,22 @@ export const useCreateShopMutation = () => {
   return useMutation(shopClient.create, {
     onSuccess: () => {
       const { permissions } = getAuthCredentials();
+
       if (hasAccess(adminOnly, permissions)) {
+        // Cas admin : redirection habituelle
         return router.push(Routes.adminMyShops);
       }
-      router.push(Routes.dashboard);
-    },
+
       // Cas non-admin : toast + redirection externe
       toast.success("Félicitations ! Votre demande est soumise pour validation.");
-      window.location.href = "https://galileecommerce.com";
-    // Always refetch after error or success:
+      window.location.href = "https://galileecommerce.vercel.app";
+    },
     onSettled: () => {
       queryClient.invalidateQueries(API_ENDPOINTS.SHOPS);
     },
   });
 };
+
 
 export const useUpdateShopMutation = () => {
   const { t } = useTranslation();
