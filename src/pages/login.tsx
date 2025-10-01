@@ -6,7 +6,7 @@ import { getAuthCredentials, isAuthenticated } from '@/utils/auth-utils';
 import { useRouter } from 'next/router';
 import AuthPageLayout from '@/components/layouts/auth-layout';
 import { Routes } from '@/config/routes';
-
+import { useSearchParams } from "next/navigation";
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   props: {
     ...(await serverSideTranslations(locale!, ['common', 'form'])),
@@ -20,12 +20,19 @@ export default function LoginPage() {
     router.replace(Routes.dashboard);
   }
   const { t } = useTranslation('common');
-
+  const searchParams = useSearchParams();
+  const becomeSeller = searchParams.get("become_seller");
   return (
     <AuthPageLayout>
-      <h3 className="mb-6 mt-4 text-center text-base italic text-body">
-        {t('admin-login-title')}
-      </h3>
+      {becomeSeller === "1" ? (
+        <h3 className="mb-6 mt-4 text-center text-base italic text-body">
+          {t('admin-login-title-auth')}
+        </h3>
+      ) : (
+        <h3 className="mb-6 mt-4 text-center text-base italic text-body">
+          {t('admin-login-title')}
+        </h3>
+      )}
       <LoginForm />
     </AuthPageLayout>
   );

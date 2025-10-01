@@ -17,7 +17,7 @@ import {
   hasAccess,
   setAuthCredentials,
 } from '@/utils/auth-utils';
-
+import { useSearchParams } from "next/navigation";
 const loginFormSchema = yup.object().shape({
   email: yup
     .string()
@@ -34,7 +34,8 @@ const LoginForm = () => {
   const { t } = useTranslation();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { mutate: login, isLoading, error } = useLogin();
-
+  const searchParams = useSearchParams();
+  const becomeSeller = searchParams.get("become_seller");
   function onSubmit(
     data: LoginInput,
     event?: React.BaseSyntheticEvent
@@ -46,7 +47,12 @@ const LoginForm = () => {
       {
         onSuccess: (data) => {
           if (data?.token) {
-            toast.success(t('common:successfully-connexion'));
+            if (becomeSeller === "1") {
+              toast.success(t('common:successfully-connexion-auth'));
+            } else {
+              toast.success(t('common:successfully-connexion'));
+            }
+
             if (hasAccess(allowedRoles, data?.permissions)) {
               setAuthCredentials(data?.token, data?.permissions, data?.role);
               Router.push(Routes.dashboard);
