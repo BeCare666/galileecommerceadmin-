@@ -90,7 +90,7 @@ const LoginForm = () => {
           }
 
           // navigation par défaut si aucune redirect fournie
-          Router.push(Routes.dashboard);
+          //Router.push(Routes.dashboard);
         },
         onError: (error: any) => {
           console.error('Erreur pendant la connexion:', error);
