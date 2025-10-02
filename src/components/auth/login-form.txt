@@ -46,51 +46,24 @@ const LoginForm = () => {
       { email: data.email, password: data.password },
       {
         onSuccess: (data) => {
-          // Pas de token -> erreur d'identifiants
-          if (!data?.token) {
-            setErrorMessage('form:error-credential-wrong');
-            return;
-          }
-
-          // Toast de succès (conserve ton comportement existant)
-          if (becomeSeller === "1") {
-            toast.success(t('common:successfully-connexion-auth'));
-          } else {
-            toast.success(t('common:successfully-connexion'));
-          }
-
-          // 1) Sauvegarder les credentials AVANT la redirection
-          //    (Important : permet d'avoir le token dispo sur la page de destination)
-          setAuthCredentials(data?.token, data?.permissions ?? [], data?.role);
-
-          // 2) Si le backend a renvoyé une URL de redirection -> on la suit (prioritaire)
-          if (data?.redirect) {
-            const redirectUrl = String(data.redirect);
-
-            // Si c'est une URL externe (http(s)://...), on fait un hard redirect
-            if (/^https?:\/\//i.test(redirectUrl)) {
-              window.location.href = redirectUrl;
-              return;
+          if (data?.token) {
+            if (becomeSeller === "1") {
+              toast.success(t('common:successfully-connexion-auth'));
+            } else {
+              toast.success(t('common:successfully-connexion'));
             }
 
-            // Sinon, route interne Next.js
-            Router.push(redirectUrl);
-            return;
-          }
-
-          // 3) Fallback (le backend n'a pas fourni de redirect)
-          //    On applique la logique de permission locale puis on redirige vers dashboard
-          const allowed = hasAccess(allowedRoles, data?.permissions ?? []);
-          if (!allowed) {
-            // informe l'utilisateur qu'il n'a pas assez de permission
+            if (hasAccess(allowedRoles, data?.permissions)) {
+              setAuthCredentials(data?.token, data?.permissions, data?.role);
+              Router.push(Routes.dashboard);
+              return;
+            } else {
+              Router.push(Routes.dashboard);
+            }
             setErrorMessage('form:error-enough-permission');
-
-            // Optionnel : aussi un toast d'erreur si tu veux un retour immédiat
-            // toast.error(t('form:error-enough-permission'));
+          } else {
+            setErrorMessage('form:error-credential-wrong');
           }
-
-          // navigation par défaut si aucune redirect fournie
-          Router.push(Routes.dashboard);
         },
         onError: (error: any) => {
           console.error('Erreur pendant la connexion:', error);

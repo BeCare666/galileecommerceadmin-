@@ -197,6 +197,7 @@ export interface AuthResponse {
   token: string;
   permissions: string[];
   role: string;
+  redirect?: string;
 }
 
 export interface Type {
