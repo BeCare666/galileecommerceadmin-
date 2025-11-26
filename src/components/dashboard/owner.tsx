@@ -75,9 +75,10 @@ const OwnerShopLayout = () => {
   const { price: total_revenue } = usePrice(
     data ? { amount: Number(data.totalRevenue) } : { amount: 0 },
   );
-  const { price: total_refund } = usePrice(
-    data ? { amount: Number(data.totalRefunds) } : { amount: 0 },
+  const { price: totalOrders } = usePrice(
+    data ? { amount: Number(data.totalOrders) } : { amount: 0 },
   );
+  const cleanNumber = Number(String(totalOrders).replace(/[^0-9.-]+/g, ""));
   const { price: todays_revenue } = usePrice(
     data ? { amount: Number(data.todaysRevenue) } : { amount: 0 },
   );
@@ -147,87 +148,37 @@ const OwnerShopLayout = () => {
         <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
           <StickerCard
             titleTransKey="Revenu total"
-            icon={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-10 w-10 text-emerald-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.5}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 8c-1.657 0-3 .843-3 1.875S10.343 11.75 12 11.75s3 .843 3 1.875S13.657 15.5 12 15.5M12 8V6m0 9.5v2m-6-9a9 9 0 1112 0 9 9 0 01-12 0z"
-                />
-              </svg>
-            }
-            color="#FFF"
             price={total_revenue}
-          />
-          <StickerCard
-            titleTransKey="Remboursements du jour"
-            icon={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-10 w-10 text-rose-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.5}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.5 12.75a8.25 8.25 0 1116.5 0m-16.5 0L7.5 9.75m-3 3 3 3"
-                />
-              </svg>
-            }
-            color="#FFF"
-            price={total_refund}
-          />
-          <StickerCard
-            titleTransKey="Total des boutiques"
-            icon={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-10 w-10 text-indigo-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.5}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 9.75V21h18V9.75M3 9.75L12 3l9 6.75M3 9.75h18"
-                />
-              </svg>
-            }
-            color="#FFF"
-            price={total_shops}
+            //note="janvier 2024"
+            color="#7C3AED"
+            icon={<svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v8m0 0l3-3m-3 3l-3-3" /></svg>}
           />
           <StickerCard
             titleTransKey="Revenu du jour"
-            icon={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-10 w-10 text-amber-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.5}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 3v18h18M7.5 13.5l3 3 6-6"
-                />
-              </svg>
-            }
-            color="#FFF"
             price={todays_revenue}
+            //note="juillet 2024"
+            color="#EC4899"
+            // indicator="down"
+            //indicatorText="-5%"
+            icon={<svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v8m0 0l3-3m-3 3l-3-3" /></svg>}
+          />
+          <StickerCard
+            titleTransKey="Commandes totales"
+            price={totalOrders}
+            //note="août 2024"
+            color="#0EA5E9"
+            icon={<svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 3h18M3 9h18M3 15h18M3 21h18" /></svg>}
+          />
+
+
+          <StickerCard
+            titleTransKey="Commandes totales"
+            price={Math.round(cleanNumber)}
+            //note="mai 2024"
+            color="#F97316"
+            //indicator="up"
+            //indicatorText="+12%"
+            icon={<svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 8h18M3 16h18M5 12h14" /></svg>}
           />
         </div>
       </div>

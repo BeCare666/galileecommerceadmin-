@@ -26,14 +26,20 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
     <Link
       href={siteSettings?.logo?.href}
       className={cn('inline-flex items-center gap-3', className)}
-      // {...props}
+    // {...props}
     >
       {miniSidebar && width >= RESPONSIVE_WIDTH ? (
         <span
           className="relative overflow-hidden "
           style={{
-            width: siteSettings.collapseLogo.width,
-            height: siteSettings.collapseLogo.height,
+            width:
+              typeof window !== 'undefined' && window.innerWidth >= 1024
+                ? siteSettings.logo.width //* 2 // ✅ Desktop
+                : siteSettings.logo.width, // ✅ Mobile & tablette
+            height:
+              typeof window !== 'undefined' && window.innerWidth >= 1024
+                ? siteSettings.logo.height //* 2
+                : siteSettings.logo.height,
           }}
         >
           <Image
@@ -44,7 +50,7 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
             alt={settings?.options?.siteTitle ?? siteSettings.collapseLogo.alt}
             fill
             sizes="(max-width: 768px) 100vw"
-            className="object-contain"
+            className="object-contain mt-2"
             loading="eager"
           />
         </span>
@@ -52,8 +58,14 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
         <span
           className="relative overflow-hidden "
           style={{
-            width: siteSettings.logo.width,
-            height: siteSettings.logo.height,
+            width:
+              typeof window !== 'undefined' && window.innerWidth >= 1024
+                ? siteSettings.logo.width * 2 // ✅ Desktop
+                : siteSettings.logo.width, // ✅ Mobile & tablette
+            height:
+              typeof window !== 'undefined' && window.innerWidth >= 1024
+                ? siteSettings.logo.height * 2
+                : siteSettings.logo.height,
           }}
         >
           <Image
@@ -61,7 +73,7 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
             alt={settings?.options?.siteTitle ?? siteSettings.logo.alt}
             fill
             sizes="(max-width: 768px) 100vw"
-            className="object-contain"
+            className="object-contain mt-2"
             loading="eager"
           />
         </span>

@@ -55,7 +55,7 @@ type PriceProps = {
 };
 export default function usePrice(data?: PriceProps | null) {
   const { currency, currencyOptions } = useSettings();
-  const { formation, fractions } = currencyOptions;
+  const { formation, fractions } = currencyOptions ?? { formation: 'en-US', fractions: 2 };
   const { amount, baseAmount, currencyCode = currency } = data ?? {};
   const locale = formation ?? siteSettings.defaultLanguage;
   const value = useMemo(() => {
@@ -63,12 +63,12 @@ export default function usePrice(data?: PriceProps | null) {
 
     return baseAmount
       ? formatVariantPrice({
-          amount,
-          baseAmount,
-          currencyCode,
-          locale,
-          fractions,
-        })
+        amount,
+        baseAmount,
+        currencyCode,
+        locale,
+        fractions,
+      })
       : formatPrice({ amount, currencyCode, locale, fractions });
   }, [amount, baseAmount, currencyCode]);
 

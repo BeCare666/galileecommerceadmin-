@@ -45,7 +45,7 @@ export default function Uploader({
       : { ...ACCEPTED_FILE_TYPES }),
     multiple,
     onDrop: async (acceptedFiles) => {
-      //console.log('acceptedFiles:', acceptedFiles);
+      console.log('acceptedFiles:', acceptedFiles);
       if (acceptedFiles.length) {
 
         upload(
@@ -229,10 +229,11 @@ export default function Uploader({
 
   return (
     <section className="upload">
+      {/*border-dashed border-2*/}
       <div
         {...getRootProps({
           className: classNames(
-            'border-dashed border-2 border-border-base h-36 rounded flex flex-col justify-center items-center cursor-pointer focus:border-accent-400 focus:outline-none relative',
+            ' border-border-base h-36 rounded flex flex-col justify-center items-center cursor-pointer focus:border-accent-400 focus:outline-none relative',
             disabled
               ? 'pointer-events-none select-none opacity-80 bg-[#EEF1F4]'
               : 'cursor-pointer',

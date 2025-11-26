@@ -5,8 +5,10 @@ import { USFlag } from '@/components/icons/flags/USFlag';
 import { DEFlag } from '@/components/icons/flags/DEFlag';
 import { ILFlag } from '@/components/icons/flags/ILFlag';
 import { ESFlag } from '@/components/icons/flags/ESFlag';
+import { FRFlag } from '@/components/icons/flags/FRFlag'; // 🇫🇷 Ajout ici
 
-const localeRTLList = ['ar', 'he'];
+const localeRTLList = ['fr', 'en'];
+
 export function useIsRTL() {
   const { locale } = useRouter();
   if (locale && localeRTLList.includes(locale)) {
@@ -16,7 +18,20 @@ export function useIsRTL() {
 }
 
 export let languageMenu = [
+
   {
+    id: 'fr',
+    name: 'Français',
+    value: 'fr',
+    icon: <FRFlag width="28px" height="28px" />, // 🇫🇷 Ajout du drapeau français
+  },
+
+];
+
+
+{/** 
+  
+    {
     id: 'ar',
     name: 'عربى',
     value: 'ar',
@@ -42,7 +57,7 @@ export let languageMenu = [
   },
   {
     id: 'he',
-    name: 'rעברית',
+    name: 'עברית',
     value: 'he',
     icon: <ILFlag width="28px" height="28px" />,
   },
@@ -51,5 +66,4 @@ export let languageMenu = [
     name: 'Español',
     value: 'es',
     icon: <ESFlag width="28px" height="28px" />,
-  },
-];
+  },**/ }

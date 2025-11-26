@@ -12,14 +12,14 @@ export const siteSettings = {
   name: 'galileecommerce',
   description: '',
   logo: {
-    url: '/logo.svg',
+    url: '/logo_red.png',
     alt: 'galileecommerce',
     href: '/',
     width: 138,
     height: 34,
   },
   collapseLogo: {
-    url: '/collapse-logo.svg',
+    url: '/logo_red.png',
     alt: 'P',
     href: '/',
     width: 32,
@@ -153,23 +153,7 @@ export const siteSettings = {
         ],
       },
 
-      financial: {
-        href: '#',
-        label: 'text-e-commerce-management',
-        icon: 'WithdrawIcon',
-        childMenu: [
-          {
-            href: Routes.tax?.list || '#',
-            label: 'sidebar-nav-item-taxes',
-            icon: 'TaxesIcon',
-          },
-          {
-            href: Routes.withdraw?.list || '#',
-            label: 'sidebar-nav-item-withdraws',
-            icon: 'WithdrawIcon',
-          },
-        ],
-      },
+
 
       order: {
         href: Routes.order?.list || '#',
@@ -185,53 +169,6 @@ export const siteSettings = {
             href: Routes.transaction || '#',
             label: 'text-transactions',
             icon: 'TransactionsIcon',
-          },
-        ],
-      },
-
-      layout: {
-        href: '#',
-        label: 'text-page-control',
-        icon: 'SettingsIcon',
-        childMenu: [
-          {
-            href: '#',
-            label: 'text-faqs',
-            icon: 'FaqIcon',
-            childMenu: [
-              {
-                href: Routes.faqs?.list || '#',
-                label: 'text-all-faqs',
-                icon: 'FaqIcon',
-              },
-              {
-                href: Routes.faqs?.create || '#',
-                label: 'text-new-faq',
-                icon: 'TypesIcon',
-              },
-            ],
-          },
-          {
-            href: '#',
-            label: 'text-terms-conditions',
-            icon: 'TermsIcon',
-            childMenu: [
-              {
-                href: Routes.termsAndCondition?.list || '#',
-                label: 'text-all-terms',
-                icon: 'TermsIcon',
-              },
-              {
-                href: Routes.termsAndCondition?.create || '#',
-                label: 'text-new-terms',
-                icon: 'TermsIcon',
-              },
-            ],
-          },
-          {
-            href: Routes.becomeSeller || '#',
-            label: 'Become a seller Page',
-            icon: 'TermsIcon',
           },
         ],
       },
@@ -264,23 +201,6 @@ export const siteSettings = {
               {
                 href: Routes.pendingVendorList || '#',
                 label: 'text-pending-vendors',
-                icon: 'UsersIcon',
-              },
-            ],
-          },
-          {
-            href: '#',
-            label: 'sidebar-nav-item-staffs',
-            icon: 'StaffIcon',
-            childMenu: [
-              {
-                href: Routes.myStaffs || '#',
-                label: 'sidebar-nav-item-my-staffs',
-                icon: 'UsersIcon',
-              },
-              {
-                href: Routes.vendorStaffs || '#',
-                label: 'sidebar-nav-item-vendor-staffs',
                 icon: 'UsersIcon',
               },
             ],
@@ -325,42 +245,7 @@ export const siteSettings = {
                 href: Routes.settings || '#',
                 label: 'text-general-settings',
                 icon: 'SettingsIcon',
-              },
-              {
-                href: Routes.paymentSettings || '#',
-                label: 'text-payment-settings',
-                icon: 'RefundsIcon',
-              },
-              {
-                href: Routes.seoSettings || '#',
-                label: 'text-seo-settings',
-                icon: 'StoreNoticeIcon',
-              },
-              {
-                href: Routes.eventSettings || '#',
-                label: 'text-events-settings',
-                icon: 'RefundsIcon',
-              },
-              {
-                href: Routes.shopSettings || '#',
-                label: 'text-shop-settings',
-                icon: 'RefundsIcon',
-              },
-              {
-                href: Routes.maintenance || '#',
-                label: 'text-maintenance-settings',
-                icon: 'InformationIcon',
-              },
-              {
-                href: Routes.companyInformation || '#',
-                label: 'text-company-settings',
-                icon: 'InformationIcon',
-              },
-              {
-                href: Routes.promotionPopup || '#',
-                label: 'text-popup-settings',
-                icon: 'InformationIcon',
-              },
+              }
             ],
           },
         ],
@@ -438,20 +323,7 @@ export const siteSettings = {
         ],
       },
 
-      financial: {
-        href: '#',
-        label: 'text-financial-management',
-        icon: 'WithdrawIcon',
-        childMenu: [
-          {
-            href: (shop: string) =>
-              `/${shop}${Routes.withdraw?.list || ''}`.replace(/\/+/, '/'),
-            label: 'sidebar-nav-item-withdraws',
-            icon: 'AttributeIcon',
-            permissions: adminAndOwnerOnly,
-          },
-        ],
-      },
+
 
       order: {
         href: '#',
@@ -480,13 +352,7 @@ export const siteSettings = {
         label: 'text-feedback-control',
         icon: 'SettingsIcon',
         childMenu: [
-          {
-            href: (shop: string) =>
-              `/${shop}${Routes.reviews?.list || ''}`.replace(/\/+/, '/'),
-            label: 'sidebar-nav-item-reviews',
-            icon: 'ReviewIcon',
-            permissions: adminAndOwnerOnly,
-          },
+
           {
             href: (shop: string) =>
               `/${shop}${Routes.question?.list || ''}`.replace(/\/+/, '/'),
@@ -512,32 +378,85 @@ export const siteSettings = {
         ],
       },
 
-      layout: {
-        href: '#',
-        label: 'text-page-management',
-        icon: 'SettingsIcon',
-        childMenu: [
-          {
-            href: (shop: string) =>
-              `/${shop}${Routes.faqs?.list || ''}`.replace(/\/+/, '/'),
-            label: 'text-faqs',
-            icon: 'TypesIcon',
-            permissions: adminOwnerAndStaffOnly,
-          },
-          {
-            href: (shop: string) =>
-              `/${shop}${Routes.termsAndCondition?.list || ''}`.replace(
-                /\/+/,
-                '/'
-              ),
-            label: 'Terms And Conditions',
-            icon: 'TypesIcon',
-            permissions: adminAndOwnerOnly,
-          },
-        ],
-      },
+
     },
 
+
+    ownerDashboard: [
+      {
+        href: Routes.dashboard || '#',
+        label: 'sidebar-nav-item-dashboard',
+        icon: 'DashboardIcon',
+        permissions: ownerAndStaffOnly,
+      },
+      {
+        href: Routes.ownerDashboardMyShop || '#',
+        label: 'common:sidebar-nav-item-my-shops',
+        icon: 'MyShopOwnerIcon',
+        permissions: ownerAndStaffOnly,
+      },
+      {
+        href: Routes.profileUpdate || '#',
+        label: 'authorized-nav-item-profile',
+        icon: 'UserIcon',
+        permissions: ownerAndStaffOnly,
+      },
+      {
+        href: Routes.userprofile || '#',
+        label: 'visite-your-user-profile',
+        icon: 'UserIcon',
+        permissions: ownerAndStaffOnly,
+      },
+      {
+        href: Routes.logout || '#',
+        label: 'authorized-nav-item-logout',
+        icon: 'LogOutIcon',
+        permissions: ownerAndStaffOnly,
+      },
+    ],
+  },
+  product: {
+    placeholder: '/product-placeholder.svg',
+  },
+  avatar: {
+    placeholder: '/avatar-placeholder.svg',
+  },
+};
+
+export const socialIcon = [
+  {
+    value: 'FacebookIcon',
+    label: 'Facebook',
+  },
+  {
+    value: 'InstagramIcon',
+    label: 'Instagram',
+  },
+  {
+    value: 'TwitterIcon',
+    label: 'Twitter',
+  },
+  {
+    value: 'YouTubeIcon',
+    label: 'Youtube',
+  },
+];
+
+{/***      {
+        href: Routes.shop?.create || '#',
+        label: 'common:text-create-shop',
+        icon: 'ShopIcon',
+        permissions: ownerAndStaffOnly,
+      },
+          {
+      href: Routes.shop?.create || '#',
+      labelTransKey: 'common:text-create-shop',
+      icon: 'ShopIcon',
+      permission: adminAndOwnerOnly,
+    },
+    
+    
+    
     staff: {
       root: {
         href: '#',
@@ -625,75 +544,87 @@ export const siteSettings = {
       },
     },
 
-    ownerDashboard: [
-      {
-        href: Routes.dashboard || '#',
-        label: 'sidebar-nav-item-dashboard',
-        icon: 'DashboardIcon',
-        permissions: ownerAndStaffOnly,
-      },
-      {
-        href: Routes.ownerDashboardMyShop || '#',
-        label: 'common:sidebar-nav-item-my-shops',
-        icon: 'MyShopOwnerIcon',
-        permissions: ownerAndStaffOnly,
-      },
-      {
-        href: Routes.profileUpdate || '#',
-        label: 'authorized-nav-item-profile',
-        icon: 'UserIcon',
-        permissions: ownerAndStaffOnly,
-      },
-      {
-        href: Routes.userprofile || '#',
-        label: 'visite-your-user-profile',
-        icon: 'UserIcon',
-        permissions: ownerAndStaffOnly,
-      },
-      {
-        href: Routes.logout || '#',
-        label: 'authorized-nav-item-logout',
-        icon: 'LogOutIcon',
-        permissions: ownerAndStaffOnly,
-      },
-    ],
-  },
-  product: {
-    placeholder: '/product-placeholder.svg',
-  },
-  avatar: {
-    placeholder: '/avatar-placeholder.svg',
-  },
-};
 
-export const socialIcon = [
-  {
-    value: 'FacebookIcon',
-    label: 'Facebook',
-  },
-  {
-    value: 'InstagramIcon',
-    label: 'Instagram',
-  },
-  {
-    value: 'TwitterIcon',
-    label: 'Twitter',
-  },
-  {
-    value: 'YouTubeIcon',
-    label: 'Youtube',
-  },
-];
 
-{/***      {
-        href: Routes.shop?.create || '#',
-        label: 'common:text-create-shop',
-        icon: 'ShopIcon',
-        permissions: ownerAndStaffOnly,
-      },
+
+           {
+            href: (shop: string) =>
+              `/${shop}${Routes.reviews?.list || ''}`.replace(/\/+/, '/'),
+            label: 'sidebar-nav-item-reviews',
+            icon: 'ReviewIcon',
+            permissions: adminAndOwnerOnly,
+          },
+
+
+
+
+
+      financial: {
+        href: '#',
+        label: 'text-financial-management',
+        icon: 'WithdrawIcon',
+        childMenu: [
           {
-      href: Routes.shop?.create || '#',
-      labelTransKey: 'common:text-create-shop',
-      icon: 'ShopIcon',
-      permission: adminAndOwnerOnly,
-    },***/}
+            href: (shop: string) =>
+              `/${shop}${Routes.withdraw?.list || ''}`.replace(/\/+/, '/'),
+            label: 'sidebar-nav-item-withdraws',
+            icon: 'AttributeIcon',
+            permissions: adminAndOwnerOnly,
+          },
+        ],
+      },
+
+
+
+
+
+      layout: {
+        href: '#',
+        label: 'text-page-control',
+        icon: 'SettingsIcon',
+        childMenu: [
+          {
+            href: '#',
+            label: 'text-faqs',
+            icon: 'FaqIcon',
+            childMenu: [
+              {
+                href: Routes.faqs?.list || '#',
+                label: 'text-all-faqs',
+                icon: 'FaqIcon',
+              },
+              {
+                href: Routes.faqs?.create || '#',
+                label: 'text-new-faq',
+                icon: 'TypesIcon',
+              },
+            ],
+          },
+
+        ],
+      },
+      layout: {
+        href: '#',
+        label: 'text-page-management',
+        icon: 'SettingsIcon',
+        childMenu: [
+          {
+            href: (shop: string) =>
+              `/${shop}${Routes.faqs?.list || ''}`.replace(/\/+/, '/'),
+            label: 'text-faqs',
+            icon: 'TypesIcon',
+            permissions: adminOwnerAndStaffOnly,
+          },
+          {
+            href: (shop: string) =>
+              `/${shop}${Routes.termsAndCondition?.list || ''}`.replace(
+                /\/+/,
+                '/'
+              ),
+            label: 'Terms And Conditions',
+            icon: 'TypesIcon',
+            permissions: adminAndOwnerOnly,
+          },
+        ],
+      },
+    ***/}

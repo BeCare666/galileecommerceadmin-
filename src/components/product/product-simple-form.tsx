@@ -150,67 +150,46 @@ export default function ProductSimpleForm({ initialValues, settings }: IProps) {
             )}
           </>
         ) : null}
+        <>
+          <Label>{t('form:input-label-digital-file')}</Label>
+          <FileInput
+            name="digital_file_input"
+            control={control}
+            multiple={false}
+            acceptFile={true}
+            //required={true}
+            error={typeof errors.digital_file?.message === 'string' ? errors.digital_file.message : undefined}
+          />
+          <input type="hidden" {...register(`digital_file`)} />
 
-        {is_external ? (
-          <div>
-            <Input
-              label={t('form:input-label-external-product-url')}
-              {...register('external_product_url')}
-              error={t(errors.external_product_url?.message!)}
-              variant="outline"
-              className="mb-5"
-              required
-            />
-            <Input
-              label={t('form:input-label-external-product-button-text')}
-              {...register('external_product_button_text')}
-              error={t(errors.external_product_button_text?.message!)}
-              variant="outline"
-              className="mb-5"
-              required
-            />
-          </div>
-        ) : (
-          <>
-            <Label>{t('form:input-label-digital-file')}</Label>
-            <FileInput
-              name="digital_file_input"
-              control={control}
-              multiple={false}
-              acceptFile={true}
-              //required={true}
-              error={typeof errors.digital_file?.message === 'string' ? errors.digital_file.message : undefined}
-            />
-            <input type="hidden" {...register(`digital_file`)} />
-
-            {settings?.enableEmailForDigitalProduct ? (
-              <div className="mt-5 mb-5">
-                <Checkbox
-                  {...register('inform_purchased_customer')}
-                  id="inform_purchased_customer"
-                  label="Send email to already purchased customer of this item about this update."
-                  // disabled={Boolean(is_external)}
-                  className="mb-5"
+          {settings?.enableEmailForDigitalProduct ? (
+            <div className="mt-5 mb-5">
+              <Checkbox
+                {...register('inform_purchased_customer')}
+                id="inform_purchased_customer"
+                label="Send email to already purchased customer of this item about this update."
+                // disabled={Boolean(is_external)}
+                className="mb-5"
+              />
+              {is_update_message ? (
+                <TextArea
+                  {...register('product_update_message')}
+                  id="product_update_message"
+                  label="You can send message towards customer about this update."
+                  variant="outline"
+                  className="col-span-2"
+                  placeholder="(Optional)"
                 />
-                {is_update_message ? (
-                  <TextArea
-                    {...register('product_update_message')}
-                    id="product_update_message"
-                    label="You can send message towards customer about this update."
-                    variant="outline"
-                    className="col-span-2"
-                    placeholder="(Optional)"
-                  />
-                ) : null}
-              </div>
-            ) : null}
-            {errors.digital_file_input && (
-              <p className="my-2 text-xs text-red-500 text-start">
-                {t('Digital file is required')}
-              </p>
-            )}
-          </>
-        )}
+              ) : null}
+            </div>
+          ) : null}
+          {errors.digital_file_input && (
+            <p className="my-2 text-xs text-red-500 text-start">
+              {t('Digital file is required')}
+            </p>
+          )}
+        </>
+
       </Card>
     </div>
   );

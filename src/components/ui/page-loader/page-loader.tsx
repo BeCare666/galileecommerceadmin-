@@ -4,7 +4,7 @@ export default function PageLoader() {
   return (
     <div className={styles.loaderContainer}>
       <img
-        src="https://galileecommerce.netlify.app/img/logo_galile_pc.png"
+        src="https://galileecommerce.netlify.app/img/logo_red.png"
         alt="logo"
         className={styles.logo}
       />

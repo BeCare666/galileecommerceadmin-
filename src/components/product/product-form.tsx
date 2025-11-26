@@ -133,8 +133,8 @@ export default function CreateOrUpdateProductForm({
 
 
   const onSubmit = async (values: ProductFormValues) => {
-    console.log('✔️ Valeurs formulaire avant transformation:', values);
-
+    //console.log('✔️ Valeurs formulaire avant transformation:', values);
+    console.log('🧭 Mode édition ?', !!initialValues, '→', initialValues);
     // Copie les valeurs du formulaire
     const inputValues = {
       language: router.locale,
@@ -184,11 +184,10 @@ export default function CreateOrUpdateProductForm({
     console.log('📦 Valeurs envoyées au backend:', backendInput);
 
     try {
-      if (
-        !initialValues ||
-        !initialValues.translated_languages.includes(router.locale!)
-      ) {
-        //@ts-ignore
+      //console.log("🧭 Mode édition ?", !!initialValues, "Langues traduites:", initialValues?.translated_languages, "Locale actuelle:", router.locale);
+      if (!initialValues?.id) {
+        //@ts-ignore  
+        //alert('create products')
         createProduct({
           ...backendInput,
           ...(initialValues?.slug && { slug: initialValues.slug }),
@@ -196,6 +195,7 @@ export default function CreateOrUpdateProductForm({
         });
       } else {
         //@ts-ignore
+        //alert('update products')
         updateProduct({
           ...backendInput,
           id: initialValues.id!,
@@ -203,6 +203,7 @@ export default function CreateOrUpdateProductForm({
         });
       }
     } catch (error) {
+      console.log(error)
       const serverErrors = getErrorMessage(error);
       Object.keys(serverErrors?.validation).forEach((field: any) => {
         setError(field.split('.')[1], {
@@ -326,7 +327,7 @@ export default function CreateOrUpdateProductForm({
       ) : null}
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+          <div className="flex flex-wrap pb-8 my-5 border-b  border-border-base sm:my-8">
             <Description
               title={t('form:featured-image-title')}
               details={featuredImageInformation}
@@ -343,7 +344,7 @@ export default function CreateOrUpdateProductForm({
             </Card>
           </div>
 
-          <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+          <div className="flex flex-wrap pb-8 my-5 border-b  border-border-base sm:my-8">
             <Description
               title={t('form:gallery-title')}
               details={galleryImageInformation}
@@ -354,8 +355,20 @@ export default function CreateOrUpdateProductForm({
               <FileInput name="gallery" control={control} />
             </Card>
           </div>
+          <div className="hidden flex flex-wrap pb-8 my-5 border-b  border-border-base sm:my-8">
+            <Description
+              title={t('form:input-label-digital-file')}
+              details={galleryImageInformation}
+              className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
+            />
 
-          <div className="hidden flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+            <Card className="w-full sm:w-8/12 md:w-2/3">
+              <Label>{t('form:input-label-digital-file')}</Label>
+              <FileInput name="digital_file" control={control} />
+            </Card>
+          </div>
+
+          <div className="hidden flex flex-wrap pb-8 my-5 border-b  border-border-base sm:my-8">
             <Description
               title={t('form:video-title')}
               details={t('form:video-help-text')}
@@ -367,7 +380,7 @@ export default function CreateOrUpdateProductForm({
               <div>
                 {fields.map((item: any, index: number) => (
                   <div
-                    className="py-5 border-b border-dashed border-border-200 first:pt-0 last:border-b-0 md:py-8 md:first:pt-0"
+                    className="py-5 border-b  border-border-200 first:pt-0 last:border-b-0 md:py-8 md:first:pt-0"
                     key={index}
                   >
                     {' '}
@@ -410,7 +423,7 @@ export default function CreateOrUpdateProductForm({
             </Card>
           </div>
 
-          <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+          <div className="flex flex-wrap pb-8 my-5 border-b  border-border-base sm:my-8">
             <Description
               title={t('form:type-and-category')}
               details={t('form:type-and-category-help-text')}
@@ -547,7 +560,7 @@ export default function CreateOrUpdateProductForm({
             </Card>
           </div>
 
-          {/* <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+          {/* <div className="flex flex-wrap pb-8 my-5 border-b  border-border-base sm:my-8">
             <Description
               title={t('form:form-title-product-type')}
               details={t('form:form-description-product-type')}
@@ -596,6 +609,7 @@ export default function CreateOrUpdateProductForm({
                   </Link>
                 )}
                 <Button
+                  type="submit"
                   loading={updating || creating}
                   disabled={updating || creating}
                   size="medium"

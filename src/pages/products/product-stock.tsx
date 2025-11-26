@@ -70,14 +70,14 @@ export default function ProductStockPage() {
             onClick={toggleVisible}
           >
             {t('common:text-filter')}{' '}
-            {visible ? (
+            {visible ? null : null}
+          </button>
+        </div>
+      {/**(
               <ArrowUp className="ms-2" />
             ) : (
               <ArrowDown className="ms-2" />
-            )}
-          </button>
-        </div>
-
+            )**/}
         <div
           className={cn('flex w-full transition', {
             'visible h-auto': !visible,

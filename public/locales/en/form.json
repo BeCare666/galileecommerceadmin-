@@ -285,7 +285,7 @@
   "button-label-add-staff": "Add Staff",
   "form-title-create-staff": "Create Staff",
   "form-description-staff-info": "Add your staff information and create a new staff from here",
-  "link-register-shop-owner": "Register as B space Owner",
+  "link-register-shop-owner": "Please create account first.",
   "button-label-submit": "Submit",
   "error-token-required": "Token is Required!",
   "error-old-password-required": "Old Password is Required!",

@@ -1,5 +1,6 @@
 {
   "text-guest": "Guest",
+  "text-select-category": "Select Category",
   "text-read-more": "Read more",
   "text-less": "Less",
   "text-or": "Or",
@@ -65,9 +66,9 @@
   "sidebar-nav-item-settings": "Settings",
   "sidebar-nav-item-store-notice": "Store Notice",
   "sidebar-nav-item-message": "Message",
-  "sidebar-nav-item-shops": "Shops",
+  "sidebar-nav-item-shops": "B space",
   "sidebar-nav-item-my-shops": "My B spaces",
-  "sidebar-nav-item-my-shops-dashboard": "Shops Dashboard",
+  "sidebar-nav-item-my-shops-dashboard": "B space Dashboard",
   "sidebar-nav-item-tags": "Tags",
   "sidebar-nav-item-withdraws": "Withdrawals",
   "sidebar-nav-item-my-staffs": "My Staffs",

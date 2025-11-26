@@ -9,7 +9,7 @@ import Alert from '@/components/ui/alert';
 import CountdownTimer from '@/components/ui/countdown-timer';
 import LinkButton from '@/components/ui/link-button';
 import Loader from '@/components/ui/loader/loader';
-import Logo from '@/components/ui/logo';
+import Logo from '@/components/ui/logox';
 import { useModalAction } from '@/components/ui/modal/modal.context';
 import { Config } from '@/config';
 import { Routes } from '@/config/routes';
@@ -199,13 +199,14 @@ const Navbar = () => {
       ) : (
         ''
       )}
-      <nav className="flex items-center px-5 md:px-8">
+      {/*px-5 md:px-8*/}
+      <nav className="flex items-center px-5 md:px-0">
         <div className="relative flex w-full flex-1 items-center">
           <div className="flex items-center">
             <motion.button
               whileTap={{ scale: 0.88 }}
               onClick={toggleSidebar}
-              className="group flex h-5 w-5 shrink-0 cursor-pointer flex-col justify-center space-y-1 me-4 focus:text-accent focus:outline-none lg:hidden"
+              className="bg-gradient-to-br from-[#0d0d0f] via-[#121215] to-[#1a1a1d] text-gray-200 group flex h-5 w-5 shrink-0 cursor-pointer flex-col justify-center space-y-1 me-4 focus:text-accent focus:outline-none lg:hidden"
             >
               <span
                 className={cn(
@@ -218,8 +219,8 @@ const Navbar = () => {
             </motion.button>
             <div
               className={cn(
-                'flex h-16 shrink-0 transition-[width] duration-300 me-4 lg:h-[76px] lg:border-solid lg:border-gray-200/80 lg:me-8 lg:border-e',
-                miniSidebar ? 'lg:w-[65px]' : 'lg:w-[257px]',
+                'lg:bg-gradient-to-br from-[#0d0d0f] via-[#121215] to-[#1a1a1d] text-gray-200 flex h-16 shrink-0 transition-[width] duration-300  lg:h-[76px] lg:border-solid lg:border-gray-200/80 lg:me-8 lg:border-e',
+                miniSidebar ? 'lg:w-[96px]' : 'lg:w-[289px]',
               )}
             >
               <Logo />
@@ -302,7 +303,7 @@ const Navbar = () => {
             )}
           </div>
 
-          {enableMultiLang ? <LanguageSwitcher /> : null}
+          {enableMultiLang ? <LanguageSwitcher /> : <LanguageSwitcher />}
 
           <AuthorizedMenu />
         </div>
