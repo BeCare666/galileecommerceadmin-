@@ -57,7 +57,7 @@ export const siteSettings = {
     admin: {
       root: {
         href: Routes.dashboard || '#',
-        label: 'Main',
+        label: 'text-main',
         icon: 'DashboardIcon',
         childMenu: [
           {

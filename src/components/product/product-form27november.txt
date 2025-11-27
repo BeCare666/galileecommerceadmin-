@@ -123,7 +123,7 @@ export default function CreateOrUpdateProductForm({
     watch,
     formState: { errors },
   } = methods;
-  console.log("DEFAULT VALUES:", getProductDefaultValues(initialValues!, isNewTranslation));
+
   const upload_max_filesize = options?.server_info?.upload_max_filesize / 1024;
 
   const { mutate: createProduct, isLoading: creating } =

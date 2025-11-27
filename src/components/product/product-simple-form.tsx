@@ -102,7 +102,16 @@ export default function ProductSimpleForm({ initialValues, settings }: IProps) {
           label={t('form:input-label-is-external')}
           disabled={Boolean(is_digital)}
           className="mb-5 h"
-        />**/}
+        />           <Label>{t('form:input-label-digital-file')}</Label>
+          <FileInput
+            name="digital_file_input"
+            control={control}
+            multiple={false}
+            acceptFile={true}
+            //required={true}
+            error={typeof errors.digital_file?.message === 'string' ? errors.digital_file.message : undefined}
+          />
+          <input type="hidden" {...register(`digital_file`)} />**/}
 
         {is_digital ? (
           <>
@@ -151,16 +160,7 @@ export default function ProductSimpleForm({ initialValues, settings }: IProps) {
           </>
         ) : null}
         <>
-          <Label>{t('form:input-label-digital-file')}</Label>
-          <FileInput
-            name="digital_file_input"
-            control={control}
-            multiple={false}
-            acceptFile={true}
-            //required={true}
-            error={typeof errors.digital_file?.message === 'string' ? errors.digital_file.message : undefined}
-          />
-          <input type="hidden" {...register(`digital_file`)} />
+
 
           {settings?.enableEmailForDigitalProduct ? (
             <div className="mt-5 mb-5">

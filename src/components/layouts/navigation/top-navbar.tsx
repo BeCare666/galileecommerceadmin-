@@ -206,7 +206,7 @@ const Navbar = () => {
             <motion.button
               whileTap={{ scale: 0.88 }}
               onClick={toggleSidebar}
-              className="bg-gradient-to-br from-[#0d0d0f] via-[#121215] to-[#1a1a1d] text-gray-200 group flex h-5 w-5 shrink-0 cursor-pointer flex-col justify-center space-y-1 me-4 focus:text-accent focus:outline-none lg:hidden"
+              className=" text-gray-200 group flex h-5 w-5 shrink-0 cursor-pointer flex-col justify-center space-y-1 me-4 focus:text-accent focus:outline-none lg:hidden"
             >
               <span
                 className={cn(
@@ -226,7 +226,7 @@ const Navbar = () => {
               <Logo />
             </div>
             <button
-              className="group hidden h-5 w-5 shrink-0 cursor-pointer flex-col justify-center space-y-1 me-6 lg:flex"
+              className="group hidden h-5 w-5 shrink-0 cursor-pointer flex-col justify-center space-y-1 me-6 "
               onClick={() => setMiniSidebar(!miniSidebar)}
             >
               <span
@@ -253,7 +253,7 @@ const Navbar = () => {
           <div className="relative hidden w-full max-w-[710px] py-4 me-6 lg:block 2xl:me-auto">
             <SearchBar />
           </div>
-          <div className="flex items-center justify-between  bg-white">
+          <div className="hidden lg:flex flex items-center justify-between  bg-white">
             <ToggleButton />
             { /**<NotificationBell />**/}
           </div>

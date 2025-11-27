@@ -39,7 +39,7 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
                         height:
                             typeof window !== 'undefined' && window.innerWidth >= 1024
                                 ? siteSettings.logo.height * 2
-                                : siteSettings.logo.height * 2
+                                : siteSettings.logo.height,
                     }}
                 >
                     <Image
@@ -58,7 +58,7 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
                         width:
                             typeof window !== 'undefined' && window.innerWidth >= 1024
                                 ? siteSettings.logo.width * 2 // ✅ Desktop
-                                : siteSettings.logo.width * 2, // ✅ Mobile & tablette
+                                : siteSettings.logo.width, // ✅ Mobile & tablette
                         height:
                             typeof window !== 'undefined' && window.innerWidth >= 1024
                                 ? siteSettings.logo.height * 2

@@ -1,13 +1,10 @@
-// ProductList.tsx — version premium, responsive, moderne, épurée
-// ⚠️ Aucune logique modifiée — uniquement structure, classes et responsive design améliorés
-
 import Pagination from '@/components/ui/pagination';
 import Image from 'next/image';
 import { Table } from '@/components/ui/table';
 import { siteSettings } from '@/settings/site.settings';
 import usePrice from '@/utils/use-price';
 import Badge from '@/components/ui/badge/badge';
-import { useRouter } from 'next/router';
+import { Router, useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { NoDataFound } from '@/components/icons/no-data-found';
 import {
@@ -43,11 +40,14 @@ const ProductList = ({
   onSort,
   onOrder,
 }: IProps) => {
+  // const { data, paginatorInfo } = products! ?? {};
   const router = useRouter();
-  const { query: { shop } } = router;
+  const {
+    query: { shop },
+  } = router;
   const { t } = useTranslation();
   const { alignLeft, alignRight } = useIsRTL();
-
+  console.log(shop)
   const [sortingObj, setSortingObj] = useState<SortingObjType>({
     sort: SortOrder.Desc,
     column: null,
@@ -75,20 +75,19 @@ const ProductList = ({
       key: 'id',
       align: alignLeft,
       width: 130,
-      className:
-        'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
       render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
     },
     {
       title: (
         <TitleWithSort
           title={t('table:table-item-product')}
-          ascending={sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'}
+          ascending={
+            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'
+          }
           isActive={sortingObj.column === 'name'}
         />
       ),
-      className:
-        'cursor-pointer text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
+      className: 'cursor-pointer',
       dataIndex: 'name',
       key: 'name',
       align: alignLeft,
@@ -96,19 +95,21 @@ const ProductList = ({
       ellipsis: true,
       onHeaderCell: () => onHeaderClick('name'),
       render: (name: string, { image, type }: { image: any; type: any }) => (
-        <div className="flex items-center gap-3">
-          <div className="relative h-10 w-10 md:h-12 md:w-12 overflow-hidden rounded-xl border border-border-200/70 bg-gray-100 dark:bg-gray-800 shadow-sm">
+        <div className="flex items-center">
+          <div className="relative aspect-square h-10 w-10 shrink-0 overflow-hidden rounded border border-border-200/80 bg-gray-100 me-2.5">
             <Image
               src={image?.url ?? siteSettings.product.placeholder}
               alt={name}
               fill
-              priority
-              className="object-cover"
+              priority={true}
+              sizes="(max-width: 768px) 100vw"
             />
           </div>
-          <div className="flex flex-col ">
-            <span className="truncate font-medium text-[14px] md:text-[15px] text-gray-800 dark:text-white">{name}</span>
-            <span className="truncate text-[12px] text-gray-500 dark:text-gray-400">{type?.name}</span>
+          <div className="flex flex-col">
+            <span className="truncate font-medium">{name}</span>
+            <span className="truncate whitespace-nowrap pt-1 pb-0.5 text-[13px] text-body/80">
+              {type?.name}
+            </span>
           </div>
         </div>
       ),
@@ -119,9 +120,10 @@ const ProductList = ({
       key: 'product_type',
       width: 150,
       align: alignLeft,
-      className: 'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
       render: (product_type: string) => (
-        <span className="truncate capitalize text-gray-700 dark:text-gray-300">{product_type}</span>
+        <span className="truncate whitespace-nowrap capitalize">
+          {product_type}
+        </span>
       ),
     },
     {
@@ -131,58 +133,78 @@ const ProductList = ({
       width: 170,
       align: alignLeft,
       ellipsis: true,
-      className: 'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
       render: (shop: Shop) => (
-        <div className="flex items-center gap-3 font-medium">
-          <div className="relative h-9 w-9 md:h-10 md:w-10 overflow-hidden rounded-full border border-border-200/70 bg-gray-100 dark:bg-gray-800 shadow-sm">
+        <div className="flex items-center font-medium">
+          <div className="relative aspect-square h-9 w-9 shrink-0 overflow-hidden rounded-full border border-border-200/80 bg-gray-100 me-2">
             <Image
               src={shop?.logo?.logo_image_url ?? siteSettings.product.placeholder}
-              alt={shop?.name ?? 'Shop'}
+              alt={shop?.name ?? 'Shop Name'}
               fill
-              priority
-              className="object-cover"
+              priority={true}
+              sizes="(max-width: 768px) 100vw"
             />
           </div>
-          <span className="truncate text-gray-800 dark:text-gray-200">{shop?.name}</span>
+          <span className="truncate">{shop?.name}</span>
         </div>
       ),
     },
+
     {
       title: (
         <TitleWithSort
           title={t('table:table-item-unit')}
-          ascending={sortingObj.sort === SortOrder.Asc && sortingObj.column === 'price'}
+          ascending={
+            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'price'
+          }
           isActive={sortingObj.column === 'price'}
         />
       ),
-      className:
-        'cursor-pointer text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
+      className: 'cursor-pointer',
       dataIndex: 'price',
       key: 'price',
       align: alignRight,
       width: 180,
       onHeaderCell: () => onHeaderClick('price'),
-      render(value: number, record: Product) {
-        const { price: max_price } = usePrice({ amount: record?.max_price as number });
-        const { price: min_price } = usePrice({ amount: record?.min_price as number });
-        const { price } = usePrice({ amount: value });
+      render: function Render(value: number, record: Product) {
+        const { price: max_price } = usePrice({
+          amount: record?.max_price as number,
+        });
+        const { price: min_price } = usePrice({
+          amount: record?.min_price as number,
+        });
+
+        const { price } = usePrice({
+          amount: value,
+        });
 
         const renderPrice =
           record?.product_type === ProductType.Variable
             ? `${min_price} - ${max_price}`
             : price;
 
-        return <span className="whitespace-nowrap text-gray-800 dark:text-gray-200">{renderPrice}</span>;
+        return (
+          <span className="whitespace-nowrap" title={renderPrice}>
+            {renderPrice}
+          </span>
+        );
       },
     },
     {
-      title: t('table:table-item-quantity'),
+      title: (
+        <TitleWithSort
+          title={t('table:table-item-quantity')}
+          ascending={
+            sortingObj.sort === SortOrder.Asc &&
+            sortingObj.column === 'quantity'
+          }
+          isActive={sortingObj.column === 'quantity'}
+        />
+      ),
+      className: 'cursor-pointer',
       dataIndex: 'quantity',
       key: 'quantity',
       align: 'center',
       width: 170,
-      className:
-        'cursor-pointer text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
       onHeaderCell: () => onHeaderClick('quantity'),
       render: (quantity: number) => {
         if (quantity < 1) {
@@ -190,11 +212,11 @@ const ProductList = ({
             <Badge
               text={t('common:text-out-of-stock')}
               color="bg-status-failed/10 text-status-failed"
-              className="capitalize !px-3 !py-1 rounded-md text-[12px]"
+              className="capitalize"
             />
           );
         }
-        return <span className="text-gray-800 dark:text-gray-200">{quantity}</span>;
+        return <span>{quantity}</span>;
       },
     },
     {
@@ -203,30 +225,28 @@ const ProductList = ({
       key: 'status',
       align: 'left',
       width: 200,
-      className: 'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
       render: (status: string, record: any) => (
         <div
-          className={`flex ${record?.quantity > 0 && record?.quantity < 10
-            ? 'flex-col items-start md:flex-row md:items-center gap-2'
-            : 'items-center gap-2'
+          className={`flex justify-start ${record?.quantity > 0 && record?.quantity < 10
+            ? 'flex-col items-baseline space-y-2 3xl:flex-row 3xl:space-x-2 3xl:space-y-0 rtl:3xl:space-x-reverse'
+            : 'items-center space-x-2 rtl:space-x-reverse'
             }`}
         >
           <Badge
             text={status}
             color={
-              status.toLowerCase() === 'draft'
+              status.toLocaleLowerCase() === 'draft'
                 ? 'bg-yellow-400/10 text-yellow-500'
                 : 'bg-accent bg-opacity-10 !text-accent'
             }
-            className="capitalize !px-3 !py-1 rounded-md text-[12px]"
+            className="capitalize"
           />
-
           {record?.quantity > 0 && record?.quantity < 10 && (
             <Badge
               text={t('common:text-low-quantity')}
               color="bg-status-failed/10 text-status-failed"
-              animate
-              className="capitalize !px-3 !py-1 rounded-md text-[12px]"
+              animate={true}
+              className="capitalize"
             />
           )}
         </div>
@@ -238,14 +258,13 @@ const ProductList = ({
       key: 'actions',
       align: 'right',
       width: 120,
-      className: 'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
       render: (slug: string, record: Product) => (
         <LanguageSwitcher
           slug={slug}
           record={record}
           deleteModalView="DELETE_PRODUCT"
           routes={Routes?.product}
-          enablePreviewMode
+          enablePreviewMode={true}
           isShop={Boolean(shop)}
           shopSlug={(shop as string) ?? ''}
         />
@@ -254,34 +273,32 @@ const ProductList = ({
   ];
 
   if (router?.query?.shop) {
-    columns = columns.filter((column) => column.key !== 'shop');
+    columns = columns?.filter((column) => column?.key !== 'shop');
   }
 
   return (
     <>
-      <div className="mb-6 overflow-hidden rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-2 md:p-4">
+      <div className="mb-6 overflow-hidden rounded shadow">
         <Table
+          /* @ts-ignore */
           columns={columns}
           emptyText={() => (
-            <div className="flex flex-col items-center py-10 text-center">
-              <NoDataFound className="w-40 md:w-52 opacity-80" />
-              <div className="mt-6 mb-1 text-base font-semibold text-gray-800 dark:text-white">
+            <div className="flex flex-col items-center py-7">
+              <NoDataFound className="w-52" />
+              <div className="mb-1 pt-6 text-base font-semibold text-heading">
                 {t('table:empty-table-data')}
               </div>
-              <p className="text-[13px] text-gray-500 dark:text-gray-400 max-w-sm">
-                {t('table:empty-table-sorry-text')}
-              </p>
+              <p className="text-[13px]">{t('table:empty-table-sorry-text')}</p>
             </div>
           )}
           data={Array.isArray(products) ? products : []}
           rowKey="id"
           scroll={{ x: 900 }}
-          className="premium-table [&_*]:transition-all [&_*]:duration-200"
         />
       </div>
 
       {!!paginatorInfo?.total && (
-        <div className="flex items-center justify-end pt-4">
+        <div className="flex items-center justify-end">
           <Pagination
             total={paginatorInfo.total}
             current={paginatorInfo.currentPage}

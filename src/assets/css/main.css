@@ -137,6 +137,7 @@
 @media (min-width: 1024px) {
 
   /* Base ultra premium */
+  /* Style appliqué à tous les aside */
   aside {
     background: linear-gradient(180deg, #0b0b0d, #111113, #18181b);
     backdrop-filter: blur(12px);
@@ -145,6 +146,25 @@
     border: 1px solid rgba(255, 255, 255, 0.06);
     transition: all 0.35s cubic-bezier(0.4, 0.0, 0.2, 1);
     color: #fff !important;
+  }
+
+  /* ❌ EXCLUSION : reset l’aside dans .upload */
+  .upload aside {
+    background: none !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    color: green !important;
+
+  }
+
+  .upload aside span {
+    color: green !important;
+  }
+
+  .upload aside svg {
+    color: green !important;
   }
 
   aside * {
@@ -248,4 +268,24 @@
 .bg-gray-100 {
   --tw-bg-opacity: 1;
   background-color: white !important;
+}
+
+.text-main {
+  display: none !important;
+}
+
+.premium-card {
+  @apply p-6 rounded-2xl shadow-sm bg-white/60 backdrop-blur-md transition-all duration-300 border border-gray-100;
+}
+
+.premium-select {
+  @apply block w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none transition-all;
+}
+
+.premium-edit-btn {
+  @apply absolute top-[27px] right-px z-10 flex h-[46px] w-11 items-center justify-center rounded-tr rounded-br border-l border-border-base bg-white text-body transition hover:text-heading;
+}
+
+.premium-preview-btn {
+  @apply inline-flex h-12 items-center justify-center px-5 border border-accent text-accent rounded-md transition-all hover:bg-accent hover:text-white;
 }

@@ -101,7 +101,7 @@ export default function Uploader({
   });
 
   const handleDelete = (image: string) => {
-    const images = files.filter((file) => file.thumbnail !== image);
+    const images = files.filter((file) => file.url !== image);
     setFiles(images);
     if (onChange) {
       onChange(images);
@@ -123,12 +123,13 @@ export default function Uploader({
     // let filename, fileType, isImage;
     if (file && file.id) {
       // const processedFile = processFileWithName(file);
+      //console.log("pour voir le file", file.url, file.id)
       const splitArray = file?.file_name
         ? file?.file_name.split('.')
-        : file?.thumbnail?.split('.');
+        : file?.url?.split('.');
       const fileType = splitArray?.pop(); // it will pop the last item from the fileSplitName arr which is the file ext
       const filename = splitArray?.join('.'); // it will join the array with dot, which restore the original filename
-      const isImage = file?.thumbnail && imgTypes.includes(fileType); // check if the original filename has the img ext
+      const isImage = file?.url //&& imgTypes.includes(fileType); // check if the original filename has the img ext
 
       // Old Code *******
 
@@ -136,7 +137,7 @@ export default function Uploader({
       // let fileSplitName = splitArray[splitArray?.length - 1]?.split('.'); // it will create an array of words of filename
       // const fileType = fileSplitName.pop(); // it will pop the last item from the fileSplitName arr which is the file ext
       // const filename = fileSplitName.join('.'); // it will join the array with dot, which restore the original filename
-      // const isImage = file?.thumbnail && imgTypes.includes(fileType); // check if the original filename has the img ext
+      // const isImage = file?.url && imgTypes.includes(fileType); // check if the original filename has the img ext
 
       return (
         <div
@@ -147,25 +148,27 @@ export default function Uploader({
           )}
           key={idx}
         >
-          {/* {file?.thumbnail && isImage ? ( */}
+          {/* {file?.url && isImage ? ( */}
           {isImage ? (
-            // <div className="flex items-center justify-center w-16 h-16 min-w-0 overflow-hidden">
-            //   <Image
-            //     src={file.thumbnail}
-            //     width={56}
-            //     height={56}
-            //     alt="uploaded image"
-            //   />
-            // </div>
-            <figure className="relative flex items-center justify-center h-16 w-28 aspect-square">
-              <Image
-                src={file.thumbnail}
-                alt={filename}
-                fill
-                sizes="(max-width: 768px) 100vw"
-                className="object-cover"
-              />
-            </figure>
+            <>
+              <div className="flex items-center justify-center w-16 h-16 min-w-0 overflow-hidden">
+                <Image
+                  src={file.url}
+                  width={56}
+                  height={56}
+                  alt="uploaded image"
+                />
+              </div>
+              <figure className="relative flex items-center justify-center h-16 w-28 aspect-square">
+                <Image
+                  src={file.url}
+                  alt={filename}
+                  fill
+                  sizes="(max-width: 768px) 100vw"
+                  className="object-cover"
+                />
+              </figure>
+            </>
           ) : (
             <div className="flex flex-col items-center">
               <div className="flex items-center justify-center min-w-0 overflow-hidden h-14 w-14">
@@ -186,32 +189,37 @@ export default function Uploader({
                 .{fileType}
               </p>
             </div>
-          )}
+          )
+          }
 
           {/* // TODO : this uploader component needs to be checked in pixer */}
 
-          {multiple ? (
-            <button
-              className="absolute top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-xs text-light shadow-xl outline-none end-1"
-              onClick={() => handleDelete(file.thumbnail)}
-            >
-              <CloseIcon width={10} height={10} />
-            </button>
-          ) : null}
+          {
+            multiple ? (
+              <button
+                className="absolute top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-xs text-light shadow-xl outline-none end-1"
+                onClick={() => handleDelete(file.url)}
+              >
+                <CloseIcon width={10} height={10} />
+              </button>
+            ) : null
+          }
 
           {/* {multiple ? (
           ) : null} */}
-          {!disabled ? (
-            <button
-              className="absolute flex items-center justify-center w-4 h-4 text-xs bg-red-600 rounded-full shadow-xl outline-none top-1 text-light end-1"
-              onClick={() => handleDelete(file.thumbnail)}
-            >
-              <CloseIcon width={10} height={10} />
-            </button>
-          ) : (
-            ''
-          )}
-        </div>
+          {
+            !disabled ? (
+              <button
+                className="absolute flex items-center justify-center w-4 h-4 text-xs bg-red-600 rounded-full shadow-xl outline-none top-1 text-light end-1"
+                onClick={() => handleDelete(file.url)}
+              >
+                <CloseIcon width={10} height={10} />
+              </button>
+            ) : (
+              ''
+            )
+          }
+        </div >
       );
     }
   });
@@ -222,7 +230,7 @@ export default function Uploader({
       setError(null);
 
       // Make sure to revoke the data uris to avoid memory leaks
-      files.forEach((file: any) => URL.revokeObjectURL(file.thumbnail));
+      files.forEach((file: any) => URL.revokeObjectURL(file.url));
     },
     [files],
   );

@@ -145,7 +145,7 @@ const LoginForm = () => {
               </span>
             </div>
 
-            <div className="text-center text-sm text-body sm:text-base hindeed mt-5">
+            <div className="hidden text-center text-sm text-body sm:text-base hindeed mt-5">
               {t('form:text-no-account')}{' '}
               <Link
                 href="https://galileecommerce.vercel.app/become_seller/become_seller"
