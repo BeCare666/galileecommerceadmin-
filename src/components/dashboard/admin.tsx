@@ -195,7 +195,7 @@ export default function Dashboard() {
   return (
     <div className="grid gap-7 md:gap-8 lg:grid-cols-2 2xl:grid-cols-12">
       <div className="col-span-full rounded-lg bg-light p-6 md:p-7">
-        <div className="p-6">
+        <div className="lg:mb-3">
           <DashboardHeader
             actionTitle="Créer une nouvelle boutique"
             actionDescription="Ajoutez votre boutique et commencez à vendre."

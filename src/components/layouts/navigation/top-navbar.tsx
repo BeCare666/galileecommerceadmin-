@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { SearchIcon } from '@/components/icons/search-icon';
 import LanguageSwitcher from '@/components/layouts/navigation/language-switcher';
 import MessageBar from '@/components/layouts/topbar/message-bar';
@@ -18,7 +19,8 @@ import { useSettingsQuery } from '@/data/settings';
 import { useShopQuery } from '@/data/shop';
 import { useMeQuery } from '@/data/user';
 import { ToggleButton } from './ToggleButton';
-import { NotificationBell } from './NotificationBell';
+import { getNotifications } from "@/lib/fetcher";
+import Notifications from "@/components/notifications/notifications";
 import {
   adminAndOwnerOnly,
   adminOnly,
@@ -66,6 +68,16 @@ const Navbar = () => {
   );
   const { width } = useWindowSize();
   const { settings, loading } = useSettingsQuery({ language: locale! });
+  const [notifications, setNotifications] = useState({
+    data: [],
+    total: 0,
+    current_page: 1,
+    per_page: 20,
+  });
+
+  useEffect(() => {
+    getNotifications().then(setNotifications);
+  }, []);
 
   const {
     data: shop,
@@ -219,7 +231,7 @@ const Navbar = () => {
             </motion.button>
             <div
               className={cn(
-                'lg:bg-gradient-to-br from-[#0d0d0f] via-[#121215] to-[#1a1a1d] text-gray-200 flex h-16 shrink-0 transition-[width] duration-300  lg:h-[76px] lg:border-solid lg:border-gray-200/80 lg:me-8 lg:border-e',
+                'text-gray-200 flex h-16 shrink-0 transition-[width] duration-300  lg:h-[76px] lg:border-solid lg:border-gray-200/80 lg:me-8 lg:border-e',
                 miniSidebar ? 'lg:w-[96px]' : 'lg:w-[289px]',
               )}
             >
@@ -274,31 +286,7 @@ const Navbar = () => {
                   <VisitStore />
                 </div>
 
-                {options?.pushNotification?.all?.order ||
-                  options?.pushNotification?.all?.message ||
-                  options?.pushNotification?.all?.storeNotice ? (
-                  <div className="flex items-center gap-3 px-0.5 py-3 sm:relative sm:border-gray-200/80 sm:py-3.5 sm:px-6 sm:border-s lg:py-5">
-                    {options?.pushNotification?.all?.order ? (
-                      <RecentOrderBar user={data} />
-                    ) : (
-                      ''
-                    )}
-
-                    {options?.pushNotification?.all?.message ? (
-                      <MessageBar user={data} />
-                    ) : (
-                      ''
-                    )}
-
-                    {!hasAccess(adminOnly, permissions) ? (
-                      options?.pushNotification?.all?.storeNotice ? (
-                        <StoreNoticeBar user={data} />
-                      ) : (
-                        ''
-                      )
-                    ) : null}
-                  </div>
-                ) : null}
+                <Notifications />
               </>
             )}
           </div>

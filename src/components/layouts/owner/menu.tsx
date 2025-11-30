@@ -132,7 +132,7 @@ const SideBarMenu = () => {
                   </Link>
                   <NavLink
                     title="Terms & Conditions"
-                    href="https://galileecommerce.com/terms"
+                    href="https://galileecommerce.com/termes_conditions"
                     icon={
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

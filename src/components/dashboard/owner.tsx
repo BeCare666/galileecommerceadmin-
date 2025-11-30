@@ -130,7 +130,7 @@ const OwnerShopLayout = () => {
   return (
     <>
       <div className="mb-8 rounded-2xl bg-white p-6 shadow-lg md:p-10">
-        <div className="p-6">
+        <div className="lg:mb-3">
           <DashboardHeader
             actionTitle="Créer une nouvelle boutique"
             actionDescription="Ajoutez votre boutique et commencez à vendre."

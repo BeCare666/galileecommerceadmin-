@@ -92,11 +92,9 @@ const Footer: React.FC<IFooterProp> = ({ className }) => {
     <footer
       className={`
         mt-auto
-        bg-[linear-gradient(180deg,#0b0b0d,#111113,#18181b)]
+        bg-white/10
         backdrop-blur-xl
-        border-t border-white/10
-        text-white
-        shadow-[0_8px_32px_rgba(0,0,0,0.45)]
+        border-t border-black/10 
         transition-all
          className="
         w-full lg:left-22  mt-72
@@ -107,7 +105,7 @@ const Footer: React.FC<IFooterProp> = ({ className }) => {
       <div className="mx-auto w-full max-w-7xl px-6 py-4 flex flex-col items-center gap-3">
 
         {/* TEXT */}
-        <span className="text-sm text-gray-300 text-center">
+        <span className="text-sm text-gray-600 text-center">
           ©{date.getFullYear()}{" "}
           <Link
             className="font-medium hover:text-gray-100 transition-colors"

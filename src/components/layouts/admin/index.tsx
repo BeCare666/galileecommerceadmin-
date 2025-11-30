@@ -121,7 +121,7 @@ const AdminLayout: React.FC<{ children?: React.ReactNode }> = ({
       <div className="flex flex-1">
         <aside
           className={cn(
-            'bg-gradient-to-br from-[#0d0d0f] via-[#121215] to-[#1a1a1d] text-gray-200 fixed bottom-0 z-10 hidden h-full w-72 shadow transition-[width] duration-300 ltr:left-0 ltr:right-auto rtl:right-0 rtl:left-auto lg:block',
+            'text-gray-200 fixed bottom-0 z-10 hidden h-full w-72 shadow transition-[width] duration-300 ltr:left-0 ltr:right-auto rtl:right-0 rtl:left-auto lg:block',
             width >= RESPONSIVE_WIDTH &&
               (underMaintenance || underMaintenanceStart)
               ? 'lg:pt-[8.75rem]'
