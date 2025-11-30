@@ -11,6 +11,7 @@ import type { LoginInput } from '@/types';
 import { useState } from 'react';
 import Alert from '@/components/ui/alert';
 import Router from 'next/router';
+
 import { toast } from 'react-toastify';
 import {
   allowedRoles,
@@ -18,6 +19,7 @@ import {
   setAuthCredentials,
 } from '@/utils/auth-utils';
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 const loginFormSchema = yup.object().shape({
   email: yup
     .string()
@@ -36,6 +38,7 @@ const LoginForm = () => {
   const { mutate: login, isLoading, error } = useLogin();
   const searchParams = useSearchParams();
   const becomeSeller = searchParams.get("become_seller");
+  const router = useRouter();
   function onSubmit(
     data: LoginInput,
     event?: React.BaseSyntheticEvent
@@ -68,13 +71,13 @@ const LoginForm = () => {
             const redirectUrl = String(data.redirect);
 
             // Si c'est une URL externe (http(s)://...), on fait un hard redirect
-            if (/^https?:\/\//i.test(redirectUrl)) {
-              window.location.href = redirectUrl;
-              return;
-            }
+            //if (/^https?:\/\//i.test(redirectUrl)) {
+            // window.location.href = redirectUrl;
+            //return;
+            // }
 
             // Sinon, route interne Next.js
-            Router.push(redirectUrl);
+            router.push('/');
             return;
           }
 

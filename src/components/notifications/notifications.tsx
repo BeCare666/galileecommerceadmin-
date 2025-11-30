@@ -84,7 +84,7 @@ export default function Notifications() {
             const auth = getAuthCredentials?.() ?? {};
             const permissions = auth?.permissions ?? [];
             const user = auth?.user ?? (typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user") || "{}") : null);
-
+            console.log("auths", auth)
             const isAdmin = hasAccess(adminOnly, permissions);
 
             // decide endpoint according to admin vs user
