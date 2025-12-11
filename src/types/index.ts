@@ -233,6 +233,8 @@ export interface Category {
   image?: Attachment;
   icon?: string;
   type: Type;
+  categories_id: number;
+  categories_name: string;
   products: Product[];
   created_at: string;
   updated_at: string;
@@ -743,6 +745,7 @@ export interface Product {
   name: string;
   slug: string;
   type: Type;
+  tags: Tag[];
   product_type: ProductType;
   max_price?: number;
   min_price?: number;
@@ -788,6 +791,7 @@ export interface CreateProduct {
   unit: string;
   description?: string;
   categories?: string[];
+  tags?: Tag[];
   variations?: AttributeProductPivot[];
   in_stock?: boolean;
   is_taxable?: boolean;

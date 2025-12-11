@@ -123,7 +123,7 @@ export const Routes = {
   draftProducts: '/products/draft',
   outOfStockOrLowProducts: '/products/product-stock',
   productInventory: '/products/inventory',
-  transaction: '/orders/transaction',
+  transaction: '/withdrawals/withdrawals',
   termsAndCondition: {
     ...routesFactory('/terms-and-conditions'),
   },

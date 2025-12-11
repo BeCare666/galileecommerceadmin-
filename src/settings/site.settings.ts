@@ -339,7 +339,7 @@ export const siteSettings = {
           },
           {
             href: (shop: string) =>
-              `/${shop}${Routes.transaction || ''}`.replace(/\/+/, '/'),
+              `/${Routes.transaction || ''}`.replace(/\/+/, '/'),
             label: 'text-transactions',
             icon: 'CalendarScheduleIcon',
             permissions: adminAndOwnerOnly,

@@ -19,6 +19,10 @@ Axios.interceptors.request.use((config) => {
   if (cookies) {
     token = JSON.parse(cookies)['token'];
   }
+  // On stocke dans localStorage pour utilisation directe
+  if (typeof window !== 'undefined') {
+    localStorage.setItem("token", token);
+  }
   // @ts-ignore
   config.headers = {
     ...config.headers,

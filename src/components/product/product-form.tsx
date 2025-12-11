@@ -30,6 +30,7 @@ import { useMemo, useState } from 'react';
 import ProductAuthorInput from '@/components/product/product-author-input';
 import ProductManufacturerInput from '@/components/product/product-manufacturer-input';
 import { EditIcon } from '@/components/icons/edit';
+import { useEffect } from 'react';
 import {
   getProductDefaultValues,
   getProductInputValues,
@@ -119,11 +120,38 @@ export default function CreateOrUpdateProductForm({
     handleSubmit,
     control,
     setValue,
+    reset,
     setError,
     watch,
     formState: { errors },
   } = methods;
-  console.log("DEFAULT VALUES:", getProductDefaultValues(initialValues!, isNewTranslation));
+  //console.log("DEFAULT VALUES:", getProductDefaultValues(initialValues!, isNewTranslation));
+
+  // ─────────── Mapping simple ───────────
+  function mapToFormValues(defaults: ReturnType<typeof getProductDefaultValues>): ProductFormValues {
+    return {
+      in_stock: defaults.in_stock ?? true,
+      is_taxable: defaults.is_taxable ?? false,
+      // ajouter ici d'autres champs de ProductFormValues si nécessaire
+    };
+  }
+
+  // ─────────── useEffect pour reset() ───────────
+  useEffect(() => {
+    if (!initialValues) return;
+
+    const defaults = getProductDefaultValues(initialValues, isNewTranslation);
+    const formValues = mapToFormValues(defaults);
+
+    reset(formValues); // <-- ici on préremplit le formulaire correctement
+
+    // si tu veux gérer CountrySelect et isOrigin séparément :
+    setSelectedCountry(initialValues.countries_id ?? undefined);
+    setIsOrigin(initialValues.is_origin ? "true" : "false");
+    // Si tes inputs categories et tags utilisent setValue de RHF
+    // 2️⃣ Préremplir categories (multi-select)
+  }, [initialValues, isNewTranslation, reset]);
+
   const upload_max_filesize = options?.server_info?.upload_max_filesize / 1024;
 
   const { mutate: createProduct, isLoading: creating } =

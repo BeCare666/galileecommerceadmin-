@@ -114,34 +114,41 @@ export function getProductDefaultValues(
       image: [],
       gallery: [],
       video: [],
-      // isVariation: false,
       variations: [],
       variation_options: [],
     };
   }
+
   const {
     variations,
     variation_options,
     product_type,
     is_digital,
     digital_file,
+    categories,
+    tags,
   } = product;
+
   return cloneDeep({
     ...product,
+
+    // ---- Product type ----
     product_type: productTypeOptions.find(
       (option) => product_type === option.value,
     ),
+
+    // ---- Digital file (simple product) ----
     ...(product_type === ProductType.Simple && {
       ...(is_digital && {
         digital_file_input: {
           id: digital_file?.attachment_id,
           thumbnail: digital_file?.url,
           original: digital_file?.url,
-          // file_name: digital_file?.file_name,
         },
       }),
     }),
 
+    // ---- Variable product ----
     ...(product_type === ProductType.Variable && {
       variations: getFormattedVariations(variations),
       variation_options: variation_options?.map(({ image, ...option }: any) => {
@@ -150,16 +157,33 @@ export function getProductDefaultValues(
           ...(!isEmpty(image) && { image: omitTypename(image) }),
           ...(option?.digital_file && {
             digital_file_input: {
-              id: option?.digital_file?.attachment_id,
-              file_name: option?.digital_file?.file_name,
+              id: option.digital_file.attachment_id,
+              file_name: option.digital_file.file_name,
             },
           }),
         };
       }),
     }),
-    // isVariation: variations?.length && variation_options?.length ? true : false,
 
-    // Remove initial dependent value for new translation
+    // ----------------------------------------------------
+    // 🆕  CATEGORIES (ajout)
+    // ----------------------------------------------------
+    categories:
+      categories?.map((c: any) => ({
+        id: c.categories_id ?? c.id,
+        name: c.categories_name ?? c.name,
+      })) ?? [],
+
+    // ----------------------------------------------------
+    // 🆕  TAGS (ajout)
+    // ----------------------------------------------------
+    tags:
+      tags?.map((t: any) => ({
+        id: t.id,
+        name: t.name,
+      })) ?? [],
+
+    // ---- New Translation (reset) ----
     ...(isNewTranslation && {
       type: null,
       categories: [],
@@ -178,6 +202,7 @@ export function getProductDefaultValues(
     }),
   });
 }
+
 
 export function filterAttributes(attributes: any, variations: any) {
   let res = [];
