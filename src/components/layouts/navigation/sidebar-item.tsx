@@ -173,8 +173,8 @@ const SidebarItem = ({
         <motion.div
           initial={false}
           className={cn(
-            'group cursor-pointer rounded-md px-3 py-2.5 text-body-dark hover:bg-gray-100 focus:text-accent',
-            isOpen ? 'bg-gray-100 font-medium' : '',
+            'group cursor-pointer rounded-xl px-3 py-2.5 text-gray-700 transition-colors duration-200 hover:bg-gray-100/80 focus:text-accent',
+            isOpen ? 'bg-gray-100/80 font-medium text-gray-900' : '',
           )}
           onClick={onClick}
         >

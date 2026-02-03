@@ -193,178 +193,149 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="grid gap-7 md:gap-8 lg:grid-cols-2 2xl:grid-cols-12">
-      <div className="col-span-full rounded-lg bg-light p-6 md:p-7">
-        <div className="lg:mb-3">
-          <DashboardHeader
-            actionTitle="Créer une nouvelle boutique"
-            actionDescription="Ajoutez votre boutique et commencez à vendre."
-            onActionClick={() => router.push(`/shops/create`)}
-          />
-        </div>
-        <div className="mb-5 flex items-center justify-between md:mb-7">
-          <h3 className="before:content-'' relative mt-1 bg-light text-lg font-semibold text-heading before:absolute before:-top-px before:h-7 before:w-1 before:rounded-tr-md before:rounded-br-md before:bg-accent ltr:before:-left-6 rtl:before:-right-6 md:before:-top-0.5 md:ltr:before:-left-7 md:rtl:before:-right-7 lg:before:h-8">
-            {t('text-summary')}
-          </h3>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+    <div className="space-y-8 lg:space-y-10">
+      {/* Hero + CTA */}
+      <div className="card-premium p-7 md:p-8 lg:p-9 hover-lift">
+        <DashboardHeader
+          actionTitle={t('common:text-create-shop')}
+          actionDescription={t('common:text-dashboard-create-shop-description')}
+          onActionClick={() => router.push(`/shops/create`)}
+        />
+      </div>
+
+      {/* Bento: 4 KPI cards */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="card-premium p-6 hover-lift">
           <StickerCard
             titleTransKey="Revenu total"
             price={total_revenue}
-            //note="janvier 2024"
             color="#7C3AED"
             icon={<svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v8m0 0l3-3m-3 3l-3-3" /></svg>}
           />
+        </div>
+        <div className="card-premium p-6 lg:p-7 hover-lift">
           <StickerCard
             titleTransKey="Revenu du jour"
             price={todays_revenue}
-            //note="juillet 2024"
             color="#EC4899"
-            // indicator="down"
-            //indicatorText="-5%"
             icon={<svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v8m0 0l3-3m-3 3l-3-3" /></svg>}
           />
+        </div>
+        <div className="card-premium p-6 lg:p-7 hover-lift">
           <StickerCard
             titleTransKey="Remboursements"
             price={total_refund}
-            //note="août 2024"
             color="#0EA5E9"
             icon={<svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 3h18M3 9h18M3 15h18M3 21h18" /></svg>}
           />
-
-
+        </div>
+        <div className="card-premium p-6 hover-lift">
           <StickerCard
             titleTransKey="Commandes totales"
             price={cleanNumber}
-            //note="mai 2024"
             color="#F97316"
-            //indicator="up"
-            //indicatorText="+12%"
             icon={<svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 8h18M3 16h18M5 12h14" /></svg>}
           />
         </div>
       </div>
 
-      <div className="hidden col-span-full rounded-lg bg-light p-6 md:p-7">
-        <div className="mb-5 items-center justify-between sm:flex md:mb-7">
-          <h3 className="before:content-'' relative mt-1 bg-light text-lg font-semibold text-heading before:absolute before:-top-px before:h-7 before:w-1 before:rounded-tr-md before:rounded-br-md before:bg-accent ltr:before:-left-6 rtl:before:-right-6 md:before:-top-0.5 md:ltr:before:-left-7 md:rtl:before:-right-7 lg:before:h-8">
-            {t('text-order-status')}
-          </h3>
-          <div className="mt-3.5 inline-flex rounded-full bg-gray-100/80 p-1.5 sm:mt-0">
-            {timeFrame
-              ? timeFrame.map((time) => (
-                <div key={time.day} className="relative">
-                  <Button
-                    className={cn(
-                      '!focus:ring-0  relative z-10 !h-7 rounded-full !px-2.5 text-sm font-medium text-gray-500',
-                      time.day === activeTimeFrame ? 'text-accent' : '',
-                    )}
-                    type="button"
-                    onClick={() => setActiveTimeFrame(time.day)}
-                    variant="custom"
-                  >
-                    {time.name}
-                  </Button>
-                  {time.day === activeTimeFrame ? (
-                    <motion.div className="absolute bottom-0 left-0 right-0 z-0 h-full rounded-3xl bg-accent/10" />
-                  ) : null}
-                </div>
-              ))
-              : null}
-          </div>
+      {/* Chart + Recent Orders */}
+      <div className="grid grid-cols-1 gap-6 lg:gap-8 lg:grid-cols-12">
+        <div className="lg:col-span-8 card-premium p-6 md:p-7 lg:p-8 hover-lift">
+          <ColumnChart
+            widgetTitle={t('common:sale-history')}
+            colors={['#6073D4']}
+            series={salesByYear}
+            categories={[
+              t('common:january'),
+              t('common:february'),
+              t('common:march'),
+              t('common:april'),
+              t('common:may'),
+              t('common:june'),
+              t('common:july'),
+              t('common:august'),
+              t('common:september'),
+              t('common:october'),
+              t('common:november'),
+              t('common:december'),
+            ]}
+          />
         </div>
-
-        { /**<OrderStatusWidget
-          order={orderDataRange}
-          timeFrame={activeTimeFrame}
-          allowedStatus={[
-            'pending',
-            'processing',
-            'complete',
-            'cancel',
-            // 'out-for-delivery',
-          ]}
-        />**/}
+        <div className="lg:col-span-4">
+          <RecentOrders
+            className="card-premium overflow-hidden"
+            orders={orderData}
+            paginatorInfo={orderPaginatorInfo}
+            title={t('table:recent-order-table-title')}
+            onPagination={handlePagination}
+            searchElement={
+              <Search
+                onSearch={handleSearch}
+                placeholderText={t('form:input-placeholder-search-name')}
+                className="hidden max-w-sm sm:inline-block [&button]:top-0.5"
+                inputClassName="!h-10"
+              />
+            }
+          />
+        </div>
       </div>
 
-      <RecentOrders
-        className="col-span-full"
-        orders={orderData}
-        paginatorInfo={orderPaginatorInfo}
-        title={t('table:recent-order-table-title')}
-        onPagination={handlePagination}
-        searchElement={
-          <Search
-            onSearch={handleSearch}
-            placeholderText={t('form:input-placeholder-search-name')}
-            className="hidden max-w-sm sm:inline-block [&button]:top-0.5"
-            inputClassName="!h-10"
+      {/* Bento: Alertes stock + Top produits + Catégories */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        <div className="lg:col-span-4">
+          <LowStockProduct
+            //@ts-ignore
+            products={lowStockProduct}
+            title={'text-low-stock-products'}
+            paginatorInfo={withdrawPaginatorInfo}
+            onPagination={handlePagination}
+            className="card-premium overflow-hidden hover-lift"
+            searchElement={
+              <Search
+                onSearch={handleSearch}
+                placeholderText={t('form:input-placeholder-search-name')}
+                className="hidden max-w-sm sm:inline-block"
+                inputClassName="!h-10"
+              />
+            }
           />
-        }
-      />
-      <div className="lg:col-span-full 2xl:col-span-8">
-        <ColumnChart
-          widgetTitle={t('common:sale-history')}
-          colors={['#6073D4']}
-          series={salesByYear}
-          categories={[
-            t('common:january'),
-            t('common:february'),
-            t('common:march'),
-            t('common:april'),
-            t('common:may'),
-            t('common:june'),
-            t('common:july'),
-            t('common:august'),
-            t('common:september'),
-            t('common:october'),
-            t('common:november'),
-            t('common:december'),
-          ]}
-        />
+        </div>
+        <div className="lg:col-span-4">
+          <TopRatedProducts
+            products={topRatedProducts}
+            title={'text-most-rated-products'}
+            className="card-premium overflow-hidden hover-lift"
+          />
+        </div>
+        <div className="lg:col-span-4">
+          <PopularProductList
+            products={popularProductData}
+            title={t('table:popular-products-table-title')}
+            className="card-premium overflow-hidden hover-lift"
+          />
+        </div>
       </div>
 
-      <PopularProductList
-        products={popularProductData}
-        title={t('table:popular-products-table-title')}
-        className="hidden lg:col-span-1 lg:col-start-2 lg:row-start-5 2xl:col-span-4 2xl:col-start-auto 2xl:row-start-auto"
-      />
-
-      <LowStockProduct
-        //@ts-ignore
-        products={lowStockProduct}
-        title={'text-low-stock-products'}
-        paginatorInfo={withdrawPaginatorInfo}
-        onPagination={handlePagination}
-        className="hidden col-span-full"
-        searchElement={
-          <Search
-            onSearch={handleSearch}
-            placeholderText={t('form:input-placeholder-search-name')}
-            className="hidden max-w-sm sm:inline-block"
-            inputClassName="!h-10"
+      {/* Bento: Catégories + Retraits */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        <div className="lg:col-span-7">
+          <ProductCountByCategory
+            products={productByCategory}
+            title={'text-most-category-products'}
+            className="card-premium overflow-hidden hover-lift"
           />
-        }
-      />
-
-      <TopRatedProducts
-        products={topRatedProducts}
-        title={'text-most-rated-products'}
-        className="hidden lg:col-span-1 lg:col-start-1 lg:row-start-5 2xl:col-span-5 2xl:col-start-auto 2xl:row-start-auto 2xl:me-20"
-      />
-      <ProductCountByCategory
-        products={productByCategory}
-        title={'text-most-category-products'}
-        className="hidden col-span-full 2xl:col-span-7 2xl:ltr:-ml-20 2xl:rtl:-mr-20"
-      />
-
-      <WithdrawTable
-        withdraws={withdraws}
-        title={t('table:withdraw-table-title')}
-        paginatorInfo={withdrawPaginatorInfo}
-        onPagination={handlePagination}
-        className="hidden col-span-full"
-      />
+        </div>
+        <div className="lg:col-span-5">
+          <WithdrawTable
+            withdraws={withdraws}
+            title={t('table:withdraw-table-title')}
+            paginatorInfo={withdrawPaginatorInfo}
+            onPagination={handlePagination}
+            className="card-premium overflow-hidden hover-lift"
+          />
+        </div>
+      </div>
     </div>
   );
 }

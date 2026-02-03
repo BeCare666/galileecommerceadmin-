@@ -10,6 +10,7 @@ function withOpacity(variableName) {
 
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
+  darkMode: ['class', '[data-theme="dark"]'],
   theme: {
     extend: {
       screens: {
@@ -106,6 +107,11 @@ module.exports = {
       },
 
       boxShadow: {
+        xs: '0 1px 2px 0 rgb(0 0 0 / 0.03)',
+        soft: '0 1px 3px 0 rgb(0 0 0 / 0.04)',
+        card: '0 1px 3px 0 rgb(0 0 0 / 0.05), 0 4px 6px -2px rgb(0 0 0 / 0.05), 0 10px 15px -3px rgb(0 0 0 / 0.04)',
+        elevated: '0 4px 6px -2px rgb(0 0 0 / 0.05), 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 20px 25px -5px rgb(0 0 0 / 0.06)',
+        glow: '0 0 0 1px rgb(0 0 0 / 0.02), 0 2px 4px rgb(0 0 0 / 0.02), 0 12px 24px rgb(0 0 0 / 0.06)',
         base: 'rgba(0, 0, 0, 0.16) 0px 4px 16px',
         translatePanel: '0px 15px 50px rgba(71, 92, 111, 0.15)',
         chatBox:
@@ -119,6 +125,11 @@ module.exports = {
         shopLogo: '2px 4px 16px rgba(0, 0, 0, 0.08)',
         shopTransferCard: '0px 2px 6px 0px rgba(75, 85, 99, 0.04)',
         shopTransferTable: '0px 2px 4px 0px rgba(75, 85, 99, 0.05)',
+      },
+      transitionDuration: {
+        150: '150ms',
+        200: '200ms',
+        300: '300ms',
       },
       dropShadow: {
         shopLogo: '2px 4px 16px rgba(0, 0, 0, 0.08)',

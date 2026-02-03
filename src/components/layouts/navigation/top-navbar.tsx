@@ -176,7 +176,7 @@ const Navbar = () => {
   }
 
   return (
-    <header className="fixed top-0 z-40 w-full bg-white shadow">
+    <header className="fixed top-0 z-40 w-full bg-white/90 backdrop-blur-xl border-b border-gray-200/80 shadow-soft">
       {width >= RESPONSIVE_WIDTH && isMaintenanceMode ? (
         <Alert
           message={

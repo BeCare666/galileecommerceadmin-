@@ -24,37 +24,33 @@ const StickerCard = ({
   return (
     <div
       className={twMerge(
-        'group relative flex flex-col justify-between rounded-2xl bg-white p-6 shadow-md hover:shadow-xl transition-all duration-300 ease-out hover:-translate-y-1 border border-gray-100 overflow-hidden'
+        'group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-gray-200/80 bg-white p-6',
+        'shadow-card transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-elevated hover:border-gray-200'
       )}
     >
-      {/* --- Haut de la carte --- */}
-      <div className="flex items-start justify-between">
-        {/* Titre et Valeur */}
-        <div className="flex flex-col">
-          <span className="text-sm font-medium text-gray-500">
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0 flex-1">
+          <span className="text-xs font-medium uppercase tracking-wider text-gray-500">
             {t(titleTransKey)}
           </span>
-          <span className="mt-2 text-3xl font-semibold text-gray-900 tracking-tight">
+          <p className="mt-2 text-2xl font-semibold tabular-nums tracking-tight text-gray-900">
             {price ?? '—'}
-          </span>
+          </p>
           {note && (
-            <span className="mt-1 text-xs text-gray-400">
-              Comparé à {note}
-            </span>
+            <span className="mt-1 block text-xs text-gray-400">Comparé à {note}</span>
           )}
         </div>
-
-        {/* Icône ronde colorée */}
         <div
           className={twMerge(
             classNames(
-              'flex h-10 w-10 items-center justify-center rounded-full',
+              'flex h-12 w-12 shrink-0 items-center justify-center rounded-xl',
               iconClassName
             )
           )}
           style={{
-            backgroundColor: `${color}1A`, // légère transparence
+            backgroundColor: `${color}15`,
             color: color,
+            boxShadow: `0 0 0 1px ${color}20`,
           }}
         >
           {icon}
@@ -79,15 +75,8 @@ const StickerCard = ({
         </div>
       )}
 
-      {/* --- Graphe sparkline (statique ou prop dynamique) --- */}
-      <div className="mt-6">
-        <svg
-          viewBox="0 0 100 30"
-          fill="none"
-          stroke={color}
-          strokeWidth="2"
-          className="w-full h-14 opacity-80"
-        >
+      <div className="mt-6 h-12 w-full opacity-60">
+        <svg viewBox="0 0 100 30" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" className="h-full w-full">
           <path d="M0 18 L10 15 L20 16 L30 10 L40 11 L50 8 L60 12 L70 10 L80 14 L90 13 L100 9" />
         </svg>
       </div>
@@ -106,10 +95,8 @@ const StickerCard = ({
 
       {/* --- Glow d’arrière-plan subtil --- */}
       <div
-        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition duration-500 pointer-events-none"
-        style={{
-          background: `radial-gradient(600px circle at top right, ${color}10, transparent 70%)`,
-        }}
+        className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        style={{ background: `radial-gradient(circle, ${color}12 0%, transparent 70%)` }}
       />
     </div>
   );

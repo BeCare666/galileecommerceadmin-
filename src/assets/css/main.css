@@ -4,62 +4,45 @@
 
 @layer base {
   * {
-    font-family: 'Montserrat-bold', sans-serif !important;
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  :root {
-    /*
-    * primary color - bleu    S
-    */
-    --color-accent: 0, 64, 255;
-    /* Bleu vif principal */
-    --color-accent-hover: 0, 38, 153;
-    /* Bleu marine foncé pour hover */
-    --color-accent-300: 51, 102, 255;
-    /* Bleu moyen clair (icônes secondaires) */
-    --color-accent-400: 38, 132, 255;
-    /* Bleu lumineux */
-    --color-accent-500: 0, 64, 255;
-    /* Accent principal */
-    --color-accent-600: 0, 64, 255;
-    /* Variante accent */
-    --color-accent-700: 0, 38, 153;
-    /* Marine profond */
-
-    /* light & dark */
+  :root,
+  [data-theme='light'] {
+    --color-accent: 59, 130, 246;
+    --color-accent-hover: 37, 99, 235;
+    --color-accent-300: 96, 165, 250;
+    --color-accent-400: 59, 130, 246;
+    --color-accent-500: 37, 99, 235;
+    --color-accent-600: 29, 78, 216;
+    --color-accent-700: 30, 64, 175;
     --color-light: 255, 255, 255;
-    --color-dark: 0, 0, 0;
+    --color-dark: 15, 23, 42;
     --color-muted-black: 17, 17, 17;
-
-    /* text colors */
-    --text-base: 102, 102, 102;
-    --text-base-dark: 51, 51, 51;
-    --text-muted: 156, 163, 175;
-    --text-muted-light: 209, 213, 219;
-    --text-sub-heading: 55, 65, 81;
-    --text-heading: 31, 41, 55;
-    --text-bolder: 31, 41, 55;
-
-    /* border colors */
-    --color-border-50: 249, 250, 251;
-    --color-border-100: 243, 244, 246;
-    --color-border-200: 229, 231, 235;
-    --color-border-base: 209, 213, 219;
-    --color-border-400: 156, 163, 175;
-
-    /* gray overrides */
-    --color-gray-50: 249, 250, 251;
-    --color-gray-100: 243, 244, 246;
-    --color-gray-200: 229, 231, 235;
-    --color-gray-300: 209, 213, 219;
-    --color-gray-400: 156, 163, 175;
-    --color-gray-500: 107, 114, 128;
-    --color-gray-600: 0, 38, 153;
-    --color-gray-700: 55, 65, 81;
-    --color-gray-800: 31, 41, 55;
-    --color-gray-900: 31, 41, 55;
-
-    /* orange palette */
+    --text-base: 100, 116, 139;
+    --text-base-dark: 51, 65, 85;
+    --text-muted: 148, 163, 184;
+    --text-muted-light: 203, 213, 225;
+    --text-sub-heading: 71, 85, 105;
+    --text-heading: 30, 41, 59;
+    --text-bolder: 15, 23, 42;
+    --color-border-50: 248, 250, 252;
+    --color-border-100: 241, 245, 249;
+    --color-border-200: 226, 232, 240;
+    --color-border-base: 203, 213, 225;
+    --color-border-400: 148, 163, 184;
+    --color-gray-50: 248, 250, 252;
+    --color-gray-100: 241, 245, 249;
+    --color-gray-200: 226, 232, 240;
+    --color-gray-300: 203, 213, 225;
+    --color-gray-400: 148, 163, 184;
+    --color-gray-500: 100, 116, 139;
+    --color-gray-600: 71, 85, 105;
+    --color-gray-700: 51, 65, 85;
+    --color-gray-800: 30, 41, 59;
+    --color-gray-900: 15, 23, 42;
     --color-orange-50: 255, 247, 237;
     --color-orange-100: 255, 237, 213;
     --color-orange-200: 254, 215, 170;
@@ -70,27 +53,53 @@
     --color-orange-700: 194, 65, 12;
     --color-orange-800: 154, 52, 18;
     --color-orange-900: 124, 45, 18;
-
-    /* status colors */
     --color-pending: 201, 161, 22;
     --color-processing: 158, 117, 0;
-    --color-complete: 0, 64, 255;
-    /* bleu pour complet */
+    --color-complete: 59, 130, 246;
     --color-canceled: 227, 110, 1;
-    --color-failed: 238, 43, 0;
+    --color-failed: 239, 68, 68;
     --color-out-for-delivery: 51, 102, 204;
-    /* bleu pour livraison */
-    /* bleu pour livraison */
-    /* icon color - pink */
-    --color-icon: 0, 38, 153;
-
-    /* headings */
-    --h1: 2.5rem;
-    --h2: 2rem;
+    --color-icon: 59, 130, 246;
+    --h1: 2.25rem;
+    --h2: 1.875rem;
     --h3: 1.5rem;
     --h4: 1.25rem;
     --h5: 1.125rem;
     --h6: 1rem;
+    /* Premium shadows (layered, Stripe/Vercel style) */
+    --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.03);
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+    --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.05), 0 4px 6px -2px rgb(0 0 0 / 0.05), 0 10px 15px -3px rgb(0 0 0 / 0.04);
+    --shadow-elevated: 0 4px 6px -2px rgb(0 0 0 / 0.05), 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 20px 25px -5px rgb(0 0 0 / 0.06);
+    --shadow-soft: 0 1px 3px 0 rgb(0 0 0 / 0.04);
+    --radius-card: 1rem;
+    --radius-button: 0.5rem;
+  }
+
+  [data-theme='dark'] {
+    --color-light: 17, 24, 39;
+    --color-dark: 255, 255, 255;
+    --text-base: 209, 213, 219;
+    --text-base-dark: 243, 244, 246;
+    --text-muted: 156, 163, 175;
+    --text-heading: 249, 250, 251;
+    --text-sub-heading: 229, 231, 235;
+    --color-border-50: 55, 65, 81;
+    --color-border-100: 75, 85, 99;
+    --color-border-200: 107, 114, 128;
+    --color-gray-50: 31, 41, 55;
+    --color-gray-100: 55, 65, 81;
+    --color-gray-200: 75, 85, 99;
+    --color-gray-300: 107, 114, 128;
+    --color-gray-400: 156, 163, 175;
+    --color-gray-500: 209, 213, 219;
+    --color-gray-600: 229, 231, 235;
+    --color-gray-700: 243, 244, 246;
+    --color-gray-800: 249, 250, 251;
+    --color-gray-900: 255, 255, 255;
+    --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.4);
+    --shadow-elevated: 0 12px 40px rgba(0, 0, 0, 0.5);
   }
 
   a {
@@ -105,9 +114,13 @@
   }
   */
   body {
-    @apply font-body;
-    color: white !important;
-    text: white !important;
+    @apply font-body text-body transition-colors duration-200;
+    background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+    min-height: 100vh;
+  }
+
+  [data-theme='dark'] body {
+    background: rgb(var(--color-light));
   }
 
   input::-webkit-outer-spin-button,
@@ -138,8 +151,7 @@
 
 
 .bg-gray-100 {
-  --tw-bg-opacity: 1;
-  background-color: white !important;
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%) !important;
 }
 
 .text-main {
@@ -160,4 +172,66 @@
 
 .premium-preview-btn {
   @apply inline-flex h-12 items-center justify-center px-5 border border-accent text-accent rounded-md transition-all hover:bg-accent hover:text-white;
+}
+
+/* ========== Premium Design System ========== */
+.transition-smooth {
+  @apply transition-all duration-200 ease-out;
+}
+.transition-premium {
+  @apply transition-all duration-300;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hover-lift {
+  box-shadow: var(--shadow-card);
+  @apply transition-premium hover:shadow-elevated hover:-translate-y-0.5;
+}
+.card-premium {
+  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: var(--radius-card);
+  @apply bg-white transition-premium;
+}
+.card-premium:hover {
+  box-shadow: var(--shadow-elevated);
+}
+[data-theme='dark'] .card-premium {
+  @apply border-gray-700/50 bg-gray-800/50;
+}
+.surface {
+  @apply bg-white/80 backdrop-blur-sm border border-gray-100/90 rounded-2xl;
+  box-shadow: var(--shadow-sm);
+}
+.surface-elevated {
+  box-shadow: var(--shadow-elevated);
+  @apply bg-white border border-gray-100/90 rounded-2xl;
+}
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out;
+}
+.animate-slideDown {
+  animation: slideDown 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.animate-scaleIn {
+  animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+/* Typography premium */
+.text-display {
+  @apply font-semibold tracking-tight text-gray-900;
+  letter-spacing: -0.02em;
+}
+.text-caption {
+  @apply text-sm text-gray-500 font-medium;
 }
