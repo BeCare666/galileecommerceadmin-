@@ -88,11 +88,16 @@ const SidebarItemMap = ({ menuItems }: any) => {
             return null;
           }
 
+          const resolvedHref =
+            typeof href === 'function'
+              ? shop != null && String(shop).trim() !== ''
+                ? href(String(shop))
+                : '#'
+              : href;
           return (
             <SidebarItem
               key={label}
-              // @ts-ignore
-              href={href(shop?.toString()!)}
+              href={resolvedHref}
               label={t(label)}
               icon={icon}
               childMenu={childMenu}

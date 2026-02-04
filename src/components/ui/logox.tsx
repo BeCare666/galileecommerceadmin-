@@ -13,70 +13,44 @@ import { useRouter } from 'next/router';
 import { useSettingsQuery } from '@/data/settings';
 
 const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
-    className,
-    ...props
+  className,
+  ...props
 }) => {
-    const { locale } = useRouter();
-    const { settings } = useSettingsQuery({
-        language: locale!,
-    });
-    const [miniSidebar, _] = useAtom(miniSidebarInitialValue);
-    const { width } = useWindowSize();
-    return (
-        <Link
-            href={siteSettings?.logo?.href}
-            className={cn('inline-flex items-center gap-3', className)}
-        // {...props}
-        >
-            {miniSidebar && width >= RESPONSIVE_WIDTH ? (
-                <span
-                    className="relative overflow-hidden "
-                    style={{
-                        width:
-                            typeof window !== 'undefined' && window.innerWidth >= 1024
-                                ? siteSettings.logo.width * 2 // ✅ Desktop
-                                : siteSettings.logo.width, // ✅ Mobile & tablette
-                        height:
-                            typeof window !== 'undefined' && window.innerWidth >= 1024
-                                ? siteSettings.logo.height * 2
-                                : siteSettings.logo.height,
-                    }}
-                >
-                    <Image
-                        src="https://galileecommerce.com/img/logo_red.png"
-                        alt={settings?.options?.siteTitle ?? siteSettings.collapseLogo.alt}
-                        fill
-                        sizes="(max-width: 768px) 100vw"
-                        className="object-contain mt-2"
-                        loading="eager"
-                    />
-                </span>
-            ) : (
-                <span
-                    className="relative overflow-hidden "
-                    style={{
-                        width:
-                            typeof window !== 'undefined' && window.innerWidth >= 1024
-                                ? siteSettings.logo.width * 2 // ✅ Desktop
-                                : siteSettings.logo.width, // ✅ Mobile & tablette
-                        height:
-                            typeof window !== 'undefined' && window.innerWidth >= 1024
-                                ? siteSettings.logo.height * 2
-                                : siteSettings.logo.height,
-                    }}
-                >
-                    <Image
-                        src="https://galileecommerce.com/img/logo_red.png"
-                        alt={settings?.options?.siteTitle ?? siteSettings.logo.alt}
-                        fill
-                        sizes="(max-width: 768px) 100vw"
-                        className="object-contain"
-                        loading="eager"
-                    />
-                </span>
-            )}
-        </Link>
-    );
+  const { locale } = useRouter();
+  const { settings } = useSettingsQuery({ language: locale! });
+  const [miniSidebar, _] = useAtom(miniSidebarInitialValue);
+  const { width } = useWindowSize();
+  const logoUrl = '/logo_red.png';
+  return (
+    <Link
+      href={siteSettings?.logo?.href ?? '/'}
+      className={cn('inline-flex items-center justify-center gap-3', className)}
+    >
+      {miniSidebar && width >= RESPONSIVE_WIDTH ? (
+        <span className="relative block h-full min-h-[32px] w-12 flex-shrink-0">
+          <Image
+            src={logoUrl}
+            alt={settings?.options?.siteTitle ?? siteSettings.collapseLogo.alt}
+            fill
+            sizes="96px"
+            className="object-contain object-center"
+            loading="eager"
+          />
+        </span>
+      ) : (
+        <span className="relative block h-full min-h-[40px] w-full max-w-[220px] flex-shrink-0 overflow-hidden">
+          <Image
+            src={logoUrl}
+            alt={settings?.options?.siteTitle ?? siteSettings.logo.alt}
+            fill
+            sizes="(max-width: 1024px) 96px, 289px"
+            className="object-contain object-center"
+            loading="eager"
+          />
+        </span>
+      )}
+    </Link>
+  );
 };
 
 export default Logo;

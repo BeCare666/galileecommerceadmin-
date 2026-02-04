@@ -20,25 +20,41 @@ export const useCreateProductMutation = () => {
   const { t } = useTranslation();
   return useMutation(productClient.create, {
     onSuccess: async () => {
+      toast.success(
+        t('common:product-created-success', {
+          defaultValue: 'Product created successfully',
+        })
+      );
       const generateRedirectUrl = router.query.shop
         ? `/${router.query.shop}${Routes.product.list}`
         : Routes.product.list;
       await Router.push(generateRedirectUrl, undefined, {
-        locale: Config.defaultLanguage,
+        locale: router.locale ?? Config.defaultLanguage,
       });
-      toast.success(t('common:successfully-created'));
     },
-    // Always refetch after error or success:
     onSettled: () => {
       queryClient.invalidateQueries(API_ENDPOINTS.PRODUCTS);
     },
     onError: (error: any) => {
-      const { data, status } = error?.response;
-      if (status === 422) {
+      const data = error?.response?.data;
+      const status = error?.response?.status;
+      const message = typeof data?.message === 'string' ? data.message : null;
+      if (status === 422 && data) {
         const errorMessage: any = Object.values(data).flat();
-        toast.error(errorMessage[0]);
+        const first = Array.isArray(errorMessage) ? errorMessage[0] : errorMessage;
+        toast.error(
+          first ??
+            t('common:product-created-error', {
+              defaultValue: 'Error creating product. Please try again.',
+            })
+        );
       } else {
-        toast.error(t(`common:${error?.response?.data.message}`));
+        toast.error(
+          message ??
+            t('common:product-created-error', {
+              defaultValue: 'Error creating product. Please try again.',
+            })
+        );
       }
     },
   });
@@ -50,24 +66,51 @@ export const useUpdateProductMutation = () => {
   const router = useRouter();
   return useMutation(productClient.update, {
     onSuccess: async (data) => {
+      toast.success(
+        t('common:product-updated-success', {
+          defaultValue: 'Product updated successfully',
+        })
+      );
       const generateRedirectUrl = router.query.shop
         ? `/${router.query.shop}${Routes.product.list}`
         : Routes.product.list;
-      await router.push(
-        `${generateRedirectUrl}/${data?.slug}/edit`,
-        undefined,
-        {
-          locale: Config.defaultLanguage,
-        },
-      );
-      toast.success(t('common:successfully-updated'));
+      const slug = data?.slug;
+      const path = slug ? `${generateRedirectUrl}/${slug}/edit` : generateRedirectUrl;
+      await router.push(path, undefined, {
+        locale: router.locale ?? Config.defaultLanguage,
+      });
     },
-    // Always refetch after error or success:
     onSettled: () => {
       queryClient.invalidateQueries(API_ENDPOINTS.PRODUCTS);
     },
     onError: (error: any) => {
-      toast.error(t(`common:${error?.response?.data.message}`));
+      const data = error?.response?.data;
+      const status = error?.response?.status;
+      const serverMessage = typeof data?.message === 'string' ? data.message : null;
+      const isGenericServerError =
+        typeof serverMessage === 'string' &&
+        /internal\s*server|server\s*error|^500$/i.test(serverMessage.trim());
+      if (process.env.NODE_ENV === 'development') {
+        console.error('[Product update error]', { status, data, error: error?.message });
+      }
+      let messageToShow: string;
+      if (status === 422 && data) {
+        const errorMessage: any = Object.values(data).flat();
+        const first = Array.isArray(errorMessage) ? errorMessage[0] : errorMessage;
+        messageToShow =
+          typeof first === 'string'
+            ? first
+            : t('common:product-updated-error', {
+                defaultValue: 'Error updating product. Please try again.',
+              });
+      } else if (serverMessage && !isGenericServerError) {
+        messageToShow = serverMessage;
+      } else {
+        messageToShow = t('common:product-updated-error', {
+          defaultValue: 'Error updating product. Please try again.',
+        });
+      }
+      toast.error(messageToShow);
     },
   });
 };

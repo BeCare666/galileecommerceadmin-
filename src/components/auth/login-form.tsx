@@ -1,25 +1,22 @@
 import Button from '@/components/ui/button';
 import Input from '@/components/ui/input';
 import PasswordInput from '@/components/ui/password-input';
+import Checkbox from '@/components/ui/checkbox/checkbox';
 import { useTranslation } from 'next-i18next';
 import * as yup from 'yup';
-import Link from '@/components/ui/link';
 import Form from '@/components/ui/forms/form';
-import { Routes } from '@/config/routes';
 import { useLogin } from '@/data/user';
 import type { LoginInput } from '@/types';
 import { useState } from 'react';
 import Alert from '@/components/ui/alert';
-import Router from 'next/router';
-
 import { toast } from 'react-toastify';
 import {
   allowedRoles,
   hasAccess,
   setAuthCredentials,
 } from '@/utils/auth-utils';
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/router";
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/router';
 const loginFormSchema = yup.object().shape({
   email: yup
     .string()
@@ -113,6 +110,15 @@ const LoginForm = () => {
 
   return (
     <>
+      {errorMessage ? (
+        <Alert
+          message={t(errorMessage)}
+          variant="error"
+          closeable={true}
+          className="mb-5"
+          onClose={() => setErrorMessage(null)}
+        />
+      ) : null}
       <Form<LoginInput>
         validationSchema={loginFormSchema}
         onSubmit={onSubmit}
@@ -124,65 +130,42 @@ const LoginForm = () => {
               label={t('form:input-label-email')}
               {...register('email')}
               type="email"
+              autoComplete="email"
               variant="outline"
-              className="mb-4"
+              className="mb-5 border-gray-200 transition-shadow focus:ring-2 focus:ring-accent/25 focus:border-accent"
               error={t(errors?.email?.message!)}
             />
             <PasswordInput
               label={t('form:input-label-password')}
-              forgotPassHelpText={t('form:input-forgot-password-label')}
+              forgotPassHelpText=""
+              forgotPageLink=""
               {...register('password')}
+              autoComplete="current-password"
               error={t(errors?.password?.message!)}
               variant="outline"
-              className="mb-4"
-              forgotPageLink={Routes.forgotPassword}
+              className="mb-5 border-gray-200"
             />
-            <Button className="w-full" loading={isLoading} disabled={isLoading}>
+            <div className="mb-6 flex items-center">
+              <Checkbox
+                id="remember"
+                name="remember"
+                label={t('form:input-label-remember-me')}
+                className="text-sm text-body"
+              />
+            </div>
+            <Button
+              type="submit"
+              className="h-12 w-full font-medium shadow-sm transition-all hover:shadow focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+              loading={isLoading}
+              disabled={isLoading}
+            >
               {t('form:button-label-login')}
             </Button>
-
-            <div className="hidden relative mt-8 mb-6 flex flex-col items-center justify-center text-sm text-heading sm:mt-11 sm:mb-8">
-              <hr className="w-full" />
-              <span className="absolute -top-2.5 bg-light px-2 -ms-4 start-2/4">
-                {t('common:text-or')}
-              </span>
-            </div>
-
-            <div className="hidden text-center text-sm text-body sm:text-base hindeed mt-5">
-              {t('form:text-no-account')}{' '}
-              <Link
-                href="https://galileecommerce.vercel.app/become_seller/become_seller"
-                className="font-semibold text-accent underline transition-colors duration-200 ms-1 hover:text-accent-hover hover:no-underline focus:text-accent-700 focus:no-underline focus:outline-none"
-              >
-                {t('form:link-register-shop-owner')}
-              </Link>
-            </div>
           </>
         )}
       </Form>
-      {errorMessage ? (
-        <Alert
-          message={t(errorMessage)}
-          variant="error"
-          closeable={true}
-          className="mt-5"
-          onClose={() => setErrorMessage(null)}
-        />
-      ) : null}
     </>
   );
 };
 
 export default LoginForm;
-
-{
-  /* {errorMsg ? (
-          <Alert
-            message={t(errorMsg)}
-            variant="error"
-            closeable={true}
-            className="mt-5"
-            onClose={() => setErrorMsg('')}
-          />
-        ) : null} */
-}

@@ -42,6 +42,7 @@ import {
   useUpdateProductMutation,
 } from '@/data/product';
 import { split, join, isEmpty } from 'lodash';
+import { toast } from 'react-toastify';
 import { adminOnly, getAuthCredentials, hasAccess } from '@/utils/auth-utils';
 import { useSettingsQuery } from '@/data/settings';
 import { useModalAction } from '@/components/ui/modal/modal.context';
@@ -131,34 +132,49 @@ export default function CreateOrUpdateProductForm({
     setValue,
     reset,
     setError,
+    clearErrors,
     watch,
+    trigger,
+    getValues,
     formState: { errors },
   } = methods;
+
+  /** Champs à valider par étape (création) : ne pas passer à l'étape suivante si invalide. */
+  const STEP_FIELDS: Record<number, (keyof ProductFormValues)[]> = {
+    1: ['name', 'unit', 'type', 'status'],
+    2: ['image'],
+    3: ['price', 'sku', 'quantity'],
+  };
+
+  const handleNextStep = useCallback(async () => {
+    if (currentStep >= 4) return;
+    const fields = STEP_FIELDS[currentStep];
+    if (currentStep === 2) {
+      const image = getValues('image');
+      const hasImage =
+        image != null &&
+        (Array.isArray(image) ? image.length > 0 : !!((image as any)?.id ?? (image as any)?.url ?? (image as any)?.thumbnail));
+      if (!initialValues && !hasImage) {
+        setError('image', { type: 'manual', message: 'form:error-image-required' });
+        return;
+      }
+    } else if (fields?.length) {
+      const valid = await trigger(fields);
+      if (!valid) return;
+    }
+    setCurrentStep((s) => s + 1);
+  }, [currentStep, trigger, getValues, setError, clearErrors, initialValues]);
   //console.log("DEFAULT VALUES:", getProductDefaultValues(initialValues!, isNewTranslation));
 
-  // ─────────── Mapping simple ───────────
-  function mapToFormValues(defaults: ReturnType<typeof getProductDefaultValues>): ProductFormValues {
-    return {
-      in_stock: defaults.in_stock ?? true,
-      is_taxable: defaults.is_taxable ?? false,
-      // ajouter ici d'autres champs de ProductFormValues si nécessaire
-    };
-  }
-
-  // ─────────── useEffect pour reset() ───────────
+  // ─────────── useEffect pour reset() (édition) ───────────
   useEffect(() => {
     if (!initialValues) return;
 
     const defaults = getProductDefaultValues(initialValues, isNewTranslation);
-    const formValues = mapToFormValues(defaults);
+    reset(defaults as unknown as ProductFormValues);
 
-    reset(formValues); // <-- ici on préremplit le formulaire correctement
-
-    // si tu veux gérer CountrySelect et isOrigin séparément :
-    setSelectedCountry(initialValues.countries_id ?? undefined);
-    setIsOrigin(initialValues.is_origin ? "true" : "false");
-    // Si tes inputs categories et tags utilisent setValue de RHF
-    // 2️⃣ Préremplir categories (multi-select)
+    setSelectedCountry((initialValues as any)?.countries_id ?? undefined);
+    setIsOrigin((initialValues as any)?.is_origin ? 'true' : 'false');
   }, [initialValues, isNewTranslation, reset]);
 
   const upload_max_filesize = options?.server_info?.upload_max_filesize / 1024;
@@ -170,8 +186,7 @@ export default function CreateOrUpdateProductForm({
 
 
   const onSubmit = async (values: ProductFormValues) => {
-    //console.log('✔️ Valeurs formulaire avant transformation:', values);
-    console.log('🧭 Mode édition ?', !!initialValues, '→', initialValues);
+    if (creating || updating) return;
     // Copie les valeurs du formulaire
     const inputValues = {
       language: router.locale,
@@ -221,14 +236,17 @@ export default function CreateOrUpdateProductForm({
     console.log('📦 Valeurs envoyées au backend:', backendInput);
 
     try {
-      //console.log("🧭 Mode édition ?", !!initialValues, "Langues traduites:", initialValues?.translated_languages, "Locale actuelle:", router.locale);
       if (!initialValues?.id) {
-        //@ts-ignore  
-        //alert('create products')
+        // Mode création : shop_id obligatoire (vient de useShopQuery)
+        const effectiveShopId = shopId ?? initialValues?.shop_id;
+        if (!effectiveShopId) {
+          toast.error(t('common:text-shop-not-loaded') ?? 'Boutique non chargée. Réessayez.');
+          return;
+        }
         createProduct({
           ...backendInput,
           ...(initialValues?.slug && { slug: initialValues.slug }),
-          shop_id: shopId || initialValues?.shop_id,
+          shop_id: effectiveShopId,
         });
       } else {
         //@ts-ignore
@@ -237,6 +255,7 @@ export default function CreateOrUpdateProductForm({
           ...backendInput,
           id: initialValues.id!,
           shop_id: initialValues.shop_id!,
+          ...(initialValues.slug && { slug: initialValues.slug }),
         });
       }
     } catch (error) {
@@ -377,7 +396,12 @@ export default function CreateOrUpdateProductForm({
                 className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
               />
               <Card className="w-full sm:w-8/12 md:w-2/3">
-                <FileInput name="image" control={control} multiple={false} />
+                <FileInput
+                  name="image"
+                  control={control}
+                  multiple={false}
+                  error={errors?.image?.message ? t(errors.image.message) : undefined}
+                />
               </Card>
             </div>
             <div className="flex flex-wrap pb-8 my-5 border-b border-border-base sm:my-8">
@@ -472,7 +496,7 @@ export default function CreateOrUpdateProductForm({
                   control={control}
                   error={t((errors?.type as any)?.message)}
                 />
-                <ProductCategoryInput control={control} setValue={setValue} />
+                <ProductCategoryInput control={control} setValue={setValue} initialProduct={initialValues ?? undefined} />
                 <ProductTagInput control={control} setValue={setValue} />
               </Card>
             </div>
@@ -659,7 +683,7 @@ export default function CreateOrUpdateProductForm({
                 {currentStep < 4 ? (
                   <Button
                     type="button"
-                    onClick={() => setCurrentStep((s) => s + 1)}
+                    onClick={handleNextStep}
                     size="medium"
                     className="text-sm md:text-base"
                   >
@@ -669,7 +693,11 @@ export default function CreateOrUpdateProductForm({
                   <Button
                     type="submit"
                     loading={updating || creating}
-                    disabled={updating || creating}
+                    disabled={
+                      updating ||
+                      creating ||
+                      (!initialValues && !shopId)
+                    }
                     size="medium"
                     className="text-sm md:text-base"
                   >

@@ -200,6 +200,7 @@ export default function Dashboard() {
           actionTitle={t('common:text-create-shop')}
           actionDescription={t('common:text-dashboard-create-shop-description')}
           onActionClick={() => router.push(`/shops/create`)}
+          showCreateShopCTA={false}
         />
       </div>
 

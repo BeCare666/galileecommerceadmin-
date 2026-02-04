@@ -7,6 +7,8 @@ interface DashboardHeaderProps {
   actionTitle?: string;
   actionDescription?: string;
   onActionClick?: () => void;
+  /** Masquer la carte CTA "Créer un B space" quand l'utilisateur n'a pas de shop */
+  showCreateShopCTA?: boolean;
 }
 
 export default function DashboardHeader({
@@ -75,7 +77,7 @@ export default function DashboardHeader({
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
         </div>
-      ) : (
+      ) : showCreateShopCTA ? (
         <div className="flex items-center justify-between rounded-2xl border border-gray-200/80 bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-200/60 hover:shadow-elevated">
           <div>
             <h3 className="text-lg font-semibold text-gray-900">{actionTitle}</h3>
@@ -88,7 +90,7 @@ export default function DashboardHeader({
             +
           </button>
         </div>
-      )}
+      ) : null}
     </div>
   );
 

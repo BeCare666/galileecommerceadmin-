@@ -96,19 +96,29 @@ export const useTransferShopOwnershipMutation = () => {
 };
 
 
-export const useShopQuery = ({ slug }: { slug: string }, options?: any) => {
+export const useShopQuery = (
+  { slug, with: withParam }: { slug: string; with?: string },
+  options?: any
+) => {
   return useQuery<Shop, Error>(
-    [API_ENDPOINTS.SHOPS, { slug }],
-    () => shopClient.get({ slug }),
+    [API_ENDPOINTS.SHOPS, { slug, with: withParam }],
+    () => shopClient.get({ slug, with: withParam }),
     options,
   );
 };
 
 export const useShopsQuery = (options: Partial<ShopQueryOptions>) => {
   const { data, error, isLoading } = useQuery<ShopPaginator, Error>(
-    [API_ENDPOINTS.SHOPS, options],
-    ({ queryKey, pageParam }) =>
-      shopClient.paginated(Object.assign({}, queryKey[1], pageParam)),
+    [
+      API_ENDPOINTS.SHOPS,
+      options.name,
+      options.page,
+      options.limit,
+      options.orderBy,
+      options.sortedBy,
+      options.is_active,
+    ],
+    () => shopClient.paginated(options),
     {
       keepPreviousData: true,
     },

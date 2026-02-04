@@ -6,6 +6,7 @@ import Link from '@/components/ui/link';
 import Pagination from '@/components/ui/pagination';
 import { AlignType, Table } from '@/components/ui/table';
 import TitleWithSort from '@/components/ui/title-with-sort';
+import { ShopLogoTableCell } from '@/components/shop/shop-logo-table-cell';
 import { siteSettings } from '@/settings/site.settings';
 import {
   MappedPaginatorInfo,
@@ -16,7 +17,6 @@ import {
 import { OWNERSHIP_TRANSFER_STATUS } from '@/utils/constants';
 import { useIsRTL } from '@/utils/locals';
 import { useTranslation } from 'next-i18next';
-import Image from 'next/image';
 import { useState } from 'react';
 import { getAuthCredentials } from '@/utils/auth-utils';
 import { SUPER_ADMIN } from '@/utils/constants';
@@ -28,6 +28,8 @@ type IProps = {
   onSort: (current: any) => void;
   onOrder: (current: string) => void;
   isMultiCommissionRate?: boolean;
+  /** Masquer l’icône de transfert de propriété (ex. page B Space /shops) */
+  showTransferOwnership?: boolean;
 };
 
 const ShopList = ({
@@ -37,6 +39,7 @@ const ShopList = ({
   onSort,
   onOrder,
   isMultiCommissionRate,
+  showTransferOwnership = true,
 }: IProps) => {
   const { t } = useTranslation();
   const { alignLeft, alignRight } = useIsRTL();
@@ -91,19 +94,11 @@ const ShopList = ({
       width: 250,
       className: 'cursor-pointer',
       onHeaderCell: () => onHeaderClick('name'),
-      render: (name: any, { slug, logo }: any) => (
-        <div className="flex items-center">
-          <div className="relative aspect-square h-10 w-10 shrink-0 overflow-hidden rounded border border-border-200/80 bg-gray-100 me-2.5">
-            <Image
-              src={logo?.thumbnail ?? siteSettings?.product?.placeholder}
-              alt={name}
-              fill
-              priority={true}
-              sizes="(max-width: 768px) 100vw"
-            />
-          </div>
-          <Link href={`/${slug}`}>
-            <span className="truncate whitespace-nowrap font-medium">
+      render: (name: any, record: Shop) => (
+        <div className="flex items-center gap-3">
+          <ShopLogoTableCell record={record} name={name} />
+          <Link href={`/${record.slug}`}>
+            <span className="truncate whitespace-nowrap font-medium text-gray-900 hover:text-accent transition-colors">
               {name}
             </span>
           </Link>
@@ -215,17 +210,16 @@ const ShopList = ({
       key: 'actions',
       align: alignRight as AlignType,
       width: 120,
-      render: (
-        id: string,
-        { slug, is_active, owner_id, ownership_history, settings }: Shop,
-      ) => {
+      render: (id: string, record: Shop) => {
+        const { slug, is_active, owner_id, ownership_history, settings } = record;
         return (
           <ActionButtons
             id={id}
             approveButton={true}
             detailsUrl={`/${slug}`}
             isShopActive={is_active}
-            transferShopOwnership
+            transferShopOwnership={showTransferOwnership}
+            shopRecord={record}
             disabled={
               !Boolean(is_active) ||
               OWNERSHIP_TRANSFER_STATUS?.includes(
@@ -254,16 +248,20 @@ const ShopList = ({
 
   return (
     <>
-      <div className="mb-6 overflow-hidden rounded shadow">
+      {/* Tableau classique B Space – design pro visible */}
+      <div className="b-space-table-wrapper mb-6 overflow-hidden rounded-2xl border-2 border-gray-200 bg-white shadow-lg">
         <Table
+          className="b-space-table"
           columns={columns}
           emptyText={() => (
-            <div className="flex flex-col items-center py-7">
-              <NoDataFound className="w-52" />
-              <div className="mb-1 pt-6 text-base font-semibold text-heading">
+            <div className="flex flex-col items-center justify-center py-16 px-4">
+              <NoDataFound className="h-40 w-40 text-gray-300" />
+              <p className="mt-6 text-base font-semibold text-gray-700">
                 {t('table:empty-table-data')}
-              </div>
-              <p className="text-[13px]">{t('table:empty-table-sorry-text')}</p>
+              </p>
+              <p className="mt-1 text-sm text-gray-500">
+                {t('table:empty-table-sorry-text')}
+              </p>
             </div>
           )}
           data={shops}
@@ -273,7 +271,10 @@ const ShopList = ({
       </div>
 
       {!!paginatorInfo?.total && (
-        <div className="flex items-center justify-end">
+        <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border-2 border-slate-200 bg-slate-50 px-5 py-4 shadow-md">
+          <span className="text-sm font-semibold text-slate-600">
+            {t('table:table-item-total')}: {paginatorInfo.total}
+          </span>
           <Pagination
             total={paginatorInfo.total}
             current={paginatorInfo.currentPage}
