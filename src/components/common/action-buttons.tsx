@@ -47,6 +47,8 @@ type Props = {
     [key: string]: string | boolean | number;
   };
   disabled?: boolean;
+  /** Full shop record for super admin preview modal (B Space) */
+  shopRecord?: any;
 };
 
 const ActionButtons = ({
@@ -75,6 +77,7 @@ const ActionButtons = ({
   transferShopOwnership,
   data,
   disabled,
+  shopRecord,
 }: Props) => {
   const { t } = useTranslation();
   const { openModal } = useModalAction();
@@ -149,6 +152,14 @@ const ActionButtons = ({
     if (!disabled) {
       openModal('TRANSFER_SHOP_OWNERSHIP_VIEW', data);
     }
+  };
+
+  const handleShopPreview = () => {
+    openModal('SHOP_PREVIEW_VIEW', {
+      shop: shopRecord,
+      detailsUrl,
+      approveData: data ? { id, data } : undefined,
+    });
   };
 
   // TODO: need to be checked about last coupon code.
@@ -302,7 +313,16 @@ const ActionButtons = ({
           )}
         </>
       )}
-      {detailsUrl && (
+      {detailsUrl && approveButton && shopRecord ? (
+        <button
+          type="button"
+          onClick={handleShopPreview}
+          className="text-base transition duration-200 hover:text-heading focus:outline-none"
+          title={t('common:text-preview')}
+        >
+          <Eye className="w-5 h-5" />
+        </button>
+      ) : detailsUrl ? (
         <Link
           href={detailsUrl}
           className="text-base transition duration-200 hover:text-heading"
@@ -311,7 +331,7 @@ const ActionButtons = ({
         >
           <Eye className="w-5 h-5" />
         </Link>
-      )}
+      ) : null}
 
       {deleteModalView &&
         (role !== STAFF ||

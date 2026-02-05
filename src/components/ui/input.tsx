@@ -21,13 +21,13 @@ export interface Props extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const classes = {
-  root: 'px-4 h-12 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0',
+  root: 'px-4 h-11 flex items-center w-full rounded-xl appearance-none transition-all duration-200 text-gray-900 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:ring-offset-0',
   normal:
-    'bg-gray-100 border border-border-base focus:shadow focus:bg-light focus:border-accent',
+    'bg-white border border-gray-200 focus:bg-white focus:border-accent',
   solid:
-    'bg-gray-100 border border-border-100 focus:bg-light focus:border-accent',
-  outline: 'border border-border-base focus:border-accent',
-  shadow: 'focus:shadow',
+    'bg-gray-50 border border-gray-200 focus:bg-white focus:border-accent',
+  outline: 'border border-gray-200 bg-white focus:border-accent',
+  shadow: 'focus:shadow-soft',
 };
 const sizeClasses = {
   small: 'text-sm h-10',

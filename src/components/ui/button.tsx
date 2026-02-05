@@ -13,20 +13,20 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const classes = {
-  root: 'inline-flex items-center justify-center flex-shrink-0 font-semibold leading-none rounded outline-none transition duration-300 ease-in-out focus:outline-none focus:shadow focus:ring-1 focus:ring-accent-700',
+  root: 'inline-flex items-center justify-center flex-shrink-0 font-semibold leading-none rounded-xl outline-none transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-accent-400/40 focus:ring-offset-2',
   normal:
-    'bg-accent text-light border border-transparent hover:bg-accent-hover',
+    'bg-accent text-white border border-transparent shadow-soft hover:bg-accent-hover hover:shadow-card active:scale-[0.98]',
   custom: 'border border-transparent',
   outline:
-    'border border-border-400 bg-transparent text-body hover:text-light hover:bg-accent hover:border-accent',
+    'border border-gray-300 bg-transparent text-gray-700 hover:bg-gray-50 hover:border-gray-400 hover:text-accent',
   loading:
     'h-4 w-4 ms-2 rounded-full border-2 border-transparent border-t-2 animate-spin',
   disabled:
-    'border border-border-base bg-[#EEF1F4] border-[#D4D8DD] text-body cursor-not-allowed',
-  disabledOutline: 'border border-border-base text-muted cursor-not-allowed',
-  small: 'px-3 py-0 h-9 text-sm h-10',
-  medium: 'px-5 py-0 h-12',
-  big: 'px-10 py-0 h-14',
+    'border border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed shadow-none',
+  disabledOutline: 'border border-gray-200 text-gray-400 cursor-not-allowed',
+  small: 'px-3.5 py-0 h-9 text-sm',
+  medium: 'px-5 py-0 h-11',
+  big: 'px-8 py-0 h-12',
 };
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(

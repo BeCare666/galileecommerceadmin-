@@ -231,7 +231,7 @@ export default function WithdrawalsPage() {
 
     return (
         <div className="p-6 bg-slate-50 min-h-screen">
-            <div className="max-w-7xl mx-auto space-y-8">
+            <div className="w-full max-w-[1920px] mx-auto space-y-8">
 
                 {/* HEADER */}
                 <header className="flex items-center justify-between">

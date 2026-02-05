@@ -31,8 +31,7 @@ const UserListIndex = ({ className, ...rest }: Props) => {
           width >= RESPONSIVE_WIDTH
             ? 'max-w-[4rem] sm:max-w-xs 2xl:max-w-[21.875rem]'
             : '',
-          'flex h-full max-h-[calc(100%-51px)] flex-1 flex-col overflow-hidden rounded-lg bg-white',
-          // adminPermission ? 'pb-6' : '',
+          'flex h-full max-h-[calc(100%-51px)] flex-1 flex-col overflow-hidden rounded-l-2xl bg-white border-r border-gray-100',
           className
         )}
         {...rest}

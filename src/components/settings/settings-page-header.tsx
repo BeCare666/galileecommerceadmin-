@@ -29,7 +29,7 @@ export default function SettingsPageHeader({
       <div className="flex pt-1 pb-5 sm:pb-8">
         <h1 className="text-lg font-semibold text-heading">{t(pageTitle)}</h1>
       </div>
-      <div className="relative mb-9 flex items-center overflow-hidden border-b border-border-base/90 lg:mb-12">
+      <div className="relative mb-9 flex items-center overflow-hidden border-b border-border-base/90 lg:mb-12 rounded-xl bg-white/80 shadow-soft p-2">
         <button
           title="Prev"
           ref={sliderPrevBtn}

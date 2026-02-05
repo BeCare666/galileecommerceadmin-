@@ -7,6 +7,8 @@ interface DashboardHeaderProps {
   actionTitle?: string;
   actionDescription?: string;
   onActionClick?: () => void;
+  /** Masquer la carte CTA "Créer un B space" quand l'utilisateur n'a pas de shop */
+  showCreateShopCTA?: boolean;
 }
 
 export default function DashboardHeader({
@@ -34,81 +36,61 @@ export default function DashboardHeader({
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-      {/* Bloc météo / greeting */}
-      <div className="flex items-center rounded-xl bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-500 p-6 text-white shadow-lg backdrop-blur-sm">
-        <div className="text-5xl mr-5 animate-pulse">{icon}</div>
-        <div>
-          <h2 className="text-2xl font-semibold tracking-tight">
-            {greeting}, <span className="font-bold">{userName}</span> 👋
-          </h2>
-          <p className="text-sm opacity-80 mt-1">
-            Heureux de vous revoir sur votre tableau de bord.
-          </p>
+      {/* Welcome card — premium gradient, soft & pro */}
+      <div className="relative flex items-center overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800 via-slate-700 to-slate-800 p-8 text-white shadow-elevated">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.25),transparent)]" />
+        <div className="relative flex items-center gap-6">
+          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-sm text-4xl">
+            {icon}
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold tracking-tight text-white/95">
+              {greeting}, <span className="font-bold text-white">{userName}</span>
+            </h2>
+            <p className="mt-1 text-sm text-white/70">
+              Heureux de vous revoir sur votre tableau de bord.
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Bloc action */}
+      {/* CTA card — clean, elevated */}
       {shop ? (
         <div
           onClick={() => router.push(`/${shop.slug}`)}
-          className="group cursor-pointer flex items-center justify-between rounded-xl bg-white/90 p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-indigo-200"
+          className="group flex cursor-pointer items-center justify-between rounded-2xl border border-gray-200/80 bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-200/60 hover:shadow-elevated"
         >
           <div className="flex items-center gap-5">
-            <div className="flex items-center justify-center w-14 h-14 rounded-lg bg-indigo-50 group-hover:bg-indigo-100 transition-colors">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-7 h-7 text-indigo-600"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.5}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 9l1-4h16l1 4M4 9h16v11a1 1 0 01-1 1H5a1 1 0 01-1-1V9z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 13h6v5H9z"
-                />
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 transition-colors group-hover:bg-blue-100">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 9l1-4h16l1 4M4 9h16v11a1 1 0 01-1 1H5a1 1 0 01-1-1V9z M9 13h6v5H9z" />
               </svg>
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-gray-800">
-                Espace vendeur
-              </h3>
+              <h3 className="text-lg font-semibold text-gray-900">Espace vendeur</h3>
               <p className="text-sm text-gray-500">
-                Accédez à votre B space <span className="font-medium">{shop.name}</span>.
+                Accédez à votre B space <span className="font-medium text-gray-700">{shop.name}</span>.
               </p>
             </div>
           </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-6 h-6 text-gray-400 group-hover:text-indigo-500 transition-transform group-hover:translate-x-1"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={1.5}
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 transition-all group-hover:translate-x-1 group-hover:text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
         </div>
-      ) : (
-        <div className="flex items-center justify-between rounded-xl bg-white/90 p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-emerald-200">
+      ) : showCreateShopCTA ? (
+        <div className="flex items-center justify-between rounded-2xl border border-gray-200/80 bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-200/60 hover:shadow-elevated">
           <div>
-            <h3 className="text-lg font-semibold text-gray-800">{actionTitle}</h3>
-            <p className="text-sm text-gray-500 mt-1">{actionDescription}</p>
+            <h3 className="text-lg font-semibold text-gray-900">{actionTitle}</h3>
+            <p className="mt-1 text-sm text-gray-500">{actionDescription}</p>
           </div>
           <button
             onClick={onActionClick}
-            className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-emerald-400 to-teal-500 text-white text-3xl shadow-md hover:shadow-lg hover:scale-110 transition-transform"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-lg font-medium text-white shadow-card transition-all hover:shadow-elevated hover:scale-105"
           >
             +
           </button>
         </div>
-      )}
+      ) : null}
     </div>
   );
 

@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "next-i18next";
 import { getAuthCredentials, hasAccess, adminOnly } from "@/utils/auth-utils";
 
 type Notif = {
@@ -33,28 +34,26 @@ function BellIcon({ className = "" }: { className?: string }) {
     );
 }
 
-function NotificationItem({ notif }: { notif: Notif }) {
-    const title = notif?.title ?? "Notification";
+function NotificationItem({ notif, t }: { notif: Notif; t: (key: string) => string }) {
+    const title = notif?.title ?? t("common:text-notifications");
     const message = notif?.message ?? "";
     const isRead = !!notif?.is_read;
 
     return (
         <div className="flex items-start gap-3 p-3 rounded-xl hover:bg-white/5 transition cursor-pointer">
-            <div className="w-10 h-10  flex items-center justify-center shrink-0 mr-7">
-                {/* small svg icon */}
-                <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="blue" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+            <div className="w-10 h-10 flex items-center justify-center shrink-0 mr-7">
+                <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
                     <path d="M13.73 21a2 2 0 01-3.46 0" />
                 </svg>
             </div>
-
             <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-white/90 truncate">{title}</p>
                 <p className="text-xs text-white/60 mt-1 line-clamp-2">{message}</p>
                 <div className="mt-2 flex items-center gap-3">
                     {notif?.link && (
                         <a className="text-[11px] text-accent underline" href={notif.link}>
-                            Ouvrir
+                            {t("common:text-notification-open")}
                         </a>
                     )}
                     <span className="text-[11px] text-white/40 ml-auto">
@@ -62,13 +61,13 @@ function NotificationItem({ notif }: { notif: Notif }) {
                     </span>
                 </div>
             </div>
-
-            {!isRead && <span className="ml-3 bg-red-500 text-white text-[11px] px-2 py-0.5 rounded-full">Nouveau</span>}
+            {!isRead && <span className="ml-3 bg-red-500 text-white text-[11px] px-2 py-0.5 rounded-full">{t("common:text-notification-new")}</span>}
         </div>
     );
 }
 
 export default function Notifications() {
+    const { t } = useTranslation("common");
     const [open, setOpen] = useState(false);
     const [list, setList] = useState<Notif[]>([]);
     const [loading, setLoading] = useState(true);
@@ -141,13 +140,15 @@ export default function Notifications() {
                 aria-expanded={open}
                 aria-haspopup="true"
                 onClick={() => setOpen(o => !o)}
-                className="relative p-2 hover:brightness-110 transition mr-2 lg:mr-7"
-                title="Notifications"
+                className="relative p-2.5 rounded-lg hover:bg-gray-100 transition-smooth mr-2 lg:mr-4"
+                title={t("text-notifications")}
             >
-                <BellIcon className="w-5 h-5 text-pink-600" />
-                <span className={`absolute -top-1 -right-1 text-[10px] px-1.5 py-0.5 rounded-full ${unreadCount > 0 ? 'bg-red-500 text-white' : 'bg-red-500 text-white'}`}>
-                    {unreadCount}
-                </span>
+                <BellIcon className="w-5 h-5 text-gray-600" />
+                {unreadCount > 0 && (
+                    <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-semibold rounded-full bg-red-500 text-white ring-2 ring-white">
+                        {unreadCount > 99 ? "99+" : unreadCount}
+                    </span>
+                )}
             </button>
 
             {open && (
@@ -175,41 +176,33 @@ export default function Notifications() {
                     >
                         {/* HEADER */}
                         <div className="flex items-center justify-between pb-3 border-b border-white/10">
-                            <h4 className="text-sm font-semibold text-white tracking-wide">Notifications</h4>
-
+                            <h4 className="text-sm font-semibold text-white tracking-wide">{t("text-notifications")}</h4>
                             <button
-                                onClick={() => { setList([]); setOpen(false); }}
-                                className="
-                        text-xs text-white/40 hover:text-white/70 
-                        transition-colors px-2 py-1 rounded-md
-                    "
+                                onClick={() => { setOpen(false); }}
+                                className="text-xs text-white/40 hover:text-white/70 transition-colors px-2 py-1 rounded-md"
                             >
-                                Fermer
+                                {t("text-notifications-close")}
                             </button>
                         </div>
 
                         {/* BODY */}
-                        <div className="
-                mt-4 space-y-2 overflow-y-auto max-h-[52vh] pr-1 
-                scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent
-            ">
+                        <div className="mt-4 space-y-2 overflow-y-auto max-h-[52vh] pr-1 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
                             {loading && (
                                 <div className="p-6 text-center text-sm text-white/50">
-                                    Chargement...
+                                    {t("text-notifications-loading")}
                                 </div>
                             )}
-
                             {!loading && list.length === 0 && (
                                 <div className="p-6 text-center text-sm text-white/40">
-                                    Aucune notification.
+                                    {t("text-notifications-none")}
                                 </div>
                             )}
-
                             {!loading &&
                                 list.map((notif) => (
                                     <NotificationItem
                                         key={notif.id ?? JSON.stringify(notif)}
                                         notif={notif}
+                                        t={t}
                                     />
                                 ))
                             }

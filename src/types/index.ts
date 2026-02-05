@@ -347,6 +347,15 @@ export interface IImage {
   cover_image_url: string
 }
 
+/** Document fourni par le fournisseur (pièce d'identité, Kbis, etc.) */
+export interface ShopDocument {
+  id?: string;
+  name: string;
+  type?: string;
+  url: string;
+  thumbnail?: string;
+}
+
 export interface Shop {
   id?: string;
   owner_id?: number;
@@ -373,6 +382,8 @@ export interface Shop {
   logo_image_url?: string;
   cover_image_url?: string;
   country?: string;
+  /** Documents fournis par le fournisseur (vérification avant validation) */
+  documents?: ShopDocument[];
 }
 
 export interface Balance {

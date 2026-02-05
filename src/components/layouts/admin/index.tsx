@@ -110,7 +110,7 @@ const AdminLayout: React.FC<{ children?: React.ReactNode }> = ({
 
   return (
     <div
-      className="flex min-h-screen flex-col bg-gray-100 transition-colors duration-150"
+      className="flex min-h-screen flex-col bg-transparent transition-colors duration-200"
       dir={dir}
     >
       <Navbar />
@@ -121,7 +121,8 @@ const AdminLayout: React.FC<{ children?: React.ReactNode }> = ({
       <div className="flex flex-1">
         <aside
           className={cn(
-            'text-gray-200 fixed bottom-0 z-10 hidden h-full w-72 shadow transition-[width] duration-300 ltr:left-0 ltr:right-auto rtl:right-0 rtl:left-auto lg:block',
+            'fixed bottom-0 z-10 hidden h-full w-72 transition-[width] duration-300 ltr:left-0 ltr:right-auto rtl:right-0 rtl:left-auto lg:block',
+            'bg-white/95 backdrop-blur-md border-r border-gray-200/80 shadow-soft',
             width >= RESPONSIVE_WIDTH &&
               (underMaintenance || underMaintenanceStart)
               ? 'lg:pt-[8.75rem]'
@@ -154,7 +155,7 @@ const AdminLayout: React.FC<{ children?: React.ReactNode }> = ({
               : 'ltr:xl:pl-76 rtl:xl:pr-76 ltr:lg:pl-72 rtl:lg:pr-72 rtl:lg:pl-0'
           )}
         >
-          <div className="h-full p-5 md:p-8">{children}</div>
+          <div className="h-full p-6 md:p-8 lg:p-10">{children}</div>
           <Footer />
         </main>
       </div>

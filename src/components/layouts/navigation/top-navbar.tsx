@@ -18,7 +18,6 @@ import { useUI } from '@/contexts/ui.context';
 import { useSettingsQuery } from '@/data/settings';
 import { useShopQuery } from '@/data/shop';
 import { useMeQuery } from '@/data/user';
-import { ToggleButton } from './ToggleButton';
 import { getNotifications } from "@/lib/fetcher";
 import Notifications from "@/components/notifications/notifications";
 import {
@@ -176,7 +175,7 @@ const Navbar = () => {
   }
 
   return (
-    <header className="fixed top-0 z-40 w-full bg-white shadow">
+    <header className="fixed top-0 z-40 w-full bg-white/90 backdrop-blur-xl border-b border-gray-200/80 shadow-soft">
       {width >= RESPONSIVE_WIDTH && isMaintenanceMode ? (
         <Alert
           message={
@@ -231,11 +230,11 @@ const Navbar = () => {
             </motion.button>
             <div
               className={cn(
-                'text-gray-200 flex h-16 shrink-0 transition-[width] duration-300  lg:h-[76px] lg:border-solid lg:border-gray-200/80 lg:me-8 lg:border-e',
+                'text-gray-200 flex h-16 shrink-0 items-center justify-center transition-[width] duration-300 lg:h-[76px] lg:border-solid lg:border-gray-200/80 lg:me-8 lg:border-e',
                 miniSidebar ? 'lg:w-[96px]' : 'lg:w-[289px]',
               )}
             >
-              <Logo />
+              <Logo className="relative h-10 w-full max-w-[220px] lg:h-12" />
             </div>
             <button
               className="group hidden h-5 w-5 shrink-0 cursor-pointer flex-col justify-center space-y-1 me-6 "
@@ -265,23 +264,24 @@ const Navbar = () => {
           <div className="relative hidden w-full max-w-[710px] py-4 me-6 lg:block 2xl:me-auto">
             <SearchBar />
           </div>
-          <div className="hidden lg:flex flex items-center justify-between  bg-white">
-            <ToggleButton />
+          <div className="hidden lg:flex items-center justify-between bg-white">
+            {/** ToggleButton (Actif/Inactif) masqué pour super admin */}
             { /**<NotificationBell />**/}
           </div>
           <div className="flex shrink-0 grow-0 basis-auto items-center">
             {hasAccess(adminAndOwnerOnly, permissions) && (
               <>
-                <div className="hidden border-gray-200/80 px-6 py-5 border-e 2xl:block">
-                  <LinkButton
-                    href={Routes.shop.create}
-                    size="small"
-                    className="px-3.5"
-                  >
-                    {t('common:text-create-shop')}
-                  </LinkButton>
-                </div>
-
+                {false && (
+                  <div className="hidden border-gray-200/80 px-6 py-5 border-e 2xl:block">
+                    <LinkButton
+                      href={Routes.shop.create}
+                      size="small"
+                      className="px-3.5"
+                    >
+                      {t('common:text-create-shop')}
+                    </LinkButton>
+                  </div>
+                )}
                 <div className="hidden px-6 py-5 2xl:block">
                   <VisitStore />
                 </div>

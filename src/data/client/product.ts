@@ -11,8 +11,38 @@ import { API_ENDPOINTS } from './api-endpoints';
 import { crudFactory } from './curd-factory';
 import { HttpClient } from './http-client';
 
+/** Keys sent only for relations; backend may not have these columns on products table */
+const UPDATE_OMIT_KEYS = ['variations'] as const;
+
+/** Backend peut renvoyer { data: product } (Laravel) ou le produit directement */
+function normalizeProductResponse(
+  response: unknown,
+  fallback: Partial<Product>
+): Product & { slug?: string } {
+  if (response != null && typeof response === 'object' && 'data' in response) {
+    const inner = (response as { data?: unknown }).data;
+    if (inner != null && typeof inner === 'object') {
+      return { ...fallback, ...inner } as Product & { slug?: string };
+    }
+  }
+  if (response != null && typeof response === 'object') {
+    return { ...fallback, ...response } as Product & { slug?: string };
+  }
+  return { ...fallback } as Product & { slug?: string };
+}
+
 export const productClient = {
   ...crudFactory<Product, QueryOptions, CreateProduct>(API_ENDPOINTS.PRODUCTS),
+  async update(payload: Partial<CreateProduct> & { id: string }) {
+    const { id, ...rest } = payload;
+    const safePayload = { ...rest };
+    UPDATE_OMIT_KEYS.forEach((key) => delete (safePayload as Record<string, unknown>)[key]);
+    const response = await HttpClient.put<Product | { data?: Product }>(
+      `${API_ENDPOINTS.PRODUCTS}/${id}`,
+      safePayload
+    );
+    return normalizeProductResponse(response, { id, slug: (payload as any).slug });
+  },
   get({ slug, language }: GetParams) {
     return HttpClient.get<Product>(`${API_ENDPOINTS.PRODUCTS}/${slug}`, {
       language,

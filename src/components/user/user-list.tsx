@@ -115,29 +115,31 @@ const UserList = ({
       key: 'permissions',
       align: alignLeft,
       width: 300,
-      render: (permissions: any) => {
+      render: (permissions: any, record: any) => {
+        const role = record?.role ?? record?.roles?.[0];
+        const permList = Array.isArray(permissions)
+          ? permissions.map((p: any) => (typeof p === 'string' ? p : p?.name ?? p?.title ?? '')).filter(Boolean)
+          : [];
         return (
-          <div className="flex flex-wrap gap-1.5 whitespace-nowrap">
-            {permissions?.map(
-              ({ name, index }: { name: string; index: number }) => (
+          <div className="flex flex-col gap-1.5">
+            {role != null && String(role).trim() !== '' && (
+              <span className="rounded bg-accent/10 px-2.5 py-1 text-xs font-medium text-accent">
+                {typeof role === 'string' ? role : (role as any)?.name ?? String(role)}
+              </span>
+            )}
+            <div className="flex flex-wrap gap-1.5 whitespace-nowrap">
+              {permList.map((name: string, index: number) => (
                 <span
                   key={index}
-                  className="rounded bg-gray-200/50 px-2.5 py-1"
+                  className="rounded bg-gray-200/50 px-2.5 py-1 text-xs"
                 >
                   {name}
                 </span>
-              )
-            )}
+              ))}
+            </div>
           </div>
         );
       },
-    },
-    {
-      title: t('table:table-item-available_wallet_points'),
-      dataIndex: ['wallet', 'available_points'],
-      key: 'available_wallet_points',
-      align: 'center',
-      width: 150,
     },
     {
       title: (
@@ -182,7 +184,7 @@ const UserList = ({
                 id={id}
                 userStatus={true}
                 isUserActive={is_active}
-                showAddWalletPoints={true}
+                showAddWalletPoints={false}
                 showMakeAdminButton={true}
               />
             )}

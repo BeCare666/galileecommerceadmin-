@@ -19,6 +19,15 @@ import omit from 'lodash/omit';
 import { omitTypename } from '@/utils/omit-typename';
 import { cartesian } from '@/utils/cartesian';
 
+/** L'API peut renvoyer variation_options en tableau ou dans { data: [...] } */
+function ensureVariationOptionsArray(val: unknown): Variation[] {
+  if (Array.isArray(val)) return val;
+  if (val && typeof val === 'object' && 'data' in val && Array.isArray((val as { data: unknown }).data)) {
+    return (val as { data: Variation[] }).data;
+  }
+  return [];
+}
+
 export type ProductFormValues = Omit<
   CreateProduct,
   | 'author_id'
@@ -98,6 +107,97 @@ export function calculateQuantity(variationOptions: any) {
   );
 }
 
+/** Format attendu par le formulaire : [{ categories_id, sous_categories_id: number[], sub_categories_id: number[] }] */
+type CategoryFormRow = {
+  categories_id: number;
+  sous_categories_id: number[];
+  sub_categories_id: number[];
+};
+
+/**
+ * Normalise les catégories produit (toutes formes possibles de l'API) vers le format formulaire.
+ * Règles recommandées pour l'édition : on préserve ce que le backend envoie (ids, sous, sous-sous).
+ */
+export function normalizeProductCategoriesForForm(product: Product | null | undefined): CategoryFormRow[] {
+  if (!product) return [];
+  const p = product as any;
+  let raw = p.categories ?? p.product_categories ?? p.categories_list;
+  // API peut renvoyer { data: [...] }
+  if (raw != null && typeof raw === 'object' && !Array.isArray(raw) && Array.isArray(raw.data)) raw = raw.data;
+  if (raw != null && !Array.isArray(raw)) raw = [raw];
+  if (raw == null || (Array.isArray(raw) && raw.length === 0)) {
+    const single = p.category ?? p.product_category;
+    if (single != null) raw = Array.isArray(single) ? single : [single];
+  }
+  if (!Array.isArray(raw) || raw.length === 0) return [];
+  // Tableau d'objets { categories_id ou id, pivot?, sous_categories_id?, sous_categories?, sub_categories_id?, sub_categories? }
+  if (Array.isArray(raw)) {
+    const parseIds = (v: any): number[] => {
+      if (Array.isArray(v)) {
+        return v
+          .map((x: any) => (typeof x === 'object' && x != null && (x.id != null || x.sous_category_id != null)) ? Number(x.id ?? x.sous_category_id) : Number(x))
+          .filter((n) => !Number.isNaN(n));
+      }
+      if (v == null || v === '') return [];
+      if (typeof v === 'string') return v.split(',').map((s) => Number(s.trim())).filter((n) => !Number.isNaN(n));
+      return [Number(v)];
+    };
+    const extractIdsFromObjects = (arr: any[], idKey = 'id', altKey = '') =>
+      Array.isArray(arr)
+        ? arr.map((x: any) => Number(x?.[idKey] ?? x?.[altKey] ?? x?.sous_category_id ?? x?.sub_category_id ?? 0)).filter((n) => n > 0)
+        : [];
+    const rows = raw.map((c: any) => {
+      const pivot = c.pivot ?? c;
+      const catId = Number(pivot.categories_id ?? c.categories_id ?? c.id ?? 0);
+      const sousFromRelation = extractIdsFromObjects(c.sous_categories ?? [], 'id', 'sous_category_id');
+      const subFromRelation = extractIdsFromObjects(c.sub_categories ?? [], 'id', 'sub_category_id');
+      const sousFromPivot = extractIdsFromObjects(pivot.sous_categories ?? [], 'id', 'sous_category_id');
+      const subFromPivot = extractIdsFromObjects(pivot.sub_categories ?? [], 'id', 'sub_category_id');
+      const sousIds = parseIds(
+        pivot.sous_categories_id ?? pivot.sous_category_ids ?? pivot.sous_category_id ?? c.sous_categories_id ?? c.sous_category_ids ?? c.sous_category_id
+      ) as number[];
+      const subIds = parseIds(
+        pivot.sub_categories_id ?? pivot.sub_category_ids ?? pivot.sub_category_id ?? c.sub_categories_id ?? c.sub_category_ids ?? c.sub_category_id
+      ) as number[];
+      return {
+        categories_id: catId,
+        sous_categories_id: sousIds.length ? sousIds : sousFromRelation.length ? sousFromRelation : sousFromPivot,
+        sub_categories_id: subIds.length ? subIds : subFromRelation.length ? subFromRelation : subFromPivot,
+      };
+    }).filter((row: CategoryFormRow) => row.categories_id > 0);
+    const parseIdsProduct = (v: any): number[] => {
+      if (v == null || v === '') return [];
+      if (Array.isArray(v)) return v.map((x: any) => Number(x)).filter((n) => !Number.isNaN(n));
+      if (typeof v === 'string') return v.split(',').map((s) => Number(s.trim())).filter((n) => !Number.isNaN(n));
+      return [Number(v)].filter((n) => !Number.isNaN(n));
+    };
+    const productSous = parseIdsProduct(p.sous_categories_id ?? p.sous_category_ids ?? p.sous_category_id);
+    const productSub = parseIdsProduct(p.sub_categories_id ?? p.sub_category_ids ?? p.sub_category_id);
+    if (rows.length > 0 && (productSous.length > 0 || productSub.length > 0)) {
+      const first = rows[0];
+      if ((!first.sous_categories_id || first.sous_categories_id.length === 0) && productSous.length > 0)
+        first.sous_categories_id = productSous;
+      if ((!first.sub_categories_id || first.sub_categories_id.length === 0) && productSub.length > 0)
+        first.sub_categories_id = productSub;
+    }
+    return rows;
+  }
+  // Backend renvoie category_ids (liste d'ids) ou categories_id (un seul id)
+  const ids = p.category_ids ?? p.category_ids_list;
+  if (Array.isArray(ids) && ids.length > 0) {
+    return ids.map((id: number | string) => ({
+      categories_id: Number(id),
+      sous_categories_id: [],
+      sub_categories_id: [],
+    }));
+  }
+  const singleId = p.categories_id ?? p.category_id;
+  if (singleId != null && singleId !== '') {
+    return [{ categories_id: Number(singleId), sous_categories_id: [], sub_categories_id: [] }];
+  }
+  return [];
+}
+
 export function getProductDefaultValues(
   product: Product,
   isNewTranslation: boolean = false,
@@ -109,6 +209,7 @@ export function getProductDefaultValues(
       max_price: 0.0,
       categories: [],
       tags: [],
+      type: null,
       in_stock: true,
       is_taxable: false,
       image: [],
@@ -127,10 +228,21 @@ export function getProductDefaultValues(
     digital_file,
     categories,
     tags,
+    type: productType,
   } = product;
 
   return cloneDeep({
     ...product,
+
+    // ---- Type de mise en page (select) ----
+    type: productType
+      ? {
+          id: String((productType as any)?.id ?? (product as any)?.type_id),
+          name: (productType as any)?.name ?? '',
+        }
+      : (product as any)?.type_id
+        ? { id: String((product as any).type_id), name: '' }
+        : null,
 
     // ---- Product type ----
     product_type: productTypeOptions.find(
@@ -166,13 +278,9 @@ export function getProductDefaultValues(
     }),
 
     // ----------------------------------------------------
-    // 🆕  CATEGORIES (ajout)
+    // 🆕  CATEGORIES (toutes formes API → format ProductCategoryInput + backend)
     // ----------------------------------------------------
-    categories:
-      categories?.map((c: any) => ({
-        id: c.categories_id ?? c.id,
-        name: c.categories_name ?? c.name,
-      })) ?? [],
+    categories: normalizeProductCategoriesForForm(product),
 
     // ----------------------------------------------------
     // 🆕  TAGS (ajout)
@@ -259,7 +367,8 @@ export function getProductInputValues(
     type_id: type?.id,
     product_type: 'simple',
 
-    categories: (categories ?? []).map((category) => category?.id),
+    // Formulaire : [{ categories_id, sous_categories_id, sub_categories_id }] → API : ids de catégories (string[]).
+    categories: (categories ?? []).map((row: any) => String(row?.categories_id ?? row?.id ?? '')).filter(Boolean),
     tags: (tags ?? []).map((tag) => tag?.id),
 
     image: omitTypename<any>(image),
@@ -277,7 +386,7 @@ export function getProductInputValues(
     variations: [],
     variation_options: {
       upsert: [],
-      delete: (initialValues?.variation_options ?? []).map(
+      delete: ensureVariationOptionsArray(initialValues?.variation_options).map(
         (variation: Variation) => variation?.id,
       ),
     },
@@ -319,7 +428,7 @@ export function getProductInputValues(
             ),
           }),
         ),
-        delete: (initialValues?.variation_options ?? [])
+        delete: ensureVariationOptionsArray(initialValues?.variation_options)
           .map((initialVariationOption: Variation) => {
             const find = (variation_options ?? []).find(
               (variationOption: Variation) =>

@@ -13,6 +13,14 @@ import AdvancePopover from '@/components/ui/advance-popover';
 import { useWindowSize } from '@/utils/use-window-size';
 import { RESPONSIVE_WIDTH } from '@/utils/constants';
 
+function getItemHref(item: any, shop: any): string {
+  if (typeof item?.href === 'function') {
+    if (shop != null && String(shop).trim() !== '') return item.href(String(shop));
+    return '#';
+  }
+  return item?.href ?? '#';
+}
+
 function SidebarShortItem({
   childMenu,
   shop,
@@ -42,24 +50,19 @@ function SidebarShortItem({
           {childMenu?.map((item: any, index: number) => {
             if (shop && !hasAccess(item?.permissions, currentUserPermissions))
               return null;
+            const itemHref = getItemHref(item, shop);
             return (
               <div key={index}>
                 <Link
                   passHref
-                  as={shop ? item?.href(shop?.toString()!) : item?.href}
+                  as={itemHref}
                   href={{
-                    pathname: `${
-                      shop ? item?.href(shop?.toString()!) : item?.href
-                    }`,
+                    pathname: itemHref,
                     query: { parents: label },
                   }}
                   className={cn(
                     'relative flex w-full cursor-pointer items-center rounded-lg py-2 text-sm text-start focus:text-accent',
-                    (
-                      shop
-                        ? sanitizedPath === item?.href(shop?.toString()!)
-                        : sanitizedPath === item?.href
-                    )
+                    sanitizedPath === itemHref
                       ? 'bg-transparent font-medium text-accent-hover'
                       : 'text-body-dark hover:text-accent focus:text-accent',
                   )}
@@ -173,8 +176,8 @@ const SidebarItem = ({
         <motion.div
           initial={false}
           className={cn(
-            'group cursor-pointer rounded-md px-3 py-2.5 text-body-dark hover:bg-gray-100 focus:text-accent',
-            isOpen ? 'bg-gray-100 font-medium' : '',
+            'group cursor-pointer rounded-xl px-3 py-2.5 text-gray-700 transition-colors duration-200 hover:bg-gray-100/80 focus:text-accent',
+            isOpen ? 'bg-gray-100/80 font-medium text-gray-900' : '',
           )}
           onClick={onClick}
         >
@@ -229,27 +232,21 @@ const SidebarItem = ({
                       !hasAccess(item?.permissions, currentUserPermissions)
                     )
                       return null;
+                    const itemHref = getItemHref(item, shop);
                     return (
                       <div key={index}>
                         <Link
                           passHref
                           href={{
-                            pathname: `${
-                              shop ? item?.href(shop?.toString()!) : item?.href
-                            }`,
+                            pathname: itemHref,
                             query: {
                               parents: label,
                             },
                           }}
-                          as={shop ? item?.href(shop?.toString()!) : item?.href}
+                          as={itemHref}
                           className={cn(
                             'relative flex w-full cursor-pointer items-center rounded-lg py-2 px-5 text-sm text-start before:absolute before:-left-0.5 before:top-[18px] before:h-px before:w-3 before:border-t before:border-dashed before:border-gray-300 before:content-[""] focus:text-accent',
-                            (
-                              shop
-                                ? sanitizedPath ===
-                                  item?.href(shop?.toString()!)
-                                : sanitizedPath === item?.href
-                            )
+                            sanitizedPath === itemHref
                               ? 'bg-transparent font-medium text-accent-hover'
                               : 'text-body-dark hover:text-accent focus:text-accent',
                           )}

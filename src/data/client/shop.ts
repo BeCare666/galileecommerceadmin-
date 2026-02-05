@@ -13,15 +13,40 @@ import { crudFactory } from './curd-factory';
 
 export const shopClient = {
   ...crudFactory<Shop, QueryOptions, ShopInput>(API_ENDPOINTS.SHOPS),
-  get({ slug }: { slug: String }) {
-    return HttpClient.get<Shop>(`${API_ENDPOINTS.SHOPS}/${slug}`);
-  },
-  paginated: ({ name, ...params }: Partial<ShopQueryOptions>) => {
-    return HttpClient.get<ShopPaginator>(API_ENDPOINTS.SHOPS, {
-      searchJoin: 'and',
-      ...params,
-      search: HttpClient.formatSearchParams({ name }),
+  get({ slug, with: withParam }: { slug: String; with?: string }) {
+    return HttpClient.get<Shop>(`${API_ENDPOINTS.SHOPS}/${slug}`, {
+      ...(withParam ? { with: withParam } : {}),
     });
+  },
+  paginated: ({
+    name,
+    is_active,
+    limit,
+    page,
+    orderBy,
+    sortedBy,
+    ...rest
+  }: Partial<ShopQueryOptions>) => {
+    const order = orderBy ?? 'created_at';
+    const sort = sortedBy ?? 'desc';
+    const params: Record<string, unknown> = {
+      searchJoin: 'and',
+      with: 'logo;cover_image',
+      ...rest,
+      limit: limit ?? 15,
+      page: page ?? 1,
+      orderBy: order,
+      sortedBy: sort,
+      order_by: order,
+      sort,
+    };
+    if (is_active !== undefined && is_active !== null) {
+      params.is_active = is_active;
+    }
+    if (name != null && String(name).trim() !== '') {
+      params.search = HttpClient.formatSearchParams({ name });
+    }
+    return HttpClient.get<ShopPaginator>(API_ENDPOINTS.SHOPS, params);
   },
   newOrInActiveShops: ({
     is_active,

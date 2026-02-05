@@ -241,11 +241,14 @@ export const siteSettings = {
             label: 'sidebar-nav-item-settings',
             icon: 'SettingsIcon',
             childMenu: [
-              {
-                href: Routes.settings || '#',
-                label: 'text-general-settings',
-                icon: 'SettingsIcon',
-              }
+              { href: Routes.settings || '#', label: 'text-general-settings', icon: 'SettingsIcon' },
+              { href: Routes.companyInformation || '#', label: 'text-company-information', icon: 'SettingsIcon' },
+              { href: Routes.paymentSettings || '#', label: 'text-payment-settings', icon: 'SettingsIcon' },
+              { href: Routes.shopSettings || '#', label: 'text-shop-settings', icon: 'SettingsIcon' },
+              { href: Routes.seoSettings || '#', label: 'text-seo-settings', icon: 'SettingsIcon' },
+              { href: Routes.eventSettings || '#', label: 'text-events-settings', icon: 'SettingsIcon' },
+              { href: Routes.maintenance || '#', label: 'text-maintenance-settings', icon: 'SettingsIcon' },
+              { href: Routes.promotionPopup || '#', label: 'text-promotion-popup', icon: 'SettingsIcon' },
             ],
           },
         ],
