@@ -68,6 +68,7 @@ export const useUpdateShopMutation = () => {
   const queryClient = useQueryClient();
   return useMutation(shopClient.update, {
     onSuccess: async (data) => {
+      console.log("SLUG =", data?.slug);
       await router.push(`/${data?.slug}/edit`, undefined, {
         locale: Config.defaultLanguage,
       });

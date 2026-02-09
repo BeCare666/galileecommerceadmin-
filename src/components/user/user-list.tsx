@@ -26,6 +26,7 @@ type IProps = {
   onSort: (current: any) => void;
   onOrder: (current: string) => void;
 };
+
 const UserList = ({
   customers,
   paginatorInfo,
@@ -35,6 +36,7 @@ const UserList = ({
 }: IProps) => {
   const { t } = useTranslation();
   const { alignLeft } = useIsRTL();
+
   const [sortingObj, setSortingObj] = useState<{
     sort: SortOrder;
     column: any | null;
@@ -58,6 +60,7 @@ const UserList = ({
       });
     },
   });
+
   const columns = [
     {
       title: (
@@ -73,10 +76,19 @@ const UserList = ({
       dataIndex: 'id',
       key: 'id',
       align: alignLeft,
-      width: 150,
+      width: 140,
       onHeaderCell: () => onHeaderClick('id'),
-      render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
+      render: (id: number) => (
+        <>
+          <div className="flex justify-start w-full">
+            <span className="font-mono text-sm font-semibold text-gray-800">
+              #{t('table:table-item-id')}: {id}
+            </span>
+          </div>
+        </>
+      ),
     },
+
     {
       title: (
         <TitleWithSort
@@ -91,47 +103,65 @@ const UserList = ({
       dataIndex: 'name',
       key: 'name',
       align: alignLeft,
-      width: 250,
+      width: 300,
       ellipsis: true,
       onHeaderCell: () => onHeaderClick('name'),
       render: (
         name: string,
         { profile, email }: { profile: any; email: string }
       ) => (
-        <div className="flex items-center">
-          <Avatar name={name} src={profile?.avatar?.thumbnail} />
-          <div className="flex flex-col whitespace-nowrap font-medium ms-2">
-            {name}
-            <span className="text-[13px] font-normal text-gray-500/80">
+        <div className="flex items-center gap-3 min-w-[220px]">
+          <Avatar
+            name={name}
+            src={profile?.avatar?.thumbnail}
+            className="!h-10 !w-10 ring-2 ring-white shadow-sm"
+          />
+          <div className="flex flex-col overflow-hidden">
+            <span className="truncate font-semibold text-gray-900 text-left">
+              {name}
+            </span>
+            <span className="truncate text-xs text-gray-500">
               {email}
             </span>
           </div>
         </div>
       ),
     },
+
     {
       title: t('table:table-item-permissions'),
       dataIndex: 'permissions',
       key: 'permissions',
       align: alignLeft,
-      width: 300,
+      width: 360,
       render: (permissions: any, record: any) => {
         const role = record?.role ?? record?.roles?.[0];
+
         const permList = Array.isArray(permissions)
-          ? permissions.map((p: any) => (typeof p === 'string' ? p : p?.name ?? p?.title ?? '')).filter(Boolean)
+          ? permissions
+            .map((p: any) =>
+              typeof p === 'string'
+                ? p
+                : p?.name ?? p?.title ?? ''
+            )
+            .filter(Boolean)
           : [];
+
         return (
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-2">
             {role != null && String(role).trim() !== '' && (
-              <span className="rounded bg-accent/10 px-2.5 py-1 text-xs font-medium text-accent">
-                {typeof role === 'string' ? role : (role as any)?.name ?? String(role)}
+              <span className="inline-block w-fit rounded-full bg-indigo-100 border border-indigo-200 px-3 py-1 text-xs font-semibold text-indigo-700">
+                {typeof role === 'string'
+                  ? role
+                  : (role as any)?.name ?? String(role)}
               </span>
             )}
-            <div className="flex flex-wrap gap-1.5 whitespace-nowrap">
+
+            <div className="flex flex-wrap gap-2">
               {permList.map((name: string, index: number) => (
                 <span
                   key={index}
-                  className="rounded bg-gray-200/50 px-2.5 py-1 text-xs"
+                  className="rounded-full bg-slate-100 border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-700"
                 >
                   {name}
                 </span>
@@ -141,6 +171,7 @@ const UserList = ({
         );
       },
     },
+
     {
       title: (
         <TitleWithSort
@@ -163,18 +194,19 @@ const UserList = ({
           textKey={is_active ? 'common:text-active' : 'common:text-inactive'}
           color={
             is_active
-              ? 'bg-accent/10 !text-accent'
-              : 'bg-status-failed/10 text-status-failed'
+              ? 'bg-emerald-100 text-emerald-700'
+              : 'bg-rose-100 text-rose-700'
           }
         />
       ),
     },
+
     {
       title: t('table:table-item-actions'),
       dataIndex: 'id',
       key: 'actions',
       align: 'right',
-      width: 120,
+      width: 160,
       render: function Render(id: string, { is_active }: any) {
         const { data } = useMeQuery();
         return (
@@ -196,27 +228,36 @@ const UserList = ({
 
   return (
     <>
-      <div className="mb-6 overflow-hidden rounded shadow">
+      {/* ===== TABLE WRAPPER PREMIUM ===== */}
+      <div className="b-space-table-wrapper mb-6 overflow-hidden rounded-2xl border-2 border-gray-200 bg-white shadow-lg">
         <Table
           // @ts-ignore
+          className="b-space-table"
           columns={columns}
           emptyText={() => (
-            <div className="flex flex-col items-center py-7">
-              <NoDataFound className="w-52" />
-              <div className="mb-1 pt-6 text-base font-semibold text-heading">
+            <div className="flex flex-col items-center justify-center py-16 px-4">
+              <NoDataFound className="h-40 w-40 text-gray-300" />
+              <div className="mt-6 text-base font-semibold text-gray-700">
                 {t('table:empty-table-data')}
               </div>
-              <p className="text-[13px]">{t('table:empty-table-sorry-text')}</p>
+              <p className="mt-1 text-sm text-gray-500">
+                {t('table:empty-table-sorry-text')}
+              </p>
             </div>
           )}
           data={customers as any}
           rowKey="id"
-          scroll={{ x: 1000 }}
+          scroll={{ x: 1100 }}
         />
       </div>
 
+      {/* ===== PAGINATION PREMIUM ===== */}
       {!!paginatorInfo?.total && (
-        <div className="flex items-center justify-end">
+        <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border-2 border-slate-200 bg-slate-50 px-5 py-4 shadow-md">
+          <span className="text-sm font-semibold text-slate-600">
+            {t('table:table-item-total')}: {paginatorInfo.total}
+          </span>
+
           <Pagination
             total={paginatorInfo.total}
             current={paginatorInfo.currentPage}

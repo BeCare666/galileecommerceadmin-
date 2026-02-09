@@ -50,7 +50,7 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
             alt={settings?.options?.siteTitle ?? siteSettings.collapseLogo.alt}
             fill
             sizes="(max-width: 768px) 100vw"
-            className="object-contain mt-2"
+            className="object-contain md:mt-2"
             loading="eager"
           />
         </span>
@@ -73,7 +73,7 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
             alt={settings?.options?.siteTitle ?? siteSettings.logo.alt}
             fill
             sizes="(max-width: 768px) 100vw"
-            className="object-contain mt-2"
+            className="object-contain md:mt-2"
             loading="eager"
           />
         </span>

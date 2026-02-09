@@ -21,13 +21,15 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
   const [miniSidebar, _] = useAtom(miniSidebarInitialValue);
   const { width } = useWindowSize();
   const logoUrl = '/logo_red.png';
+  console.log("settings", settings);
+  console.log("siteSettings", siteSettings);
   return (
     <Link
       href={siteSettings?.logo?.href ?? '/'}
       className={cn('inline-flex items-center justify-center gap-3', className)}
     >
       {miniSidebar && width >= RESPONSIVE_WIDTH ? (
-        <span className="relative block h-full min-h-[32px] w-12 flex-shrink-0">
+        <span className="relative block h-full min-h-[32px] w-12 flex-shrink-0 mt-7">
           <Image
             src={logoUrl}
             alt={settings?.options?.siteTitle ?? siteSettings.collapseLogo.alt}
@@ -38,7 +40,7 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
           />
         </span>
       ) : (
-        <span className="relative block h-full min-h-[40px] w-full max-w-[220px] flex-shrink-0 overflow-hidden">
+        <span className="relative block h-full min-h-[40px] w-full max-w-[220px] flex-shrink-0 overflow-hidden ">
           <Image
             src={logoUrl}
             alt={settings?.options?.siteTitle ?? siteSettings.logo.alt}

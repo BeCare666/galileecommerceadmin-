@@ -224,7 +224,7 @@ export default function Dashboard() {
         </div>
         <div className="card-premium p-6 lg:p-7 hover-lift">
           <StickerCard
-            titleTransKey="Remboursements"
+            titleTransKey="Rembour sements"
             price={total_refund}
             color="#0EA5E9"
             icon={<svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 3h18M3 9h18M3 15h18M3 21h18" /></svg>}

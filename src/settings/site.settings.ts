@@ -83,11 +83,7 @@ export const siteSettings = {
                 label: 'text-all-shops',
                 icon: 'MyShopIcon',
               },
-              {
-                href: Routes.shop?.create || '#',
-                label: 'text-add-all-shops',
-                icon: 'ShopIcon',
-              },
+
               {
                 href: Routes.newShops || '#',
                 label: 'text-inactive-shops',
@@ -130,26 +126,19 @@ export const siteSettings = {
               },
             ],
           },
-          {
-            href: Routes.type?.list || '#',
-            label: 'text-groups',
-            icon: 'HomeIcon',
-          },
+
           {
             href: Routes.productInventory || '#',
             label: 'text-inventory',
             icon: 'InventoryIcon',
           },
-          {
-            href: Routes.category?.list || '#',
-            label: 'sidebar-nav-item-categories',
-            icon: 'CategoriesIcon',
-          },
+
           {
             href: Routes.tag?.list || '#',
             label: 'sidebar-nav-item-tags',
             icon: 'TagIcon',
           },
+
         ],
       },
 
@@ -366,20 +355,7 @@ export const siteSettings = {
         ],
       },
 
-      user: {
-        href: '#',
-        label: 'text-user-control',
-        icon: 'SettingsIcon',
-        childMenu: [
-          {
-            href: (shop: string) =>
-              `/${shop}${Routes.staff?.list || ''}`.replace(/\/+/, '/'),
-            label: 'sidebar-nav-item-staffs',
-            icon: 'UsersIcon',
-            permissions: adminAndOwnerOnly,
-          },
-        ],
-      },
+
 
 
     },
@@ -458,7 +434,11 @@ export const socialIcon = [
       permission: adminAndOwnerOnly,
     },
     
-    
+              {
+            href: Routes.category?.list || '#',
+            label: 'sidebar-nav-item-categories',
+            icon: 'CategoriesIcon',
+          },
     
     staff: {
       root: {
@@ -547,7 +527,11 @@ export const socialIcon = [
       },
     },
 
-
+          {
+            href: Routes.type?.list || '#',
+            label: 'text-groups',
+            icon: 'HomeIcon',
+          },
 
 
            {
@@ -579,7 +563,11 @@ export const socialIcon = [
 
 
 
-
+              {
+                href: Routes.shop?.create || '#',
+                label: 'text-add-all-shops',
+                icon: 'ShopIcon',
+              },
 
       layout: {
         href: '#',
@@ -626,6 +614,21 @@ export const socialIcon = [
               ),
             label: 'Terms And Conditions',
             icon: 'TypesIcon',
+            permissions: adminAndOwnerOnly,
+          },
+        ],
+      },
+      // à remettre après le deedback dans sidebarlinks
+            user: {
+        href: '#',
+        label: 'text-user-control',
+        icon: 'SettingsIcon',
+        childMenu: [
+          {
+            href: (shop: string) =>
+              `/${shop}${Routes.staff?.list || ''}`.replace(/\/+/, '/'),
+            label: 'sidebar-nav-item-staffs',
+            icon: 'UsersIcon',
             permissions: adminAndOwnerOnly,
           },
         ],

@@ -28,18 +28,22 @@ export default function LoginPage() {
   const headerMessage =
     becomeSeller === '1' ? t('admin-login-title-auth') : undefined;
 
-  return (
-    <div className="relative min-h-screen">
-      {/* Arrière-plan plein écran (gradient + visuels) */}
-      <div className="fixed inset-0">
-        <LoginHero />
-      </div>
-      {/* Formulaire centré par-dessus l'arrière-plan */}
-      <div className="relative flex min-h-screen flex-col items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
-        <LoginFormCard headerMessage={headerMessage}>
-          <LoginForm />
-        </LoginFormCard>
-      </div>
+return (
+  <div className="min-h-screen w-full flex flex-col lg:flex-row">
+    
+    {/* Hero à gauche — visible seulement sur desktop */}
+    <div className="hidden lg:flex lg:w-1/2">
+      <LoginHero />
     </div>
-  );
+
+    {/* Formulaire à droite — toujours visible */}
+    <div className="flex w-full lg:w-1/2 items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
+      <LoginFormCard headerMessage={headerMessage}>
+        <LoginForm />
+      </LoginFormCard>
+    </div>
+
+  </div>
+);
+
 }  

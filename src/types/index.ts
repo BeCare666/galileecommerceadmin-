@@ -98,6 +98,7 @@ export interface GoogleMapLocation {
 export type QueryOptionsType = {
   page?: number;
   name?: string;
+  text?: string;
   shop_id?: number;
   limit?: number;
   orderBy?: string;

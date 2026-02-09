@@ -72,7 +72,7 @@ export default function Tags() {
             }}
           />
 
-          {locale === Config.defaultLanguage && (
+          {['fr', 'en', 'es', 'ar', 'it','cn'].includes(locale!) && (
             <LinkButton
               href={`${Routes.tag.create}`}
               className="h-12 w-full md:w-auto md:ms-6"

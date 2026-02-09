@@ -6,30 +6,22 @@ import { SortOrder } from '@/types';
 import { useState } from 'react';
 import TitleWithSort from '@/components/ui/title-with-sort';
 import { MappedPaginatorInfo, Tag } from '@/types';
-import { Config } from '@/config';
-import Link from '@/components/ui/link';
-import { NoDataFound } from '@/components/icons/no-data-found';
-import { Routes } from '@/config/routes';
 import LanguageSwitcher from '@/components/ui/lang-action/action';
+import { Routes } from '@/config/routes';
+import { NoDataFound } from '@/components/icons/no-data-found';
 
 export type IProps = {
-  tags: any | undefined | null;
-  onPagination: (key: number) => void;
-  onSort: (current: any) => void;
-  onOrder: (current: string) => void;
+  tags: Tag[] | undefined | null;
+  onPagination: (page: number) => void;
+  onSort: (sortDirection: SortOrder) => void;
+  onOrder: (column: string) => void;
   paginatorInfo: MappedPaginatorInfo | null;
 };
 
-const TagList = ({
-  tags,
-  onPagination,
-  onSort,
-  onOrder,
-  paginatorInfo,
-}: IProps) => {
+const TagList = ({ tags, onPagination, onSort, onOrder, paginatorInfo }: IProps) => {
   const { t } = useTranslation();
   const { alignLeft, alignRight } = useIsRTL();
-
+  //console.log("TAGS =", tags);
   const [sortingObj, setSortingObj] = useState<{
     sort: SortOrder;
     column: string | null;
@@ -38,18 +30,16 @@ const TagList = ({
     column: null,
   });
 
+  // Handle column header click
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
-      onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc
-      );
-      onOrder(column!);
+      const newSort =
+        sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc;
 
-      setSortingObj({
-        sort:
-          sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc,
-        column: column,
-      });
+      onSort(newSort);
+      if (column) onOrder(column);
+
+      setSortingObj({ sort: newSort, column });
     },
   });
 
@@ -58,9 +48,7 @@ const TagList = ({
       title: (
         <TitleWithSort
           title={t('table:table-item-id')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
-          }
+          ascending={sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'}
           isActive={sortingObj.column === 'id'}
         />
       ),
@@ -76,9 +64,7 @@ const TagList = ({
       title: (
         <TitleWithSort
           title={t('table:table-item-title')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'
-          }
+          ascending={sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'}
           isActive={sortingObj.column === 'name'}
         />
       ),
@@ -97,21 +83,7 @@ const TagList = ({
       width: 250,
       ellipsis: true,
     },
-    {
-      title: t('table:table-item-group'),
-      dataIndex: 'type',
-      key: 'type',
-      align: alignLeft,
-      width: 250,
-      render: (type: any) => (
-        <div
-          className="overflow-hidden truncate whitespace-nowrap"
-          title={type?.name}
-        >
-          {type?.name}
-        </div>
-      ),
-    },
+
     {
       title: t('table:table-item-actions'),
       dataIndex: 'slug',
@@ -166,3 +138,5 @@ const TagList = ({
 };
 
 export default TagList;
+
+

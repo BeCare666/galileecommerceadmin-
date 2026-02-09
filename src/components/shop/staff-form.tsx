@@ -12,12 +12,14 @@ import { useShopQuery } from '@/data/shop';
 import { useAddStaffMutation } from '@/data/staff';
 import { passwordRules } from '@/utils/constants';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
+import { toast } from 'react-toastify';
 
 type FormValues = {
   name: string;
   email: string;
   password: string;
 };
+
 const staffFormSchema = yup.object().shape({
   name: yup.string().required('form:error-name-required'),
   email: yup
@@ -28,32 +30,42 @@ const staffFormSchema = yup.object().shape({
     .string()
     .required('form:error-password-required')
     .matches(passwordRules, {
-      message:
-        'Please create a stronger password. hint: Min 8 characters, 1 Upper case letter, 1 Lower case letter, 1 Numeric digit.',
+      message: 'form:error-password-weak',
     }),
 });
+
 const AddStaffForm = () => {
   const router = useRouter();
   const {
     query: { shop },
   } = router;
+
+  const { t } = useTranslation();
+
   const { data: shopData } = useShopQuery({
     slug: shop as string,
   });
-  const shopId = shopData?.id!;
+
+  const shopId = shopData?.id;
+
   const {
     register,
     handleSubmit,
     setError,
-
+    reset,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: yupResolver(staffFormSchema),
   });
+
   const { mutate: addStaff, isLoading: loading } = useAddStaffMutation();
-  const { t } = useTranslation();
 
   function onSubmit({ name, email, password }: FormValues) {
+    if (!shopId) {
+      toast.error(t('form:error-shop-not-found'));
+      return;
+    }
+
     addStaff(
       {
         name,
@@ -62,13 +74,57 @@ const AddStaffForm = () => {
         shop_id: Number(shopId),
       },
       {
-        onError: (error: any) => {
-          Object.keys(error?.response?.data).forEach((field: any) => {
-            setError(field, {
-              type: 'manual',
-              message: error?.response?.data[field],
-            });
+        onSuccess: () => {
+          toast.success(t('form:success-staff-created'));
+          reset();
+          router.push({
+            pathname: '/[shop]/staffs',
+            query: { shop },
           });
+        },
+
+        onError: (error: any) => {
+          const status = error?.response?.status;
+          const data = error?.response?.data;
+
+          // 🔴 Validation erreurs champ par champ
+          if (status === 422 && data?.errors) {
+            Object.entries(data.errors).forEach(([field, message]) => {
+              setError(field as keyof FormValues, {
+                type: 'manual',
+                message: message as string,
+              });
+            });
+
+            toast.error(t('form:error-invalid-fields'));
+            return;
+          }
+
+          // 🔴 Email déjà existant
+          if (status === 400 && data?.message === 'EMAIL_ALREADY_EXISTS') {
+            setError('email', {
+              type: 'manual',
+              message: 'form:error-email-exists',
+            });
+
+            toast.error(t('form:error-email-exists'));
+            return;
+          }
+
+          // 🔴 Boutique introuvable
+          if (status === 404 && data?.message === 'SHOP_NOT_FOUND') {
+            toast.error(t('form:error-shop-not-found'));
+            return;
+          }
+
+          // 🔴 Accès interdit
+          if (status === 403) {
+            toast.error(t('form:error-unauthorized'));
+            return;
+          }
+
+          // 🔴 Erreur serveur
+          toast.error(t('form:error-server'));
         },
       }
     );
@@ -93,6 +149,7 @@ const AddStaffForm = () => {
             error={t(errors.name?.message!)}
             required
           />
+
           <Input
             label={t('form:input-label-email')}
             {...register('email')}
@@ -102,6 +159,7 @@ const AddStaffForm = () => {
             error={t(errors.email?.message!)}
             required
           />
+
           <PasswordInput
             label={t('form:input-label-password')}
             {...register('password')}

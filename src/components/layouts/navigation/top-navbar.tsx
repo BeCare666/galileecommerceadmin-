@@ -285,8 +285,9 @@ const Navbar = () => {
                 <div className="hidden px-6 py-5 2xl:block">
                   <VisitStore />
                 </div>
-
-                <Notifications />
+                <div className="relative inline-block shrink-0 grow-0 basis-auto text-left ps-1.5 sm:border-solid sm:border-gray-200 sm:py-5 sm:ps-5 sm:border-s mr-4">
+                  <Notifications />
+                </div>
               </>
             )}
           </div>

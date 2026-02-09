@@ -8,6 +8,18 @@ import { adminOnly, getAuthCredentials, hasAccess } from '@/utils/auth-utils';
 import NotFound from '@/components/ui/not-found';
 import { isEmpty } from 'lodash';
 
+const ShopCardSkeleton = () => {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen px-4 animate-pulse">
+      <div className="w-full max-w-3xl md:max-w-4xl lg:max-w-5xl">
+        <div className="w-full h-[500px] md:h-[600px] lg:h-[700px] bg-gray-200 dark:bg-gray-700 rounded-xl" />
+      </div>
+
+      <div className="mt-8 w-60 h-12 bg-gray-200 dark:bg-gray-700 rounded-lg" />
+    </div>
+  );
+};
+
 const ShopList = () => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -15,14 +27,13 @@ const ShopList = () => {
   const { permissions } = getAuthCredentials();
   const permission = hasAccess(adminOnly, permissions);
 
-  if (loading) return <Loader text={t('common:text-loading')} />;
+  if (loading) return <ShopCardSkeleton />;
   if (error) return <ErrorMessage message={error.message} />;
 
   // On récupère seulement le premier shop
   const firstShop = data?.shops?.[0] || data?.managed_shop;
 
   if (!firstShop) {
-
     return (
       <NotFound
         image="/no-shop-found.svg"
@@ -31,7 +42,7 @@ const ShopList = () => {
       />
     );
   } else {
-    router.push(`/${firstShop.slug}`)
+    router.push(`/${firstShop.slug}`);
   }
 
   return (
@@ -41,7 +52,10 @@ const ShopList = () => {
       </h1>
 
       <div className="w-full max-w-3xl md:max-w-4xl lg:max-w-5xl">
-        <ShopCard shop={firstShop} className="w-full h-[500px] md:h-[600px] lg:h-[700px]" />
+        <ShopCard
+          shop={firstShop}
+          className="w-full h-[500px] md:h-[600px] lg:h-[700px]"
+        />
       </div>
 
       <button

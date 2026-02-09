@@ -25,7 +25,7 @@ export default function AllUsersPage() {
   const { users, paginatorInfo, loading, error } = useUsersQuery({
     limit: 20,
     page,
-    name: searchTerm,
+    text: searchTerm,
     orderBy,
     sortedBy,
   });

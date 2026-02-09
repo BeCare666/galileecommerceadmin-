@@ -4,18 +4,18 @@ export interface State {
 }
 
 const initialState = {
-  siteTitle: 'Pixer',
-  siteSubtitle: '',
-  currency: 'USD',
-  currencyOptions: {
-    formation: "en-US",
-    fractions: 2,
-  },
-  logo: {
-    id: 1,
-    thumbnail: '/logo.svg',
-    original: '/logo.svg',
-  },
+	siteTitle: 'Galilee Commerce',
+	siteSubtitle: '',
+	currency: 'USD',
+	currencyOptions: {
+		formation: "en-US",
+		fractions: 2,
+	},
+	logo: {
+		id: 1,
+		thumbnail: '/logo.svg',
+		original: '/logo.svg',
+	},
 };
 
 export const SettingsContext = React.createContext<State | any>(initialState);

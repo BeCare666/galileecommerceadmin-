@@ -41,6 +41,7 @@ export const Routes = {
   tag: {
     ...routesFactory('/tags'),
   },
+
   reviews: {
     ...routesFactory('/reviews'),
   },

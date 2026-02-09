@@ -123,17 +123,21 @@ const StaffList = ({
           scroll={{ x: 800 }}
         />
       </div>
-      {!!paginatorInfo?.total && (
-        <div className="flex items-center justify-end">
-          <Pagination
-            total={paginatorInfo.total}
-            current={paginatorInfo.currentPage}
-            pageSize={paginatorInfo.perPage}
-            onChange={onPagination}
-            showLessItems
-          />
-        </div>
-      )}
+     {paginatorInfo &&
+  Number.isFinite(paginatorInfo.total) &&
+  Number.isFinite(paginatorInfo.currentPage) &&
+  Number.isFinite(paginatorInfo.perPage) && (
+    <div className="flex items-center justify-end">
+      <Pagination
+        total={paginatorInfo.total}
+        current={paginatorInfo.currentPage}
+        pageSize={paginatorInfo.perPage}
+        onChange={onPagination}
+        showLessItems
+      />
+    </div>
+  )}
+
     </>
   );
 };

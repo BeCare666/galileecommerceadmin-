@@ -112,10 +112,11 @@ const SearchBar: React.FC<IProps> = ({ }: IProps) => {
         onClick={() => setSearchText('')}
       />
       <div className="relative w-full max-w-lg rounded-3xl">
-        <SearchIcon className="absolute inset-y-0 left-4 my-auto h-4 w-4" />
+        <SearchIcon className="absolute inset-y-0 left-0 my-auto h-4 w-4 " />
+        <div className='opacity-0'></div>
         <input
           type="text"
-          className="w-full bg-transparent border-0 border-b border-gray-700 text-gray-200 placeholder-gray-500 
+          className="ml-2 w-full bg-transparent border-0 border-b border-gray-700 text-gray-200 placeholder-gray-500 
              focus:border-indigo-500 focus:ring-0 focus:outline-none transition-colors duration-300
              py-2 text-sm"
           placeholder={t('text-top-bar-search-placeholder')}

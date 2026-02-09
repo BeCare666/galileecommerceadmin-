@@ -92,7 +92,7 @@ const StoreNoticeBar = ({ user }: IProps) => {
           )}
         >
           <NotificationIcon
-            className={cn('h-5 w-5')}
+            className={cn('h-5 w-5 mr-3')}
             onClick={() => setNoticeOpen(!noticeOpen)}
           />
         </Menu.Button>

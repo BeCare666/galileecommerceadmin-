@@ -17,7 +17,7 @@ export default function AuthorizedMenu() {
   const { pathname, query } = useRouter();
   const slug = pathname === '/[shop]' ? (query?.shop as string) || '' : '';
   const { role, permissions } = getAuthCredentials();
-  console.log("data", data)
+  console.log("me", data)
   // Pour éviter les erreurs TS, on déclare `user` en type any ici
   const user: any = data;
 

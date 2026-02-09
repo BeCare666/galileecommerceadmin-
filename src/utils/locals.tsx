@@ -25,6 +25,12 @@ export let languageMenu = [
     value: 'fr',
     icon: <FRFlag width="28px" height="28px" />, // 🇫🇷 Ajout du drapeau français
   },
+  {
+    id: 'en',
+    name: 'English',
+    value: 'en',
+    icon: <USFlag width="28px" height="28px" />,
+  },
 
 ];
 
