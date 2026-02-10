@@ -283,7 +283,7 @@ export default function Dashboard() {
       </div>
 
       {/* Bento: Alertes stock + Top produits + Catégories */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 hidden">
         <div className="lg:col-span-4">
           <LowStockProduct
             //@ts-ignore
