@@ -99,7 +99,6 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
   const { mutate: updateShop, isLoading: updating } = useUpdateShopMutation();
   // const { permissions } = getAuthCredentials();
   // let permission = hasAccess(adminAndOwnerOnly, permissions);
-
   const { permissions } = getAuthCredentials();
   const {
     register,
@@ -114,49 +113,21 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
     ...(initialValues
       ? {
         defaultValues: {
-          name: initialValues.name ?? '',
-          slug: initialValues.slug ?? '',
-          description: initialValues.description ?? '',
-          logo_image:
-            initialValues.logo_image ??
-            (initialValues.logo_image_url
-              ? { thumbnail: initialValues.logo_image_url, original: initialValues.logo_image_url }
-              : null),
-          cover_image:
-            initialValues.cover_image ??
-            (initialValues.cover_image_url
-              ? { thumbnail: initialValues.cover_image_url, original: initialValues.cover_image_url }
-              : null),
-          address: {
-            street_address: initialValues.address?.street_address ?? '',
-            city: initialValues.address?.city ?? '',
-            state: initialValues.address?.state ?? '',
-            country: initialValues.address?.country ?? '',
-            zip: initialValues.address?.zip ?? '',
-          },
-          balance: {
-            payment_info: {
-              name: initialValues.bank?.account_name ?? '',
-              email: initialValues.raw_payload?.contact ?? '',
-              bank: initialValues.bank?.iban ?? '',
-              account: initialValues.bank?.account_number ?? '',
-            },
-          },
+          ...initialValues,
+          logo: getFormattedImage(initialValues?.logo as IImage),
+          cover_image: getFormattedImage(
+            initialValues?.cover_image as IImage,
+          ),
           settings: {
-            location: initialValues.location ?? {},
-            contact: initialValues.contact ?? '',
-            website: initialValues.website ?? '',
-            notifications: initialValues.settings?.notifications ?? { email: '', enable: false },
-            socials: initialValues.settings?.socials ?? [],
-            isShopUnderMaintenance: initialValues.settings?.isShopUnderMaintenance ?? false,
-            shopMaintenance: initialValues.settings?.shopMaintenance ?? {
-              title: '',
-              description: '',
-              start: null,
-              until: null,
-              image: null,
-            },
-            askForAQuote: initialValues.settings?.askForAQuote ?? { enable: false, quote: '', content: '' },
+            ...initialValues?.settings,
+            socials: initialValues?.settings?.socials
+              ? initialValues?.settings?.socials.map((social: any) => ({
+                icon: updatedIcons?.find(
+                  (icon) => icon?.value === social?.icon,
+                ),
+                url: social?.url,
+              }))
+              : [],
           },
         },
       }
@@ -216,90 +187,51 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
     (router?.query?.action === 'edit' || router?.pathname === '/[shop]/edit') &&
     router?.locale === Config.defaultLanguage;
 
-  const onSubmit = (values: FormValues) => {
-    console.log('🔥 Form submitted', values);
-
-    const socials = values.settings.socials?.map((s) => ({
-      icon: s.icon?.value ?? s.icon,
-      url: s.url,
-    })) ?? [];
-
-    const shopMaintenance = values.settings.shopMaintenance
-      ? {
-        title: values.settings.shopMaintenance.title,
-        description: values.settings.shopMaintenance.description,
-        start: values.settings.shopMaintenance.start,
-        until: values.settings.shopMaintenance.until,
-        image: values.settings.shopMaintenance.image ?? undefined,
-      }
-      : undefined;
-
-    const balance = values.balance.payment_info
-      ? {
-        account_name: values.balance.payment_info.name,
-        email: values.balance.payment_info.email,
-        bank: values.balance.payment_info.bank,
-        account_number: values.balance.payment_info.account,
-      }
-      : undefined;
-
-    const logo_image = values.logo_image
-      ? {
-        thumbnail: values.logo_image.thumbnail,
-        original: values.logo_image.original,
-      }
-      : undefined;
-
-    const cover_image = values.cover_image
-      ? {
-        thumbnail: values.cover_image.thumbnail,
-        original: values.cover_image.original,
-      }
-      : undefined;
-
-    const address = {
-      country: values.address.country,
-      city: values.address.city,
-      state: values.address.state,
-      zip: values.address.zip,
-      street_address: values.address.street_address,
+  function onSubmit(values: FormValues) {
+    const settings = {
+      ...values?.settings,
+      location: { ...omit(values?.settings?.location, '__typename') },
+      socials: values?.settings?.socials
+        ? values?.settings?.socials?.map((social: any) => ({
+          icon: social?.icon?.value,
+          url: social?.url,
+        }))
+        : [],
+      shopMaintenance: values?.settings?.shopMaintenance,
     };
 
-    const location = values.settings.location
-      ? {
-        lat: values.settings.location.lat,
-        lng: values.settings.location.lng,
-        formatted_address: values.settings.location?.formatted_address ?? undefined,
-      }
-      : undefined;
-
-    const payload: Partial<ShopInput> = {
-      name: values.name,
-      slug: values.slug,
-      description: values.description,
-      logo_image,
-      cover_image,
-      website: values.settings.website ?? undefined,
-      contact: values.settings.contact ?? undefined,
-      address,
-      location,
-      balance,
-      settings: {
-        notifications: values.settings.notifications,
-        socials,
-        isShopUnderMaintenance: values.settings.isShopUnderMaintenance,
-        shopMaintenance,
-        askForAQuote: values.settings.askForAQuote,
+    // Construction du payload aligné avec ce que le backend attend
+    const payload = {
+      ...values,
+      logo_image: values.logo_image,                   // ✅ renommer logo → logo_image
+      cover_image: values.cover_image,                // déjà au bon format
+      website: values.settings?.website ?? null,      // extraire website du settings
+      contact: values.settings?.contact ?? null,      // extraire contact du settings
+      location: values.settings?.location ?? null,    // extraire location du settings
+      address: values.address,                        // garder address
+      settings,                                       // conserver settings complet si besoin
+      balance: {                                      // idem balance
+        ...values.balance,
       },
     };
 
+    console.log('✅ Payload envoyé au backend (corrigé) :', payload);
+
     if (initialValues) {
-      updateShop({ id: initialValues.id as string, ...payload });
+      const { ...restAddress } = values.address;
+      updateShop({
+        id: initialValues?.id as string,
+        ...payload,
+        address: restAddress,
+        balance: {
+          id: initialValues.balance?.id,
+          ...values.balance,
+        },
+      });
     } else {
       createShop(payload);
     }
-  };
-
+  }
 
 
 
@@ -836,3 +768,9 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
 };
 
 export default ShopForm;
+
+
+
+
+
+

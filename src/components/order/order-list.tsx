@@ -6,21 +6,20 @@ import usePrice from '@/utils/use-price';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
-import { Product, SortOrder, UserAddress } from '@/types';
+import { Product, SortOrder, Order } from '@/types';
 import { useTranslation } from 'next-i18next';
 import { useIsRTL } from '@/utils/locals';
 import { useState } from 'react';
 import TitleWithSort from '@/components/ui/title-with-sort';
-import { Order, MappedPaginatorInfo } from '@/types';
+import { MappedPaginatorInfo } from '@/types';
 import { NoDataFound } from '@/components/icons/no-data-found';
 import { useRouter } from 'next/router';
 import StatusColor from '@/components/order/status-color';
 import Badge from '@/components/ui/badge/badge';
-import { ChatIcon } from '@/components/icons/chat';
-import { useCreateConversations } from '@/data/conversations';
 import { SUPER_ADMIN } from '@/utils/constants';
 import { getAuthCredentials } from '@/utils/auth-utils';
 import Avatar from '../common/avatar';
+import { useCreateConversations } from '@/data/conversations';
 
 type IProps = {
   orders: Order[] | undefined;
@@ -37,29 +36,23 @@ const OrderList = ({
   onSort,
   onOrder,
 }: IProps) => {
-  // const { data, paginatorInfo } = orders! ?? {};
   const router = useRouter();
   const { t } = useTranslation();
-  const rowExpandable = (record: any) => record.children?.length;
   const { alignLeft, alignRight } = useIsRTL();
   const { permissions } = getAuthCredentials();
-  const { mutate: createConversations, isLoading: creating } =
-    useCreateConversations();
-  const [loading, setLoading] = useState<boolean | string | undefined>(false);
-  const [sortingObj, setSortingObj] = useState<{
-    sort: SortOrder;
-    column: string | null;
-  }>({
+  const { mutate: createConversations } = useCreateConversations();
+
+  const [loading, setLoading] = useState<string | boolean | undefined>(false);
+  const [sortingObj, setSortingObj] = useState<{ sort: SortOrder; column: string | null }>({
     sort: SortOrder.Desc,
     column: null,
   });
 
+  const rowExpandable = (record: any) => record.children?.length;
+
   const onSubmit = async (shop_id: string | undefined) => {
     setLoading(shop_id);
-    createConversations({
-      shop_id: Number(shop_id),
-      via: 'admin',
-    });
+    createConversations({ shop_id: Number(shop_id), via: 'admin' });
   };
 
   const onHeaderClick = (column: string | null) => ({
@@ -70,8 +63,7 @@ const OrderList = ({
       onOrder(column!);
 
       setSortingObj({
-        sort:
-          sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc,
+        sort: sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc,
         column: column,
       });
     },
@@ -84,14 +76,13 @@ const OrderList = ({
       key: 'tracking_number',
       align: alignLeft,
       width: 200,
+      className: 'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
     },
     {
       title: (
         <TitleWithSort
           title={t('table:table-item-customer')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'
-          }
+          ascending={sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'}
           isActive={sortingObj.column === 'name'}
         />
       ),
@@ -99,25 +90,14 @@ const OrderList = ({
       key: 'name',
       align: alignLeft,
       width: 250,
+      className: 'cursor-pointer text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
       onHeaderCell: () => onHeaderClick('name'),
-      // render: (logo: any, record: any) => (
-      //   <Image
-      //     src={logo?.thumbnail ?? siteSettings.product.placeholder}
-      //     alt={record?.name}
-      //     width={42}
-      //     height={42}
-      //     className="overflow-hidden rounded"
-      //   />
-      // ),
       render: (customer: any) => (
-        <div className="flex items-center">
-          {/* <Avatar name={customer.name} src={customer?.profile.avatar.thumbnail} /> */}
+        <div className="flex items-center gap-3">
           <Avatar name={customer?.name} />
           <div className="flex flex-col whitespace-nowrap font-medium ms-2">
-            {customer?.name ? customer?.name : t('common:text-guest')}
-            <span className="text-[13px] font-normal text-gray-500/80">
-              {customer?.email}
-            </span>
+            <span>{customer?.name ? customer?.name : t('common:text-guest')}</span>
+            <span className="text-[13px] font-normal text-gray-500/80">{customer?.email}</span>
           </div>
         </div>
       ),
@@ -127,20 +107,17 @@ const OrderList = ({
       dataIndex: 'products',
       key: 'products',
       align: 'center',
+      className: 'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
       render: (products: Product[] | undefined) => (
         <span>{Array.isArray(products) ? products.length : 0}</span>
       ),
     },
     {
-      // title: t('table:table-item-order-date'),
       title: (
         <TitleWithSort
           title={t('table:table-item-order-date')}
-          ascending={
-            sortingObj?.sort === SortOrder?.Asc &&
-            sortingObj?.column === 'created_at'
-          }
-          isActive={sortingObj?.column === 'created_at'}
+          ascending={sortingObj.sort === SortOrder.Asc && sortingObj.column === 'created_at'}
+          isActive={sortingObj.column === 'created_at'}
           className="cursor-pointer"
         />
       ),
@@ -148,6 +125,7 @@ const OrderList = ({
       key: 'created_at',
       align: 'center',
       onHeaderCell: () => onHeaderClick('created_at'),
+      className: 'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
       render: (date: string) => {
         dayjs.extend(relativeTime);
         dayjs.extend(utc);
@@ -164,23 +142,18 @@ const OrderList = ({
       dataIndex: 'delivery_fee',
       key: 'delivery_fee',
       align: 'center',
-      render: function Render(value: any) {
-        const delivery_fee = value ? value : 0;
-        const { price } = usePrice({
-          amount: delivery_fee,
-        });
-        return <span>{price}</span>;
+      className: 'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
+      render: (value: any) => {
+        const { price } = usePrice({ amount: value || 0 });
+        return <span className="whitespace-nowrap">{price}</span>;
       },
     },
     {
       title: (
         <TitleWithSort
           title={t('table:table-item-total')}
-          ascending={
-            sortingObj?.sort === SortOrder?.Asc &&
-            sortingObj?.column === 'total'
-          }
-          isActive={sortingObj?.column === 'total'}
+          ascending={sortingObj.sort === SortOrder.Asc && sortingObj.column === 'total'}
+          isActive={sortingObj.column === 'total'}
           className="cursor-pointer"
         />
       ),
@@ -189,10 +162,9 @@ const OrderList = ({
       align: 'center',
       width: 120,
       onHeaderCell: () => onHeaderClick('total'),
-      render: function Render(value: any) {
-        const { price } = usePrice({
-          amount: value,
-        });
+      className: 'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
+      render: (value: any) => {
+        const { price } = usePrice({ amount: value });
         return <span className="whitespace-nowrap">{price}</span>;
       },
     },
@@ -201,6 +173,7 @@ const OrderList = ({
       dataIndex: 'order_status',
       key: 'order_status',
       align: 'center',
+      className: 'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
       render: (order_status: string) => (
         <Badge text={t(order_status)} color={StatusColor(order_status)} />
       ),
@@ -211,34 +184,30 @@ const OrderList = ({
       key: 'actions',
       align: alignRight,
       width: 120,
+      className: 'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
       render: (id: string, order: Order) => {
         const currentButtonLoading = !!loading && loading === order?.shop_id;
         return (
-          <>
-            {/* @ts-ignore */}
-            {order?.children?.length ? (
-              ''
-            ) : (
+          <div className="flex items-center justify-end gap-2">
+            {order?.children?.length ? null : (
               <>
                 {permissions?.includes(SUPER_ADMIN) && order?.shop_id ? (
                   <button
                     onClick={() => onSubmit(order?.shop_id)}
                     disabled={currentButtonLoading}
-                    className="cursor-pointer text-accent transition-colors duration-300 me-1.5 hover:text-accent-hover"
+                    className="cursor-pointer text-accent transition-colors duration-300 hover:text-accent-hover"
                   >
-                    {/* <ChatIcon width="19" height="20" /> */}
+                    {/* Chat Icon ici */}
                   </button>
-                ) : (
-                  ''
-                )}
+                ) : null}
+                <ActionButtons
+                  id={id}
+                  detailsUrl={`${router.asPath}/${id}`}
+                  customLocale={order.language}
+                />
               </>
             )}
-            <ActionButtons
-              id={id}
-              detailsUrl={`${router.asPath}/${id}`}
-              customLocale={order.language}
-            />
-          </>
+          </div>
         );
       },
     },
@@ -246,35 +215,34 @@ const OrderList = ({
 
   return (
     <>
-      <div className="mb-6 overflow-hidden rounded shadow">
+      <div className="mb-6 overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-md">
         <Table
           //@ts-ignore
           columns={columns}
-          emptyText={() => (
-            <div className="flex flex-col items-center py-7">
-              <NoDataFound className="w-52" />
-              <div className="mb-1 pt-6 text-base font-semibold text-heading">
-                {t('table:empty-table-data')}
-              </div>
-              <p className="text-[13px]">{t('table:empty-table-sorry-text')}</p>
-            </div>
-          )}
           data={orders}
           rowKey="id"
           scroll={{ x: 1000 }}
-          expandable={{
-            expandedRowRender: () => '',
-            rowExpandable: rowExpandable,
-          }}
+          expandable={{ expandedRowRender: () => '', rowExpandable }}
+          emptyText={() => (
+            <div className="flex flex-col items-center justify-center py-16 px-4">
+              <NoDataFound className="w-40 md:w-52 opacity-80" />
+              <div className="mt-6 text-base font-semibold text-gray-700 dark:text-white">
+                {t('table:empty-table-data')}
+              </div>
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 max-w-sm text-center">
+                {t('table:empty-table-sorry-text')}
+              </p>
+            </div>
+          )}
         />
       </div>
 
       {!!paginatorInfo?.total && (
-        <div className="flex items-center justify-end">
+        <div className="flex flex-wrap items-center justify-end gap-4 rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 shadow-md">
           <Pagination
-            total={paginatorInfo?.total}
-            current={paginatorInfo?.currentPage}
-            pageSize={paginatorInfo?.perPage}
+            total={paginatorInfo.total}
+            current={paginatorInfo.currentPage}
+            pageSize={paginatorInfo.perPage}
             onChange={onPagination}
           />
         </div>

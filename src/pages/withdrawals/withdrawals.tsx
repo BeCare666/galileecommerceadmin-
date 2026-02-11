@@ -5,7 +5,7 @@ import Loader from '@/components/ui/loader/loader';
 import ErrorMessage from '@/components/ui/error-message';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-import { getAuthCredentials, hasAccess, adminOnly } from '@/utils/auth-utils';
+import { getAuthCredentials, hasAccess, adminAndOwnerOnly } from '@/utils/auth-utils';
 
 type WithdrawalStatus = 'pending' | 'approved' | 'rejected';
 
@@ -75,8 +75,8 @@ export default function WithdrawalsPage() {
 
     // refetch when page, limit, filters change
     useEffect(() => {
-        if (!hasAccess(adminOnly, permissions)) {
-            router.replace('/dashboard');
+        if (!hasAccess(adminAndOwnerOnly, permissions)) {
+            router.replace('/');
             return;
         }
         fetchWithdrawals();

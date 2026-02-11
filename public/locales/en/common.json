@@ -22,7 +22,7 @@
   "change-locale": "Switch to german",
   "admin-login-title": "Login to dashboard",
   "admin-login-title-auth": "Please authenticate before continuing",
-  "login-hero-tagline": "Connect buyers and sellers in one powerful marketplace",
+  "login-hero-tagline": "Connect administrator and sellers in one powerful marketplace",
   "login-hero-value": "Manage products, orders, and your store from a single dashboard. Secure and built for growth.",
   "login-welcome-back": "Welcome back",
   "login-subtitle": "Login to your marketplace account",
@@ -685,5 +685,19 @@
       "title": "Welcome",
       "message": "You have been added to the shop %{shopName}."
     }
-  }
+  },
+  "total-revenue": "Total revenue",
+  "today-revenue": "Today's revenue",
+  "refunds": "Refunds",
+  "total-orders": "Total orders",
+  "dashboard-greeting-morning": "Good morning",
+  "dashboard-greeting-afternoon": "Good afternoon",
+  "dashboard-greeting-evening": "Good evening",
+  "dashboard-greeting-night": "Good night",
+  "dashboard-welcome-back": "Glad to see you again on your dashboard.",
+  "dashboard-user-fallback": "User",
+  "dashboard-seller-space": "Seller space",
+  "dashboard-seller-access": "Access your B space {{name}}.",
+  "dashboard-default-action-title": "Add a new product",
+  "dashboard-default-action-description": "Create your first item in just a few clicks."
 }

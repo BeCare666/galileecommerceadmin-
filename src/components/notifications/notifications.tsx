@@ -175,6 +175,7 @@ export default function NotificationsDropdown() {
             });
 
             const data = await res.json();
+            //console.log("my notif", data)
             const arr = Array.isArray(data) ? data : data.data ?? [];
             setNotifications(arr);
         } catch {
@@ -283,11 +284,11 @@ export default function NotificationsDropdown() {
                         {!loading &&
                             notifications.map((n) => {
                                 const unread = !n.is_read;
-                                {/**onClick={() => onNotifClick(n)}**/}
+                                {/**onClick={() => onNotifClick(n)}**/ }
                                 return (
                                     <div
                                         key={n.id}
-                                        
+
                                         className={clsx(
                                             "p-4 cursor-pointer transition",
                                             unread

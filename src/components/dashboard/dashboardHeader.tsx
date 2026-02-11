@@ -1,37 +1,48 @@
 // app/components/DashboardHeader.tsx
 import { useMemo } from "react";
 import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 import { useMeQuery } from "@/data/user";
 
 interface DashboardHeaderProps {
   actionTitle?: string;
   actionDescription?: string;
   onActionClick?: () => void;
-  /** Masquer la carte CTA "Créer un B space" quand l'utilisateur n'a pas de shop */
+  /** Masquer la carte CTA quand l'utilisateur n'a pas de shop */
   showCreateShopCTA?: boolean;
 }
 
 export default function DashboardHeader({
-  actionTitle = "Ajoutez un nouveau produit",
-  actionDescription = "Créez votre premier article en quelques clics.",
+  actionTitle,
+  actionDescription,
   onActionClick,
   showCreateShopCTA = true,
 }: DashboardHeaderProps) {
   const router = useRouter();
+  const { t } = useTranslation("common");
 
   const { data } = useMeQuery();
-  const userName = data?.name || "Utilisateur";
+  const userName = data?.name || t("common:dashboard-user-fallback");
   const shop = data?.shops?.[0];
 
   const { greeting, icon } = useMemo(() => {
     const hour = new Date().getHours();
 
-    if (hour < 12) return { greeting: "Bonjour", icon: "🌅" };
-    if (hour < 18) return { greeting: "Bon après-midi", icon: "☀️" };
-    if (hour < 22) return { greeting: "Bonsoir", icon: "🌙" };
+    if (hour < 12)
+      return { greeting: t("common:dashboard-greeting-morning"), icon: "🌅" };
+    if (hour < 18)
+      return { greeting: t("common:dashboard-greeting-afternoon"), icon: "☀️" };
+    if (hour < 22)
+      return { greeting: t("common:dashboard-greeting-evening"), icon: "🌙" };
 
-    return { greeting: "Bonne nuit", icon: "🌑" };
-  }, []);
+    return { greeting: t("common:dashboard-greeting-night"), icon: "🌑" };
+  }, [t]);
+
+  const finalActionTitle =
+    actionTitle || t("common:dashboard-default-action-title");
+
+  const finalActionDescription =
+    actionDescription || t("common:dashboard-default-action-description");
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -44,10 +55,11 @@ export default function DashboardHeader({
           </div>
           <div>
             <h2 className="text-xl font-semibold tracking-tight text-white/95">
-              {greeting}, <span className="font-bold text-white">{userName}</span>
+              {greeting},{" "}
+              <span className="font-bold text-white">{userName}</span>
             </h2>
             <p className="mt-1 text-sm text-white/70">
-              Heureux de vous revoir sur votre tableau de bord.
+              {t("common:dashboard-welcome-back")}
             </p>
           </div>
         </div>
@@ -64,9 +76,11 @@ export default function DashboardHeader({
               🏪
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-gray-900">Espace vendeur</h3>
+              <h3 className="text-lg font-semibold text-gray-900">
+                {t("common:dashboard-seller-space")}
+              </h3>
               <p className="text-sm text-gray-500">
-                Accédez à votre B space <span className="font-medium text-gray-700">{shop.name}</span>.
+                {t("common:dashboard-seller-access", { name: shop.name })}
               </p>
             </div>
           </div>
@@ -74,8 +88,12 @@ export default function DashboardHeader({
       ) : showCreateShopCTA ? (
         <div className="flex items-center justify-between rounded-2xl border border-gray-200/80 bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-200/60 hover:shadow-elevated">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">{actionTitle}</h3>
-            <p className="mt-1 text-sm text-gray-500">{actionDescription}</p>
+            <h3 className="text-lg font-semibold text-gray-900">
+              {finalActionTitle}
+            </h3>
+            <p className="mt-1 text-sm text-gray-500">
+              {finalActionDescription}
+            </p>
           </div>
           <button
             onClick={onActionClick}
@@ -88,4 +106,3 @@ export default function DashboardHeader({
     </div>
   );
 }
-

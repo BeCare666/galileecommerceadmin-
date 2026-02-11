@@ -363,29 +363,69 @@ export interface Shop {
   owner?: User;
   staffs?: User[];
   is_active?: boolean;
+
   orders_count?: number;
   products_count?: number;
+
   balance?: Balance;
+  wallet_balance?: string;
+
   name?: string;
   contact?: string;
   slug?: string;
   description?: string;
-  cover_image: IImage;
-  logo: IImage;
+  website?: string;
+
+  // 🔥 IMAGES BACKEND
+  cover_image?: IImage;
+  logo_image?: IImage;
+
+  cover_image_url?: string;
+  logo_image_url?: string;
+
+  // 🔥 ADDRESS
   address?: UserAddress;
+  street_address?: string;
+  city?: string;
+  country?: string;
+  zip?: string;
+  state?: string;
+
+  // 🔥 BANK
+  bank?: {
+    account_name?: string;
+    account_number?: string;
+    iban?: string;
+  };
+
+  // 🔥 LOCATION
+  location?: {
+    lat?: number;
+    lng?: number;
+  } | null;
+
+  // 🔥 DOCUMENTS
+  documents?: ShopDocument[];
+
+  // 🔥 RAW PAYLOAD (important pour edit mode)
+  raw_payload?: {
+    contact?: string;
+    website?: string;
+    location?: any;
+    logo_image?: IImage;
+    cover_image?: IImage;
+  };
+
   settings?: ShopSettings;
+
   created_at?: string;
   updated_at?: string;
+
   ownership_history?: {
     status: OwnerShipTransferStatus;
   };
-  street_address?: string;
-  logo_image_url?: string;
-  cover_image_url?: string;
-  country?: string;
-  /** Documents fournis par le fournisseur (vérification avant validation) */
-  documents?: ShopDocument[];
 }
+
 
 export interface Balance {
   id?: string;

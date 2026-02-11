@@ -208,7 +208,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="card-premium p-6 hover-lift">
           <StickerCard
-            titleTransKey="Revenu total"
+            titleTransKey={t('common:total-revenue')}
             price={total_revenue}
             color="#7C3AED"
             icon={<svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v8m0 0l3-3m-3 3l-3-3" /></svg>}
@@ -216,7 +216,7 @@ export default function Dashboard() {
         </div>
         <div className="card-premium p-6 lg:p-7 hover-lift">
           <StickerCard
-            titleTransKey="Revenu du jour"
+            titleTransKey={t('common:today-revenue')}
             price={todays_revenue}
             color="#EC4899"
             icon={<svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v8m0 0l3-3m-3 3l-3-3" /></svg>}
@@ -224,7 +224,7 @@ export default function Dashboard() {
         </div>
         <div className="card-premium p-6 lg:p-7 hover-lift">
           <StickerCard
-            titleTransKey="Rembour sements"
+            titleTransKey={t('common:refunds')}
             price={total_refund}
             color="#0EA5E9"
             icon={<svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 3h18M3 9h18M3 15h18M3 21h18" /></svg>}
@@ -232,7 +232,7 @@ export default function Dashboard() {
         </div>
         <div className="card-premium p-6 hover-lift">
           <StickerCard
-            titleTransKey="Commandes totales"
+            titleTransKey={t('common:total-orders')}
             price={cleanNumber}
             color="#F97316"
             icon={<svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 8h18M3 16h18M5 12h14" /></svg>}
@@ -241,46 +241,46 @@ export default function Dashboard() {
       </div>
 
       {/* Chart + Recent Orders */}
-      <div className="grid grid-cols-1 gap-6 lg:gap-8 lg:grid-cols-12">
-        <div className="lg:col-span-8 card-premium p-6 md:p-7 lg:p-8 hover-lift">
-          <ColumnChart
-            widgetTitle={t('common:sale-history')}
-            colors={['#6073D4']}
-            series={salesByYear}
-            categories={[
-              t('common:january'),
-              t('common:february'),
-              t('common:march'),
-              t('common:april'),
-              t('common:may'),
-              t('common:june'),
-              t('common:july'),
-              t('common:august'),
-              t('common:september'),
-              t('common:october'),
-              t('common:november'),
-              t('common:december'),
-            ]}
-          />
-        </div>
-        <div className="lg:col-span-4">
-          <RecentOrders
-            className="card-premium overflow-hidden"
-            orders={orderData}
-            paginatorInfo={orderPaginatorInfo}
-            title={t('table:recent-order-table-title')}
-            onPagination={handlePagination}
-            searchElement={
-              <Search
-                onSearch={handleSearch}
-                placeholderText={t('form:input-placeholder-search-name')}
-                className="hidden max-w-sm sm:inline-block [&button]:top-0.5"
-                inputClassName="!h-10"
-              />
-            }
-          />
-        </div>
+
+      <div className="mb-8 flex w-full flex-wrap md:flex-nowrap">
+        <ColumnChart
+          widgetTitle={t('common:sale-history')}
+          colors={['#6073D4']}
+          series={salesByYear}
+          categories={[
+            t('common:january'),
+            t('common:february'),
+            t('common:march'),
+            t('common:april'),
+            t('common:may'),
+            t('common:june'),
+            t('common:july'),
+            t('common:august'),
+            t('common:september'),
+            t('common:october'),
+            t('common:november'),
+            t('common:december'),
+          ]}
+        />
       </div>
+      <div className="mb-8 flex w-full flex-wrap md:flex-nowrap">
+        <RecentOrders
+          className="card-premium overflow-hidden"
+          orders={orderData}
+          paginatorInfo={orderPaginatorInfo}
+          title={t('table:recent-order-table-title')}
+          onPagination={handlePagination}
+          searchElement={
+            <Search
+              onSearch={handleSearch}
+              placeholderText={t('form:input-placeholder-search-name')}
+              className="hidden max-w-sm sm:inline-block [&button]:top-0.5"
+              inputClassName="!h-10"
+            />
+          }
+        />
+      </div>
+
 
       {/* Bento: Alertes stock + Top produits + Catégories */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 hidden">
@@ -318,16 +318,35 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Bento: Catégories + Retraits */}
+      {/* Bento: Catégories */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-        <div className="lg:col-span-7">
+        <div className="lg:col-span-12">
           <ProductCountByCategory
             products={productByCategory}
             title={'text-most-category-products'}
             className="card-premium overflow-hidden hover-lift"
           />
         </div>
-        <div className="lg:col-span-5">
+        <div className="lg:col-span-5 hidden">
+          <WithdrawTable
+            withdraws={withdraws}
+            title={t('table:withdraw-table-title')}
+            paginatorInfo={withdrawPaginatorInfo}
+            onPagination={handlePagination}
+            className="card-premium overflow-hidden hover-lift"
+          />
+        </div>
+      </div>
+      {/* Bento: Retraits */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        <div className="lg:col-span-12 hidden">
+          <ProductCountByCategory
+            products={productByCategory}
+            title={'text-most-category-products'}
+            className="card-premium overflow-hidden hover-lift"
+          />
+        </div>
+        <div className="lg:col-span-12 ">
           <WithdrawTable
             withdraws={withdraws}
             title={t('table:withdraw-table-title')}
