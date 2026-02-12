@@ -234,7 +234,7 @@ const Navbar = () => {
                 miniSidebar ? 'lg:w-[96px]' : 'lg:w-[289px]',
               )}
             >
-              <Logo className="relative h-10 w-full max-w-[220px] lg:h-12" />
+              <Logo className="relative h-10 w-full max-w-[220px] lg:h-20 mt-1.5" />
             </div>
             <button
               className="group hidden h-5 w-5 shrink-0 cursor-pointer flex-col justify-center space-y-1 me-6 "

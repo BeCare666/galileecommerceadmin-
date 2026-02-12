@@ -352,11 +352,15 @@ export const siteSettings = {
             icon: 'QuestionIcon',
             permissions: adminAndOwnerOnly,
           },
+            {
+            href: (shop: string) =>
+              `/${shop}${Routes.reviews?.list || ''}`.replace(/\/+/, '/'),
+            label: 'sidebar-nav-item-reviews',
+            icon: 'ReviewIcon',
+            permissions: adminAndOwnerOnly,
+          },
         ],
       },
-
-
-
 
     },
 

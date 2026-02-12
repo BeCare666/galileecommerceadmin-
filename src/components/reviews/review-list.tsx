@@ -26,6 +26,7 @@ export type IProps = {
   onSort: (current: any) => void;
   onOrder: (current: string) => void;
 };
+
 const ReviewList = ({
   reviews,
   paginatorInfo,
@@ -35,8 +36,9 @@ const ReviewList = ({
 }: IProps) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { alignLeft } = useIsRTL();
+  const { alignLeft, alignRight } = useIsRTL();
   const { openModal } = useModalAction();
+
   const [sortingObj, setSortingObj] = useState<{
     sort: SortOrder;
     column: string | null;
@@ -48,13 +50,17 @@ const ReviewList = ({
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc
+        currentSortDirection === SortOrder.Desc
+          ? SortOrder.Asc
+          : SortOrder.Desc
       );
       onOrder(column!);
 
       setSortingObj({
         sort:
-          sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc,
+          sortingObj.sort === SortOrder.Desc
+            ? SortOrder.Asc
+            : SortOrder.Desc,
         column: column,
       });
     },
@@ -91,10 +97,10 @@ const ReviewList = ({
       dataIndex: 'product',
       key: 'product-image',
       align: alignLeft,
-      width: 220,
+      width: 250,
       render: (product: Product) => (
-        <div className="flex items-center">
-          <div className="relative aspect-square h-14 w-14 shrink-0 overflow-hidden rounded border border-border-200/80 bg-gray-100 me-2.5">
+        <div className="flex items-center gap-3">
+          <div className="relative aspect-square h-14 w-14 shrink-0 overflow-hidden rounded border border-gray-200 bg-gray-100">
             <Image
               src={
                 product?.image?.thumbnail ?? siteSettings.product.placeholder
@@ -108,7 +114,7 @@ const ReviewList = ({
           <Link
             href={`${process.env.NEXT_PUBLIC_SHOP_URL}/products/${product?.slug}`}
           >
-            <span className="truncate whitespace-nowrap font-medium">
+            <span className="truncate whitespace-nowrap font-medium text-gray-900 hover:text-accent transition-colors">
               {product?.name}
             </span>
           </Link>
@@ -127,7 +133,8 @@ const ReviewList = ({
         <TitleWithSort
           title={t('table:table-item-ratings')}
           ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'rating'
+            sortingObj.sort === SortOrder.Asc &&
+            sortingObj.column === 'rating'
           }
           isActive={sortingObj.column === 'rating'}
         />
@@ -152,12 +159,16 @@ const ReviewList = ({
       render: (record: any) => {
         if (router.query.shop) {
           return (
-            <span className="font-bold">{record?.abusive_reports_count}</span>
+            <span className="font-bold">
+              {record?.abusive_reports_count}
+            </span>
           );
         }
         return (
           <>
-            <span className="font-bold">{record?.abusive_reports_count}</span>
+            <span className="font-bold">
+              {record?.abusive_reports_count}
+            </span>
             {record?.abusive_reports_count > 0 && (
               <a
                 href={`${router.asPath}/${record?.id}`}
@@ -187,7 +198,7 @@ const ReviewList = ({
       dataIndex: 'created_at',
       key: 'created_at',
       align: alignLeft,
-      width: 120,
+      width: 150,
       onHeaderCell: () => onHeaderClick('created_at'),
       render: (date: string) => {
         dayjs.extend(relativeTime);
@@ -204,12 +215,15 @@ const ReviewList = ({
       title: t('table:table-item-actions'),
       dataIndex: 'id',
       key: 'actions',
-      align: 'right',
-      width: 100,
+      align: alignRight,
+      width: 120,
       render: (id: string) => {
         if (router?.query?.shop) {
           return (
-            <button onClick={() => openAbuseReportModal(id)}>
+            <button
+              onClick={() => openAbuseReportModal(id)}
+              className="font-medium text-accent hover:underline"
+            >
               {t('common:text-report')}
             </button>
           );
@@ -218,19 +232,22 @@ const ReviewList = ({
       },
     },
   ];
+
   return (
     <>
-      <div className="mb-6 overflow-hidden rounded shadow">
+      {/* Wrapper premium identique à ShopList */}
+      <div className="b-space-table-wrapper mb-6 overflow-hidden rounded-2xl border-2 border-gray-200 bg-white shadow-lg">
         <Table
-          //@ts-ignore
           columns={columns}
           emptyText={() => (
-            <div className="flex flex-col items-center py-7">
-              <NoDataFound className="w-52" />
-              <div className="mb-1 pt-6 text-base font-semibold text-heading">
+            <div className="flex flex-col items-center justify-center py-16 px-4">
+              <NoDataFound className="h-40 w-40 text-gray-300" />
+              <p className="mt-6 text-base font-semibold text-gray-700">
                 {t('table:empty-table-data')}
-              </div>
-              <p className="text-[13px]">{t('table:empty-table-sorry-text')}</p>
+              </p>
+              <p className="mt-1 text-sm text-gray-500">
+                {t('table:empty-table-sorry-text')}
+              </p>
             </div>
           )}
           data={reviews}
@@ -240,7 +257,10 @@ const ReviewList = ({
       </div>
 
       {!!paginatorInfo?.total && (
-        <div className="flex items-center justify-end">
+        <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border-2 border-slate-200 bg-slate-50 px-5 py-4 shadow-md">
+          <span className="text-sm font-semibold text-slate-600">
+            {t('table:table-item-total')}: {paginatorInfo.total}
+          </span>
           <Pagination
             total={paginatorInfo.total}
             current={paginatorInfo.currentPage}

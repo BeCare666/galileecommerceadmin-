@@ -39,7 +39,6 @@ const OrderTransactionList = ({
   onSort,
   onOrder,
 }: IProps) => {
-  // const { data, paginatorInfo } = orders! ?? {};
   const router = useRouter();
   const { t } = useTranslation();
   const rowExpandable = (record: any) => record.children?.length;
@@ -47,6 +46,7 @@ const OrderTransactionList = ({
   const { permissions } = getAuthCredentials();
   const { mutate: createConversations, isLoading: creating } =
     useCreateConversations();
+
   const [loading, setLoading] = useState<boolean | string | undefined>(false);
   const [sortingObj, setSortingObj] = useState<{
     sort: SortOrder;
@@ -68,13 +68,17 @@ const OrderTransactionList = ({
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc
+        currentSortDirection === SortOrder.Desc
+          ? SortOrder.Asc
+          : SortOrder.Desc
       );
       onOrder(column!);
 
       setSortingObj({
         sort:
-          sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc,
+          sortingObj.sort === SortOrder.Desc
+            ? SortOrder.Asc
+            : SortOrder.Desc,
         column: column,
       });
     },
@@ -171,7 +175,9 @@ const OrderTransactionList = ({
       dataIndex: 'payment_gateway',
       key: 'payment_gateway',
       align: alignLeft,
-      render: (payment_gateway: string) => <div>{payment_gateway}</div>,
+      render: (payment_gateway: string) => (
+        <div>{payment_gateway}</div>
+      ),
     },
     {
       title: t('table:table-item-payment-status'),
@@ -179,26 +185,21 @@ const OrderTransactionList = ({
       key: 'payment_status',
       align: 'center',
       render: (payment_status: string) => (
-        <Badge text={t(payment_status)} color={StatusColor(payment_status)} />
+        <Badge
+          text={t(payment_status)}
+          color={StatusColor(payment_status)}
+        />
       ),
     },
   ];
 
   return (
     <>
-      <div className="mb-6 overflow-hidden rounded shadow">
+      {/* SAME WRAPPER AS REVIEWLIST */}
+      <div className="mb-6 overflow-hidden rounded-2xl border-2 border-gray-200 bg-white shadow-lg">
         <Table
           //@ts-ignore
           columns={columns}
-          emptyText={() => (
-            <div className="flex flex-col items-center py-7">
-              <NoDataFound className="w-52" />
-              <div className="mb-1 pt-6 text-base font-semibold text-heading">
-                {t('table:empty-table-data')}
-              </div>
-              <p className="text-[13px]">{t('table:empty-table-sorry-text')}</p>
-            </div>
-          )}
           data={orders}
           rowKey="id"
           scroll={{ x: 1000 }}
@@ -206,11 +207,22 @@ const OrderTransactionList = ({
             expandedRowRender: () => '',
             rowExpandable: rowExpandable,
           }}
+          emptyText={() => (
+            <div className="flex flex-col items-center py-7">
+              <NoDataFound className="w-52" />
+              <div className="mb-1 pt-6 text-base font-semibold text-heading">
+                {t('table:empty-table-data')}
+              </div>
+              <p className="text-[13px]">
+                {t('table:empty-table-sorry-text')}
+              </p>
+            </div>
+          )}
         />
       </div>
 
       {!!paginatorInfo?.total && (
-        <div className="flex items-center justify-end">
+        <div className="flex items-center justify-end rounded-2xl border-2 border-gray-200 bg-white px-5 py-4 shadow-lg">
           <Pagination
             total={paginatorInfo?.total}
             current={paginatorInfo?.currentPage}

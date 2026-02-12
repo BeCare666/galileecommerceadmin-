@@ -43,7 +43,10 @@ const OrderList = ({
   const { mutate: createConversations } = useCreateConversations();
 
   const [loading, setLoading] = useState<string | boolean | undefined>(false);
-  const [sortingObj, setSortingObj] = useState<{ sort: SortOrder; column: string | null }>({
+  const [sortingObj, setSortingObj] = useState<{
+    sort: SortOrder;
+    column: string | null;
+  }>({
     sort: SortOrder.Desc,
     column: null,
   });
@@ -58,12 +61,17 @@ const OrderList = ({
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc
+        currentSortDirection === SortOrder.Desc
+          ? SortOrder.Asc
+          : SortOrder.Desc
       );
       onOrder(column!);
 
       setSortingObj({
-        sort: sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc,
+        sort:
+          sortingObj.sort === SortOrder.Desc
+            ? SortOrder.Asc
+            : SortOrder.Desc,
         column: column,
       });
     },
@@ -76,13 +84,17 @@ const OrderList = ({
       key: 'tracking_number',
       align: alignLeft,
       width: 200,
-      className: 'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
+      className:
+        'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
     },
     {
       title: (
         <TitleWithSort
           title={t('table:table-item-customer')}
-          ascending={sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'}
+          ascending={
+            sortingObj.sort === SortOrder.Asc &&
+            sortingObj.column === 'name'
+          }
           isActive={sortingObj.column === 'name'}
         />
       ),
@@ -90,14 +102,21 @@ const OrderList = ({
       key: 'name',
       align: alignLeft,
       width: 250,
-      className: 'cursor-pointer text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
+      className:
+        'cursor-pointer text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
       onHeaderCell: () => onHeaderClick('name'),
       render: (customer: any) => (
         <div className="flex items-center gap-3">
           <Avatar name={customer?.name} />
           <div className="flex flex-col whitespace-nowrap font-medium ms-2">
-            <span>{customer?.name ? customer?.name : t('common:text-guest')}</span>
-            <span className="text-[13px] font-normal text-gray-500/80">{customer?.email}</span>
+            <span>
+              {customer?.name
+                ? customer?.name
+                : t('common:text-guest')}
+            </span>
+            <span className="text-[13px] font-normal text-gray-500/80">
+              {customer?.email}
+            </span>
           </div>
         </div>
       ),
@@ -107,7 +126,8 @@ const OrderList = ({
       dataIndex: 'products',
       key: 'products',
       align: 'center',
-      className: 'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
+      className:
+        'hidden text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
       render: (products: Product[] | undefined) => (
         <span>{Array.isArray(products) ? products.length : 0}</span>
       ),
@@ -116,7 +136,10 @@ const OrderList = ({
       title: (
         <TitleWithSort
           title={t('table:table-item-order-date')}
-          ascending={sortingObj.sort === SortOrder.Asc && sortingObj.column === 'created_at'}
+          ascending={
+            sortingObj.sort === SortOrder.Asc &&
+            sortingObj.column === 'created_at'
+          }
           isActive={sortingObj.column === 'created_at'}
           className="cursor-pointer"
         />
@@ -125,14 +148,18 @@ const OrderList = ({
       key: 'created_at',
       align: 'center',
       onHeaderCell: () => onHeaderClick('created_at'),
-      className: 'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
+      className:
+        'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
       render: (date: string) => {
         dayjs.extend(relativeTime);
         dayjs.extend(utc);
         dayjs.extend(timezone);
         return (
           <span className="whitespace-nowrap">
-            {dayjs.utc(date).tz(dayjs.tz.guess()).fromNow()}
+            {dayjs
+              .utc(date)
+              .tz(dayjs.tz.guess())
+              .fromNow()}
           </span>
         );
       },
@@ -142,17 +169,23 @@ const OrderList = ({
       dataIndex: 'delivery_fee',
       key: 'delivery_fee',
       align: 'center',
-      className: 'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
+      className:
+        'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
       render: (value: any) => {
         const { price } = usePrice({ amount: value || 0 });
-        return <span className="whitespace-nowrap">{price}</span>;
+        return (
+          <span className="whitespace-nowrap">{price}</span>
+        );
       },
     },
     {
       title: (
         <TitleWithSort
           title={t('table:table-item-total')}
-          ascending={sortingObj.sort === SortOrder.Asc && sortingObj.column === 'total'}
+          ascending={
+            sortingObj.sort === SortOrder.Asc &&
+            sortingObj.column === 'total'
+          }
           isActive={sortingObj.column === 'total'}
           className="cursor-pointer"
         />
@@ -162,20 +195,26 @@ const OrderList = ({
       align: 'center',
       width: 120,
       onHeaderCell: () => onHeaderClick('total'),
-      className: 'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
-      render: (value: any) => {
-        const { price } = usePrice({ amount: value });
-        return <span className="whitespace-nowrap">{price}</span>;
-      },
+      className:
+        'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
+      render: (paid_total: any) => (
+        <span className="whitespace-nowrap">
+          {paid_total}$
+        </span>
+      ),
     },
     {
       title: t('table:table-item-status'),
       dataIndex: 'order_status',
       key: 'order_status',
       align: 'center',
-      className: 'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
+      className:
+        'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
       render: (order_status: string) => (
-        <Badge text={t(order_status)} color={StatusColor(order_status)} />
+        <Badge
+          text={t(order_status)}
+          color={StatusColor(order_status)}
+        />
       ),
     },
     {
@@ -184,20 +223,26 @@ const OrderList = ({
       key: 'actions',
       align: alignRight,
       width: 120,
-      className: 'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
+      className:
+        'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
       render: (id: string, order: Order) => {
-        const currentButtonLoading = !!loading && loading === order?.shop_id;
+        const currentButtonLoading =
+          !!loading && loading === order?.shop_id;
+
         return (
           <div className="flex items-center justify-end gap-2">
             {order?.children?.length ? null : (
               <>
-                {permissions?.includes(SUPER_ADMIN) && order?.shop_id ? (
+                {permissions?.includes(SUPER_ADMIN) &&
+                order?.shop_id ? (
                   <button
-                    onClick={() => onSubmit(order?.shop_id)}
+                    onClick={() =>
+                      onSubmit(order?.shop_id)
+                    }
                     disabled={currentButtonLoading}
                     className="cursor-pointer text-accent transition-colors duration-300 hover:text-accent-hover"
                   >
-                    {/* Chat Icon ici */}
+                    {/* Chat Icon */}
                   </button>
                 ) : null}
                 <ActionButtons
@@ -215,21 +260,25 @@ const OrderList = ({
 
   return (
     <>
-      <div className="mb-6 overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-md">
+      {/* EXACT SAME WRAPPER STYLE AS REVIEWLIST */}
+      <div className="mb-6 overflow-hidden rounded-2xl border-2 border-gray-200 bg-white shadow-lg">
         <Table
           //@ts-ignore
           columns={columns}
           data={orders}
           rowKey="id"
           scroll={{ x: 1000 }}
-          expandable={{ expandedRowRender: () => '', rowExpandable }}
+          expandable={{
+            expandedRowRender: () => '',
+            rowExpandable,
+          }}
           emptyText={() => (
-            <div className="flex flex-col items-center justify-center py-16 px-4">
-              <NoDataFound className="w-40 md:w-52 opacity-80" />
-              <div className="mt-6 text-base font-semibold text-gray-700 dark:text-white">
+            <div className="flex flex-col items-center py-7">
+              <NoDataFound className="w-52" />
+              <div className="mb-1 pt-6 text-base font-semibold text-heading">
                 {t('table:empty-table-data')}
               </div>
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 max-w-sm text-center">
+              <p className="text-[13px]">
                 {t('table:empty-table-sorry-text')}
               </p>
             </div>
@@ -238,7 +287,7 @@ const OrderList = ({
       </div>
 
       {!!paginatorInfo?.total && (
-        <div className="flex flex-wrap items-center justify-end gap-4 rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 shadow-md">
+        <div className="flex items-center justify-end rounded-2xl border-2 border-gray-200 bg-white px-5 py-4 shadow-lg">
           <Pagination
             total={paginatorInfo.total}
             current={paginatorInfo.currentPage}
