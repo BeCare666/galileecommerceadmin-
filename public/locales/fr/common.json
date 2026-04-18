@@ -627,5 +627,19 @@
   "dashboard-seller-space": "Espace vendeur",
   "dashboard-seller-access": "Accédez à votre B space {{name}}.",
   "dashboard-default-action-title": "Ajoutez un nouveau produit",
-  "dashboard-default-action-description": "Créez votre premier article en quelques clics."
+  "dashboard-default-action-description": "Créez votre premier article en quelques clics.",
+  "text-ambassadors": "Ambassadeurs",
+  "input-placeholder-search-name": "Rechercher un ambassadeur...",
+  "table-item-id": "ID",
+  "table-item-name": "Nom",
+  "table-item-email": "Email",
+  "table-item-type": "Type",
+  "table-item-status": "Statut",
+  "empty-table-data": "Aucune donnée trouvée",
+  "text-ambassador-management": "Gestion des ambassadeurs",
+  "sidebar-nav-item-ambassadors": "Ambassadeurs",
+  "text-all-ambassadors": "Tous les ambassadeurs",
+  "text-pending-ambassadors": "Ambassadeurs en attente",
+  "text-approved-ambassadors": "Ambassadeurs approuvés",
+  "text-rejected-ambassadors": "Ambassadeurs rejetés"
 }

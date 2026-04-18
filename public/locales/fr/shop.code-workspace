@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../../../shop"
+		},
+		{
+			"path": "../../../../galileecommerce-api"
+		},
+		{
+			"path": "../../.."
+		}
+	],
+	"settings": {}
+}

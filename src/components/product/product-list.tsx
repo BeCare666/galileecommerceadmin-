@@ -55,7 +55,7 @@ const ProductList = ({
     sort: SortOrder.Desc,
     column: null,
   });
-
+console.log('product ', products);
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
@@ -145,7 +145,7 @@ const ProductList = ({
         'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
       render: (shop: Shop) => (
         <div className="flex items-center gap-3 font-medium">
-          <div className="relative h-9 w-9 md:h-10 md:w-10 overflow-hidden rounded-full border border-border-200/70 bg-gray-100 dark:bg-gray-800 shadow-sm">
+          <div className="hidden relative h-9 w-9 md:h-10 md:w-10 overflow-hidden rounded-full border border-border-200/70 bg-gray-100 dark:bg-gray-800 shadow-sm">
             <Image
               src={shop?.logo?.logo_image_url ?? siteSettings.product.placeholder}
               alt={shop?.name ?? 'Shop'}

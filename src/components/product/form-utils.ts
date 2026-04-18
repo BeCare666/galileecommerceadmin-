@@ -48,7 +48,10 @@ export type ProductFormValues = Omit<
   in_flash_sale: boolean;
   variations?: AttributeValue[];
   variation_options?: Variation[];
-  // image: AttachmentInput;
+  caracteristiques?: string;
+  table_content?: string;
+  embaEditor?: string;
+  timeOutEditor?: string;
 };
 
 export type ProductTypeOption = {
@@ -237,9 +240,9 @@ export function getProductDefaultValues(
     // ---- Type de mise en page (select) ----
     type: productType
       ? {
-          id: String((productType as any)?.id ?? (product as any)?.type_id),
-          name: (productType as any)?.name ?? '',
-        }
+        id: String((productType as any)?.id ?? (product as any)?.type_id),
+        name: (productType as any)?.name ?? '',
+      }
       : (product as any)?.type_id
         ? { id: String((product as any).type_id), name: '' }
         : null,

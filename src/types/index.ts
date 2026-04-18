@@ -808,6 +808,9 @@ export interface Product {
   pivot?: OrderProductPivot;
   orders: Order[];
   description?: string;
+  table_content?: string;
+  embaEditor?: string;
+  timeOutEditor?: string;
   in_stock?: boolean;
   is_digital?: boolean;
   is_external?: boolean;
@@ -832,6 +835,7 @@ export interface Product {
   updated_at: string;
   ratings: number;
   shop?: Shop;
+  caracteristiques?: string;
 }
 export interface CreateProduct {
   name: string;
@@ -868,6 +872,7 @@ export interface CreateProduct {
   width?: string;
   shop_id?: string;
   in_flash_sale: boolean;
+  caracteristiques?: string;
 }
 
 export interface AttributeProductPivot {

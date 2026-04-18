@@ -3,6 +3,7 @@ import { MAXIMUM_WORD_COUNT_FOR_RICH_TEXT_EDITOR } from '@/utils/constants';
 
 export const productValidationSchema = yup.object().shape({
   name: yup.string().required('form:error-name-required'),
+  caracteristiques: yup.string().nullable().notRequired(),
   sku: yup.string().nullable().required('form:error-sku-required'),
   price: yup
     .number()
@@ -110,6 +111,10 @@ export const productValidationSchema = yup.object().shape({
       MAXIMUM_WORD_COUNT_FOR_RICH_TEXT_EDITOR,
       'form:error-description-maximum-title',
     ),
+  table_content: yup
+    .string()
+    .nullable()
+    .notRequired(),
   // image: yup
   //   .mixed()
   //   .nullable()

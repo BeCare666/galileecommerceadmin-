@@ -106,7 +106,7 @@ const AdminsList = ({
             className="!h-10 !w-10 ring-2 ring-white shadow-sm"
           />
           <div className="flex flex-col overflow-hidden">
-            <span className="truncate font-semibold text-gray-900">
+            <span className="truncate font-semibold text-gray-900 text-left">
               {name}
             </span>
             <span className="truncate text-xs text-gray-500">
@@ -120,39 +120,39 @@ const AdminsList = ({
     // =========================
     // PERMISSIONS
     // =========================
- 
-{
-  title: (
-    <TitleWithSort
-      title={t('table:table-item-permissions')}
-      ascending={
-        sortingObj.sort === SortOrder.Asc &&
-        sortingObj.column === 'role'
-      }
-      isActive={sortingObj.column === 'role'}
-    />
-  ),
-  dataIndex: 'role',
-  key: 'role',
-  align: 'center' as AlignType,
-  width: 180,
-  className: 'cursor-pointer',
-  onHeaderCell: () => onHeaderClick('role'),
-  render: (role: string) => {
-    const roleStyle: Record<string, string> = {
-      super_admin: 'bg-purple-100 text-purple-700 border-purple-200',
-      admin: 'bg-indigo-100 text-indigo-700 border-indigo-200',
-      manager: 'bg-blue-100 text-blue-700 border-blue-200',
-      staff: 'bg-slate-100 text-slate-700 border-slate-200',
-    };
 
-    const style =
-      roleStyle[role?.toLowerCase()] ||
-      'bg-gray-100 text-gray-700 border-gray-200';
+    {
+      title: (
+        <TitleWithSort
+          title={t('table:table-item-permissions')}
+          ascending={
+            sortingObj.sort === SortOrder.Asc &&
+            sortingObj.column === 'role'
+          }
+          isActive={sortingObj.column === 'role'}
+        />
+      ),
+      dataIndex: 'role',
+      key: 'role',
+      align: 'center' as AlignType,
+      width: 180,
+      className: 'cursor-pointer',
+      onHeaderCell: () => onHeaderClick('role'),
+      render: (role: string) => {
+        const roleStyle: Record<string, string> = {
+          super_admin: 'bg-purple-100 text-purple-700 border-purple-200',
+          admin: 'bg-indigo-100 text-indigo-700 border-indigo-200',
+          manager: 'bg-blue-100 text-blue-700 border-blue-200',
+          staff: 'bg-slate-100 text-slate-700 border-slate-200',
+        };
 
-    return (
-      <span
-        className={`
+        const style =
+          roleStyle[role?.toLowerCase()] ||
+          'bg-gray-100 text-gray-700 border-gray-200';
+
+        return (
+          <span
+            className={`
           px-3 py-1
           text-xs font-semibold
           rounded-full
@@ -160,12 +160,12 @@ const AdminsList = ({
           whitespace-nowrap
           ${style}
         `}
-      >
-        {role}
-      </span>
-    );
-  },
-},
+          >
+            {role}
+          </span>
+        );
+      },
+    },
 
     // =========================
     // STATUS

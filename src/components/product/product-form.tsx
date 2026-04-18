@@ -58,6 +58,10 @@ import { EyeIcon } from '../icons/category/eyes-icon';
 import { UpdateIcon } from '../icons/update';
 import { ProductDescriptionSuggestion } from '@/components/product/product-ai-prompt';
 import RichTextEditor from '@/components/ui/wysiwyg-editor/editor';
+import TableEditor from '@/components/ui/wysiwyg-editor/tableEditor';
+import EmbaEditor from '@/components/ui/wysiwyg-editor/embaEditor';
+import TimeOutEditor from '@/components/ui/wysiwyg-editor/timeOutEditor';
+import ProductTableInput from '@/components/ui/wysiwyg-editor/productTableInput';
 import TooltipLabel from '@/components/ui/tooltip-label';
 import CountrySelect from '../countrySelect/countrySelect'
 type ProductFormProps = {
@@ -501,123 +505,141 @@ export default function CreateOrUpdateProductForm({
               </Card>
             </div>
 
-          <div className="flex flex-wrap my-5 sm:my-8">
-            <Description
-              title={t('form:item-description')}
-              details={`${initialValues
-                ? t('form:item-description-edit')
-                : t('form:item-description-add')
-                } ${t('form:product-description-help-text')}`}
-              className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
-            />
-
-            <Card className="w-full sm:w-8/12 md:w-2/3">
-              <Input
-                label={`${t('form:input-label-name')}*`}
-                {...register('name')}
-                error={t(errors.name?.message!)}
-                variant="outline"
-                className="mb-5"
+            <div className="flex flex-wrap my-5 sm:my-8">
+              <Description
+                title={t('form:item-description')}
+                details={`${initialValues
+                  ? t('form:item-description-edit')
+                  : t('form:item-description-add')
+                  } ${t('form:product-description-help-text')}`}
+                className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
               />
 
-              {isSlugEditable ? (
-                <div className="relative mb-5">
+              <Card className="w-full sm:w-8/12 md:w-2/3">
+                <Input
+                  label={`${t('form:input-label-name')}*`}
+                  {...register('name')}
+                  error={t(errors.name?.message!)}
+                  variant="outline"
+                  className="mb-5"
+                />
+
+                {isSlugEditable ? (
+                  <div className="relative mb-5">
+                    <Input
+                      label={`${t('Slug')}`}
+                      {...register('slug')}
+                      error={t(errors.slug?.message!)}
+                      variant="outline"
+                      disabled={isSlugDisable}
+                    />
+                    <button
+                      className="absolute top-[27px] right-px z-10 flex h-[46px] w-11 items-center justify-center rounded-tr rounded-br border-l border-solid border-border-base bg-white px-2 text-body transition duration-200 hover:text-heading focus:outline-none"
+                      type="button"
+                      title={t('common:text-edit')}
+                      onClick={() => setIsSlugDisable(false)}
+                    >
+                      <EditIcon width={14} />
+                    </button>
+                  </div>
+                ) : (
                   <Input
                     label={`${t('Slug')}`}
                     {...register('slug')}
-                    error={t(errors.slug?.message!)}
+                    value={slugAutoSuggest}
                     variant="outline"
-                    disabled={isSlugDisable}
+                    className="mb-5"
+                    disabled
                   />
-                  <button
-                    className="absolute top-[27px] right-px z-10 flex h-[46px] w-11 items-center justify-center rounded-tr rounded-br border-l border-solid border-border-base bg-white px-2 text-body transition duration-200 hover:text-heading focus:outline-none"
-                    type="button"
-                    title={t('common:text-edit')}
-                    onClick={() => setIsSlugDisable(false)}
-                  >
-                    <EditIcon width={14} />
-                  </button>
-                </div>
-              ) : (
+                )}
                 <Input
-                  label={`${t('Slug')}`}
-                  {...register('slug')}
-                  value={slugAutoSuggest}
+                  label={`${t('form:input-label-unit')}*`}
+                  {...register('unit')}
+                  error={t(errors.unit?.message!)}
                   variant="outline"
                   className="mb-5"
-                  disabled
                 />
-              )}
-              <Input
-                label={`${t('form:input-label-unit')}*`}
-                {...register('unit')}
-                error={t(errors.unit?.message!)}
-                variant="outline"
-                className="mb-5"
-              />
-              <div className="relative mb-5">
-                {options?.useAi && (
-                  <OpenAIButton
-                    title="Generate Description With AI"
-                    onClick={handleGenerateDescription}
-                  />
-                )}
-                <RichTextEditor
-                  title={t('form:input-label-description')}
-                  control={control}
-                  name="description"
-                  error={t(errors?.description?.message)}
-                />
-              </div>
-
-              <div>
-                <Label>{t('form:input-label-status')}</Label>
-                {!isEmpty(statusList)
-                  ? statusList?.map((status: any, index: number) => (
-                    <Radio
-                      key={index}
-                      {...register('status')}
-                      label={t(status?.label)}
-                      id={status?.id}
-                      value={status?.value}
-                      className="mb-2"
-                      disabled={
-                        permission &&
-                          initialValues?.status === ProductStatus?.Draft
-                          ? true
-                          : false
-                      }
+                <div className="relative mb-5">
+                  {options?.useAi && (
+                    <OpenAIButton
+                      title="Generate Description With AI"
+                      onClick={handleGenerateDescription}
                     />
-                  ))
-                  : ''}
-                {errors.status?.message && (
-                  <p className="my-2 text-xs text-red-500">
-                    {t(errors?.status?.message!)}
-                  </p>
-                )}
-              </div>
-              <div className="mt-5 w-ful">
-                <Label>{`${t('form:input-label-CountrySelect')}*`}</Label>
-                <CountrySelect value={selectedCountry} onChange={setSelectedCountry} />
-                <div className="mt-5 w-ful">
-                  <Label>{`${t('form:input-label-countryorigin-optionL')}*`}</Label>
-                  <select
-                    id="product-origin"
-                    required
-                    value={isOrigin} // string
-                    onChange={(e) => setIsOrigin(e.target.value)} // toujours string
-                    className="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none transition-all"
-                  >
-                    <option value="" disabled>
-                      {t('form:input-label-countryorigin-option')}
-                    </option>
-                    <option value="true">{t('form:input-label-countryorigin-option-yes')}</option>
-                    <option value="false">{t('form:input-label-countryorigin-option-no')}</option>
-                  </select>
+                  )}
+                  <RichTextEditor
+                    title={t('form:input-label-description')}
+                    control={control}
+                    name="description"
+                    error={t(errors?.description?.message)}
+                  />
                 </div>
-              </div>
-            </Card>
-          </div>
+                <TableEditor
+                  title="Caractéristiques du produit"
+                  control={control}
+                  name="table_content"
+                  error={errors?.table_content?.message}
+                />
+                <EmbaEditor
+                  title="Emballage et livraison"
+                  control={control}
+                  name="embaEditor"
+                  error={errors?.embaEditor?.message}
+                />
+                <TimeOutEditor
+                  title="Délai de préparation de la commande"
+                  control={control}
+                  name="timeOutEditor"
+                  error={errors?.timeOutEditor?.message}
+                />
+
+                <div>
+                  <Label>{t('form:input-label-status')}</Label>
+                  {!isEmpty(statusList)
+                    ? statusList?.map((status: any, index: number) => (
+                      <Radio
+                        key={index}
+                        {...register('status')}
+                        label={t(status?.label)}
+                        id={status?.id}
+                        value={status?.value}
+                        className="mb-2"
+                        disabled={
+                          permission &&
+                            initialValues?.status === ProductStatus?.Draft
+                            ? true
+                            : false
+                        }
+                      />
+                    ))
+                    : ''}
+                  {errors.status?.message && (
+                    <p className="my-2 text-xs text-red-500">
+                      {t(errors?.status?.message!)}
+                    </p>
+                  )}
+                </div>
+                <div className="mt-5 w-ful">
+                  <Label>{`${t('form:input-label-CountrySelect')}*`}</Label>
+                  <CountrySelect value={selectedCountry} onChange={setSelectedCountry} />
+                  <div className="mt-5 w-ful">
+                    <Label>{`${t('form:input-label-countryorigin-optionL')}*`}</Label>
+                    <select
+                      id="product-origin"
+                      required
+                      value={isOrigin} // string
+                      onChange={(e) => setIsOrigin(e.target.value)} // toujours string
+                      className="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none transition-all"
+                    >
+                      <option value="" disabled>
+                        {t('form:input-label-countryorigin-option')}
+                      </option>
+                      <option value="true">{t('form:input-label-countryorigin-option-yes')}</option>
+                      <option value="false">{t('form:input-label-countryorigin-option-no')}</option>
+                    </select>
+                  </div>
+                </div>
+              </Card>
+            </div>
           </div>
 
           {/* <div className="flex flex-wrap pb-8 my-5 border-b  border-border-base sm:my-8">

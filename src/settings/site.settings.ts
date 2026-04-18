@@ -98,7 +98,40 @@ export const siteSettings = {
           },
         ],
       },
-
+      ambassador: {
+        href: '#',
+        label: 'text-ambassador-management',
+        icon: 'UsersIcon',
+        childMenu: [
+          {
+            href: '#',
+            label: 'sidebar-nav-item-ambassadors',
+            icon: 'UsersIcon',
+            childMenu: [
+              {
+                href: Routes.ambassadorList || '#',
+                label: 'text-all-ambassadors',
+                icon: 'UsersIcon',
+              },
+              {
+                href: Routes.pendingAmbassadors || '#',
+                label: 'text-pending-ambassadors',
+                icon: 'UsersIcon',
+              },
+              {
+                href: Routes.approvedAmbassadors || '#',
+                label: 'text-approved-ambassadors',
+                icon: 'UsersIcon',
+              },
+              {
+                href: Routes.rejectedAmbassadors || '#',
+                label: 'text-rejected-ambassadors',
+                icon: 'UsersIcon',
+              },
+            ],
+          },
+        ],
+      },
       product: {
         href: '#',
         label: 'text-product-management',
@@ -352,7 +385,7 @@ export const siteSettings = {
             icon: 'QuestionIcon',
             permissions: adminAndOwnerOnly,
           },
-            {
+          {
             href: (shop: string) =>
               `/${shop}${Routes.reviews?.list || ''}`.replace(/\/+/, '/'),
             label: 'sidebar-nav-item-reviews',
