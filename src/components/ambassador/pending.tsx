@@ -20,7 +20,7 @@ type Props = {
     onPagination: (page: number) => void;
 };
 
-const AmbassadorList = ({ ambassadors, paginatorInfo, onPagination }: Props) => {
+const Pending = ({ ambassadors, paginatorInfo, onPagination }: Props) => {
     const { t } = useTranslation();
     const { alignLeft } = useIsRTL();
 
@@ -239,4 +239,4 @@ const AmbassadorList = ({ ambassadors, paginatorInfo, onPagination }: Props) => 
     );
 };
 
-export default AmbassadorList;
+export default Pending;
