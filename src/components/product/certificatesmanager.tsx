@@ -44,42 +44,42 @@ export const CERTIFICATE_OPTIONS = [
     {
         label: "ISO 9001",
         type: "ISO9001",
-        badgeIcon: "https://upload.wikimedia.org/wikipedia/commons/5/5e/ISO_9001-2015.svg",
+        badgeIcon: "https://www.iso.org/modules/isoorg-template/img/iso/iso-logo-print.gif",
     },
     {
         label: "ISO 14001",
         type: "ISO14001",
-        badgeIcon: "https://upload.wikimedia.org/wikipedia/commons/3/3b/ISO_14001_logo.svg",
+        badgeIcon: "https://www.iso.org/modules/isoorg-template/img/iso/iso-logo-print.gif",
     },
     {
         label: "ISO 45001",
         type: "ISO45001",
-        badgeIcon: "https://upload.wikimedia.org/wikipedia/commons/8/8d/ISO_45001_logo.svg",
+        badgeIcon: "https://www.iso.org/modules/isoorg-template/img/iso/iso-logo-print.gif",
     },
     {
         label: "RoHS",
         type: "ROHS",
-        badgeIcon: "https://upload.wikimedia.org/wikipedia/commons/3/3f/RoHS_logo.svg",
+        badgeIcon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF73k-wDCjfB-mlY2qW7rWTrcJbA_ZAKVMfQ&s",
     },
     {
         label: "FCC",
         type: "FCC",
-        badgeIcon: "https://upload.wikimedia.org/wikipedia/commons/2/2d/FCC_logo.svg",
+        badgeIcon: "https://cdn.worldvectorlogo.com/logos/fcc.svg",
     },
     {
         label: "UL",
         type: "UL",
-        badgeIcon: "https://upload.wikimedia.org/wikipedia/commons/3/3b/UL_logo.svg",
+        badgeIcon: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/UL_Mark.svg/960px-UL_Mark.svg.png",
     },
     {
         label: "SGS",
         type: "SGS",
-        badgeIcon: "https://upload.wikimedia.org/wikipedia/commons/0/0b/SGS_logo.svg",
+        badgeIcon: "https://static.vecteezy.com/system/resources/previews/009/022/719/non_2x/sgs-logo-sgs-letter-sgs-letter-logo-design-initials-sgs-logo-linked-with-circle-and-uppercase-monogram-logo-sgs-typography-for-technology-business-and-real-estate-brand-vector.jpg",
     },
     {
         label: "TÜV",
         type: "TUV",
-        badgeIcon: "https://upload.wikimedia.org/wikipedia/commons/1/1c/TUV_Rheinland_Logo.svg",
+        badgeIcon: "https://logowik.com/content/uploads/images/tuv-rheinland-certified7623.jpg",
     },
     {
         label: "CSA",
@@ -94,7 +94,7 @@ export const CERTIFICATE_OPTIONS = [
     {
         label: "UKCA",
         type: "UKCA",
-        badgeIcon: "https://upload.wikimedia.org/wikipedia/commons/0/0d/UKCA_marking.svg",
+        badgeIcon: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/UKCA_filled.svg/960px-UKCA_filled.svg.png?_=20210207231830",
     },
 ];
 
