@@ -252,7 +252,7 @@ export default function CertificatesManager({ productId }: Props) {
             {/* MODAL */}
             {open && (
                 <div className="fixed inset-0 bg-black/40 flex justify-center items-center">
-                    <div className="bg-white p-5 rounded-xl w-[500px] space-y-3">
+                    <div className="bg-white p-5 rounded-xl w-[500px] max-h-[90vh] overflow-y-auto space-y-3">
 
                         <h2 className="font-bold flex gap-2 items-center">
                             <ShieldCheck /> Add Certificate
