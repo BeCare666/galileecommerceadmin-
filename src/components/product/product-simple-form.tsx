@@ -1,7 +1,7 @@
 import Input from '@/components/ui/input';
 import Description from '@/components/ui/description';
 import Card from '@/components/common/card';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import Label from '@/components/ui/label';
 import FileInput from '@/components/ui/file-input';
@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import Alert from '@/components/ui/alert';
 import { SettingsOptions } from '@/types';
 import TextArea from '@/components/ui/text-area';
+import { useEffect } from 'react';
 
 type IProps = {
   initialValues: any;
@@ -22,15 +23,26 @@ export default function ProductSimpleForm({ initialValues, settings }: IProps) {
     register,
     control,
     watch,
+    setValue,
     formState: { errors },
   } = useFormContext();
+
   const { t } = useTranslation();
   const { locale } = useRouter();
-  //const isTranslateProduct = locale !== Config.defaultLanguage;
   const isTranslateProduct = locale;
+
   const is_digital = watch('is_digital');
   const is_external = watch('is_external');
   const is_update_message = watch('inform_purchased_customer');
+  const negotiable_price = watch('negotiable_price');
+
+  // 🔥 Gestion automatique des valeurs
+  useEffect(() => {
+    if (negotiable_price) {
+      setValue('price', 0);
+      setValue('sale_price', 0);
+    }
+  }, [negotiable_price, setValue]);
 
   return (
     <div className="flex flex-wrap my-5 sm:my-8">
@@ -44,22 +56,39 @@ export default function ProductSimpleForm({ initialValues, settings }: IProps) {
       />
 
       <Card className="w-full sm:w-8/12 md:w-2/3">
-        <Input
-          label={`${t('form:input-label-price')}*`}
-          {...register('price')}
-          type="number"
-          error={t(errors.price?.message!)}
-          variant="outline"
+
+        {/* ✅ Checkbox prix négociable */}
+        <Checkbox
+          {...register('negotiable_price')}
+          id="negotiable_price"
+          label="Prix à négocier avec le fournisseur"
           className="mb-5"
         />
-        <Input
-          label={t('form:input-label-sale-price')}
-          type="number"
-          {...register('sale_price')}
-          error={t(errors.sale_price?.message!)}
-          variant="outline"
-          className="mb-5"
-        />
+
+        {/* ✅ Affichage conditionnel */}
+        {!negotiable_price && (
+          <>
+            <Input
+              label={`${t('form:input-label-price')}*`}
+              {...register('price', {
+                required: !negotiable_price,
+              })}
+              type="number"
+              error={t(errors.price?.message!)}
+              variant="outline"
+              className="mb-5"
+            />
+
+            <Input
+              label={t('form:input-label-sale-price')}
+              type="number"
+              {...register('sale_price')}
+              error={t(errors.sale_price?.message!)}
+              variant="outline"
+              className="mb-5"
+            />
+          </>
+        )}
 
         {!is_external && (
           <Input
@@ -69,8 +98,6 @@ export default function ProductSimpleForm({ initialValues, settings }: IProps) {
             error={t(errors.quantity?.message!)}
             variant="outline"
             className="mb-5"
-          // Need discussion
-          //disabled={isTranslateProduct}
           />
         )}
 
@@ -85,7 +112,6 @@ export default function ProductSimpleForm({ initialValues, settings }: IProps) {
           error={t(errors.sku?.message!)}
           variant="outline"
           className="mb-5"
-        //disabled={isTranslateProduct}
         />
 
         <Input
@@ -96,50 +122,36 @@ export default function ProductSimpleForm({ initialValues, settings }: IProps) {
           className="mb-5"
         />
 
-        { /** <Checkbox
-          {...register('is_external')}
-          id="is_external"
-          label={t('form:input-label-is-external')}
-          disabled={Boolean(is_digital)}
-          className="mb-5 h"
-        />           <Label>{t('form:input-label-digital-file')}</Label>
-          <FileInput
-            name="digital_file_input"
-            control={control}
-            multiple={false}
-            acceptFile={true}
-            //required={true}
-            error={typeof errors.digital_file?.message === 'string' ? errors.digital_file.message : undefined}
-          />
-          <input type="hidden" {...register(`digital_file`)} />**/}
-
         {is_digital ? (
           <>
             <Label>{t('form:input-label-digital-file')}</Label>
+
             <FileInput
               name="digital_file_input"
               control={control}
               multiple={false}
               acceptFile={true}
             />
+
             <Alert
               message={t('form:info-about-digital-product')}
               variant="info"
               closeable={false}
               className="mt-5 mb-5"
             />
+
             <input type="hidden" {...register(`digital_file`)} />
 
-            {settings?.enableEmailForDigitalProduct ? (
+            {settings?.enableEmailForDigitalProduct && (
               <div className="mt-5 mb-5">
                 <Checkbox
                   {...register('inform_purchased_customer')}
                   id="inform_purchased_customer"
                   label="Send email to already purchased customer of this item about this update."
-                  // disabled={Boolean(is_external)}
                   className="mb-5"
                 />
-                {is_update_message ? (
+
+                {is_update_message && (
                   <TextArea
                     {...register('product_update_message')}
                     id="product_update_message"
@@ -148,9 +160,9 @@ export default function ProductSimpleForm({ initialValues, settings }: IProps) {
                     className="col-span-2"
                     placeholder="(Optional)"
                   />
-                ) : null}
+                )}
               </div>
-            ) : null}
+            )}
 
             {errors.digital_file_input && (
               <p className="my-2 text-xs text-red-500 text-start">
@@ -158,38 +170,37 @@ export default function ProductSimpleForm({ initialValues, settings }: IProps) {
               </p>
             )}
           </>
-        ) : null}
-        <>
-
-
-          {settings?.enableEmailForDigitalProduct ? (
-            <div className="mt-5 mb-5">
-              <Checkbox
-                {...register('inform_purchased_customer')}
-                id="inform_purchased_customer"
-                label="Send email to already purchased customer of this item about this update."
-                // disabled={Boolean(is_external)}
-                className="mb-5"
-              />
-              {is_update_message ? (
-                <TextArea
-                  {...register('product_update_message')}
-                  id="product_update_message"
-                  label="You can send message towards customer about this update."
-                  variant="outline"
-                  className="col-span-2"
-                  placeholder="(Optional)"
+        ) : (
+          <>
+            {settings?.enableEmailForDigitalProduct && (
+              <div className="mt-5 mb-5">
+                <Checkbox
+                  {...register('inform_purchased_customer')}
+                  id="inform_purchased_customer"
+                  label="Send email to already purchased customer of this item about this update."
+                  className="mb-5"
                 />
-              ) : null}
-            </div>
-          ) : null}
-          {errors.digital_file_input && (
-            <p className="my-2 text-xs text-red-500 text-start">
-              {t('Digital file is required')}
-            </p>
-          )}
-        </>
 
+                {is_update_message && (
+                  <TextArea
+                    {...register('product_update_message')}
+                    id="product_update_message"
+                    label="You can send message towards customer about this update."
+                    variant="outline"
+                    className="col-span-2"
+                    placeholder="(Optional)"
+                  />
+                )}
+              </div>
+            )}
+
+            {errors.digital_file_input && (
+              <p className="my-2 text-xs text-red-500 text-start">
+                {t('Digital file is required')}
+              </p>
+            )}
+          </>
+        )}
       </Card>
     </div>
   );

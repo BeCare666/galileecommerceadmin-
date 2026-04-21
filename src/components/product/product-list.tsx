@@ -13,6 +13,7 @@ import Badge from '@/components/ui/badge/badge';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { NoDataFound } from '@/components/icons/no-data-found';
+import  CertificatesManager  from '@/components/product/certificatesmanager';
 import {
   Product,
   MappedPaginatorInfo,
@@ -25,7 +26,7 @@ import { useState } from 'react';
 import TitleWithSort from '@/components/ui/title-with-sort';
 import { Routes } from '@/config/routes';
 import LanguageSwitcher from '@/components/ui/lang-action/action';
-
+import { ShieldCheck } from 'lucide-react';
 export type IProps = {
   products: Product[] | undefined;
   paginatorInfo: MappedPaginatorInfo | null;
@@ -55,7 +56,9 @@ const ProductList = ({
     sort: SortOrder.Desc,
     column: null,
   });
-console.log('product ', products);
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+  const [openCertManager, setOpenCertManager] = useState(false);
+  console.log('product ', products);
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
@@ -265,15 +268,31 @@ console.log('product ', products);
       className:
         'text-[13px] md:text-sm font-semibold text-gray-700 dark:text-gray-300',
       render: (slug: string, record: Product) => (
-        <LanguageSwitcher
-          slug={slug}
-          record={record}
-          deleteModalView="DELETE_PRODUCT"
-          routes={Routes?.product}
-          enablePreviewMode
-          isShop={Boolean(shop)}
-          shopSlug={(shop as string) ?? ''}
-        />
+        <div className="flex items-center gap-2">
+
+          <LanguageSwitcher
+            slug={slug}
+            record={record}
+            deleteModalView="DELETE_PRODUCT"
+            routes={Routes?.product}
+            enablePreviewMode
+            isShop={Boolean(shop)}
+            shopSlug={(shop as string) ?? ''}
+          />
+
+          {/* 🔥 CERTIFICATE ICON */}
+          <button
+            onClick={() => {
+              setSelectedProductId(record.id);
+              setOpenCertManager(true);
+            }}
+            className="p-1 hover:bg-gray-100 rounded"
+            title="Certificates"
+          >
+            <ShieldCheck size={18} />
+          </button>
+
+        </div>
       ),
     },
   ];
@@ -315,6 +334,28 @@ console.log('product ', products);
             pageSize={paginatorInfo.perPage}
             onChange={onPagination}
           />
+        </div>
+      )}
+
+      {openCertManager && selectedProductId && (
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
+          <div className="bg-white rounded-xl w-[900px] max-h-[90vh] overflow-auto">
+
+            <CertificatesManager
+              productId={selectedProductId}
+            />
+
+            <button
+              onClick={() => {
+                setOpenCertManager(false);
+                setSelectedProductId(null);
+              }}
+              className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded"
+            >
+              Close
+            </button>
+
+          </div>
         </div>
       )}
     </>
