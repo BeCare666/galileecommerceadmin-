@@ -12,7 +12,7 @@ import { GetStaticProps } from 'next';
 import PageHeading from '@/components/common/page-heading';
 import AmbassadorList from '@/components/ambassador/pending';
 
-export default function Ambassadors() {
+export default function Pendingambassadors() {
     const { t } = useTranslation();
 
     const [searchTerm, setSearchTerm] = useState('');
@@ -33,33 +33,33 @@ export default function Ambassadors() {
     }, [searchTerm, page]);
 
     async function fetchPending() {
-    try {
-        setLoading(true);
+        try {
+            setLoading(true);
 
-        const res = await fetch(
-            `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/ambassadors?search=${searchTerm}&page=${page}`
-        );
+            const res = await fetch(
+                `${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}/ambassadors?search=${searchTerm}&page=${page}`
+            );
 
-        const result = await res.json();
+            const result = await res.json();
 
-        const filtered = result.data.filter(
-            (item: any) => item.status === 'pending'
-        );
+            const filtered = result.data.filter(
+                (item: any) => item.status === 'pending'
+            );
 
-        setData(filtered);
+            setData(filtered);
 
-        setPaginatorInfo({
-            total: filtered.length,
-            currentPage: result.page,
-            perPage: result.limit,
-        });
+            setPaginatorInfo({
+                total: filtered.length,
+                currentPage: result.page,
+                perPage: result.limit,
+            });
 
-    } catch (err) {
-        setError(err);
-    } finally {
-        setLoading(false);
+        } catch (err) {
+            setError(err);
+        } finally {
+            setLoading(false);
+        }
     }
-}
 
     if (loading) return <Loader text={t('common:text-loading')} />;
     if (error) return <ErrorMessage message="Erreur chargement" />;
@@ -91,11 +91,11 @@ export default function Ambassadors() {
     );
 }
 
-Ambassadors.authenticate = {
+Pendingambassadors.authenticate = {
     permissions: adminOnly,
 };
 
-Ambassadors.Layout = Layout;
+Pendingambassadors.Layout = Layout;
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
     props: {

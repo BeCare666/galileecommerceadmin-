@@ -52,7 +52,7 @@ export default function CreateShopPage() {
           >
             <h2 className="text-3xl md:text-5xl font-bold">
               Connectez-vous à des millions d’acheteurs grâce au B Space de
-              Galiléecommerce.com
+              Galileecommerce
             </h2>
             <p className="text-lg text-gray-200">
               Les B Spaces, abréviation de Business Space, correspondent à vos

@@ -12,7 +12,7 @@ import { GetStaticProps } from 'next';
 import PageHeading from '@/components/common/page-heading';
 import AmbassadorList from '@/components/ambassador/rejected';
 
-export default function Ambassadors() {
+export default function Rejectedambassadors() {
     const { t } = useTranslation();
 
     const [searchTerm, setSearchTerm] = useState('');
@@ -91,11 +91,11 @@ export default function Ambassadors() {
     );
 }
 
-Ambassadors.authenticate = {
+Rejectedambassadors.authenticate = {
     permissions: adminOnly,
 };
 
-Ambassadors.Layout = Layout;
+Rejectedambassadors.Layout = Layout;
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
     props: {
