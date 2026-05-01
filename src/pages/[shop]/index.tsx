@@ -203,7 +203,7 @@ export default function ShopPage() {
             {hasAccess(adminAndOwnerOnly, permissions) && (
               <div className="self-end pt-4 space-x-4 xl:pt-0">
                 <Link
-                  className="inline-flex items-center gap-1 rounded-full bg-accent px-[0.625rem] py-[0.5625rem] text-xs font-medium text-white hover:bg-accent-hover"
+                  className="hidden inline-flex items-center gap-1 rounded-full bg-accent px-[0.625rem] py-[0.5625rem] text-xs font-medium text-white hover:bg-accent-hover"
                   href={`/${shop}/edit`}
                 >
                   <EditFillIcon />
