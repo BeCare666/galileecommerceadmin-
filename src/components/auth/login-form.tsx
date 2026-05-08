@@ -10,6 +10,7 @@ import type { LoginInput } from '@/types';
 import { useState } from 'react';
 import Alert from '@/components/ui/alert';
 import { toast } from 'react-toastify';
+import Link from "next/link";
 import {
   allowedRoles,
   hasAccess,
@@ -145,14 +146,21 @@ const LoginForm = () => {
               variant="outline"
               className="mb-5 border-gray-200"
             />
-            <div className="mb-6 flex items-center">
-              <Checkbox
-                id="remember"
-                name="remember"
-                label={t('form:input-label-remember-me')}
-                className="text-sm text-body"
-              />
-            </div>
+          <div className="mb-6 flex items-center justify-between gap-4">
+            <Checkbox
+              id="remember"
+              name="remember"
+              label={t('form:input-label-remember-me')}
+              className="text-sm text-body"
+            />
+
+            <Link
+              href="/forgot-password"
+              className="text-sm font-medium text-brand hover:text-brand-dark transition-colors"
+            >
+              {t('form:form-title-forgot-password')}
+            </Link>
+          </div>
             <Button
               type="submit"
               className="h-12 w-full font-medium shadow-sm transition-all hover:shadow focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"

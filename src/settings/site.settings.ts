@@ -423,6 +423,12 @@ export const siteSettings = {
         icon: 'UserIcon',
         permissions: ownerAndStaffOnly,
       },
+        {
+        href: Routes.resetMyPassword || '#',
+        label: 'resetmypassword-user',
+        icon: 'SettingsIcon',
+        permissions: ownerAndStaffOnly,
+      },
       {
         href: Routes.logout || '#',
         label: 'authorized-nav-item-logout',

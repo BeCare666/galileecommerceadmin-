@@ -5,6 +5,7 @@ export const Routes = {
   register: '/register',
   forgotPassword: '/forgot-password',
   resetPassword: '/reset-password',
+  resetMyPassword: '/change-password'
   adminMyShops: '/my-shops',
   ambassadorList: '/ambassadors',
   pendingAmbassadors: '/ambassadors/pendingambassadors',
