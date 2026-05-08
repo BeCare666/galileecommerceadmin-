@@ -271,6 +271,7 @@ export const siteSettings = {
               { href: Routes.eventSettings || '#', label: 'text-events-settings', icon: 'SettingsIcon' },
               { href: Routes.maintenance || '#', label: 'text-maintenance-settings', icon: 'SettingsIcon' },
               { href: Routes.promotionPopup || '#', label: 'text-promotion-popup', icon: 'SettingsIcon' },
+              {href: Routes.resetMyPassword || '#', label: 'resetmypassword-user', icon: 'SettingsIcon' },
             ],
           },
         ],
